@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd" id="WebApp_ID" version="4.0">
+  <display-name>JadeTear</display-name>
+  <welcome-file-list>
+    <welcome-file>catalog.jsp</welcome-file>
+  </welcome-file-list>
+  <resource-ref>
+    <description>JNDI reference to a data source</description>
+    <res-ref-name>jdbc/storage</res-ref-name>
+    <res-type>javax.sql.DataSource</res-type>
+    <res-auth>Container</res-auth>
+  </resource-ref>
+
+
+  <servlet>
+    <servlet-name> CatalogServlet </servlet-name>
+    <servlet-class>it.unisa.control.CatalogServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name> CatalogServlet </servlet-name>
+    <url-pattern>/createCatalog</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name> CartServlet </servlet-name>
+    <servlet-class>it.unisa.control.CartServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name> CartServlet </servlet-name>
+    <url-pattern>/cart</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name> AdminServlet </servlet-name>
+    <servlet-class>it.unisa.control.AdminServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name> AdminServlet </servlet-name>
+    <url-pattern>/admin</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name> DetailsServlet </servlet-name>
+    <servlet-class>it.unisa.control.DetailsServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name> DetailsServlet </servlet-name>
+    <url-pattern>/details</url-pattern>
+  </servlet-mapping>
+  
+  <servlet>
+    <servlet-name> LoginServlet </servlet-name>
+    <servlet-class>it.unisa.control.LoginServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name> LoginServlet </servlet-name>
+    <url-pattern>/login</url-pattern>
+  </servlet-mapping>
+  
+  <servlet>
+    <servlet-name> RegistrationServlet </servlet-name>
+    <servlet-class>it.unisa.control.RegistrationServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name> RegistrationServlet </servlet-name>
+    <url-pattern>/registration</url-pattern>
+  </servlet-mapping>
+
+</web-app>
