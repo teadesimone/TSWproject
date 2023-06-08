@@ -24,7 +24,7 @@ public class OrderBean {
         this.id = 0;
         this.client = null;
         this.prezzo_totale = 0;
-        this.destinatario = null;
+        this.destinatario = null; 
         this.metodo_di_pagamento = null;
         this.indirizzo_di_spedizione = null;
         this.numero_di_tracking = null;

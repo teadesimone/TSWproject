@@ -29,7 +29,7 @@ public class ClientOrdersServlet extends HttpServlet{
         if (client == null){
             RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/login.jsp");
             dispatcher.forward(request, response);
-        }
+        } 
         else if (!client.getEmail().equals("JadeTear@gmail.com")){
             //cliente generico
             String username = client.getUsername();

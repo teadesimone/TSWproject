@@ -29,7 +29,7 @@ public class PaymentServlet extends HttpServlet {
     public PaymentServlet() {
         super();
     }
-
+ 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
         String action = request.getParameter("action");

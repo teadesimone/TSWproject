@@ -30,7 +30,7 @@ public class OrderDetailsServlet extends HttpServlet{
         
         OrderBean order = new OrderBean();
         
-        try {
+        try { 
 			order = orderModel.doRetrieveByKey(id);
 		} catch (SQLException e) {
 			LOGGER.log( Level.SEVERE, e.toString(), e );

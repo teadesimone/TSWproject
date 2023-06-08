@@ -21,7 +21,7 @@ public class OrderDAO {
     private static DataSource ds;
 
     static {
-        try {
+        try { 
             Context initCtx = new InitialContext();
             Context envCtx = (Context) initCtx.lookup("java:comp/env");
 

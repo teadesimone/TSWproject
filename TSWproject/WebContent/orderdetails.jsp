@@ -10,7 +10,7 @@ import = "java.util.*, java.sql.*, it.unisa.model.*" pageEncoding="UTF-8"%>
 
 <!-- STAMPA: nome, immagine, personalizzato, quantità, prezzo -->
 
-<!DOCTYPE html> 
+<!DOCTYPE html>
 <html>
 	<head>
 		<meta charset="UTF-8">
