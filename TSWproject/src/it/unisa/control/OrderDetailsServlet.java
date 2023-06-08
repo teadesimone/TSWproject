@@ -15,7 +15,7 @@ import java.util.logging.Logger;
 
 import it.unisa.model.*;
 
-public class OrderDetailsServlet extends HttpServlet{ 
+public class OrderDetailsServlet extends HttpServlet{
     
     static OrderDAO orderModel = new OrderDAO();
     static OrderProductDAO orderProdModel = new OrderProductDAO(); 
