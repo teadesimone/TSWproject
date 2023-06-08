@@ -12,4 +12,4 @@ pageEncoding="ISO-8859-1"%>
     <p> Compà non provare a comprare cose che non esistono. Torna al carrello <a>href="cart.jsp">qui</a></p>
 
 </body>
-</html>
+</html> 

@@ -12,7 +12,7 @@ import = "java.util.*, it.unisa.model.*" pageEncoding="UTF-8"%>
 	ArrayList<OrderBean> orders = (ArrayList<OrderBean>) request.getAttribute("ordini");
 	
 %>    
-
+ 
 <!DOCTYPE html>
 <html>
 

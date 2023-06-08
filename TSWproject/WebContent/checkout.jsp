@@ -10,7 +10,7 @@
 		<title>Pagamento</title>
 		<!-- <link rel="stylesheet" href="styles/formStyle.css" type="text/css"> -->
 	</head>
-	<body>
+	<body> 
 	<h1>Checkout</h1>
     
     <form action="payment" method="post">
