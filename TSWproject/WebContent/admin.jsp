@@ -9,7 +9,7 @@ import = "java.util.*, it.unisa.model.*" pageEncoding="UTF-8"%>
 
 <head>
         <title> Admin Page </title>
-</head>
+</head> 
 
 <body>
         <h1> Admin Page </h1>
