@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 import = "java.util.*, it.unisa.model.*" pageEncoding="UTF-8"%>
 
-<% JewelBean j = (JewelBean) request.getAttribute("jewel"); %>
+<% JewelBean j = (JewelBean) request.getAttribute("jewel"); %> 
 
 
 <!DOCTYPE html>
