@@ -119,5 +119,57 @@ public class ClientDAO {
         
         return client;
     }
+    
+    public synchronized ClientBean doRetrieveByKey(String username) throws SQLException{
+        //PRENDE UN UTENTE DAL SUO USERNAME
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+
+        String selectSQL = "SELECT * FROM " + ClientDAO.TABLE + " WHERE username=?";
+        ClientBean client = null;
+        
+
+        try {
+            connection = ds.getConnection();
+            preparedStatement = connection.prepareStatement(selectSQL);
+            preparedStatement.setString(1, username);
+
+            ResultSet rs = preparedStatement.executeQuery();
+            
+           
+
+            while (rs.next()) {
+            	
+            	client = new ClientBean();
+
+                client.setUsername(rs.getString("username"));
+                client.setCf(rs.getString("cf"));
+                client.setNome(rs.getString("nome"));
+                client.setCognome(rs.getString("cognome"));
+                client.setVia(rs.getString("via"));
+                client.setCitta(rs.getString("citta"));
+                client.setProvincia(rs.getString("provincia"));
+                client.setCap(rs.getString("cap"));
+                client.setTelefono(rs.getString("telefono"));
+                client.setEmail(rs.getString("email"));
+                client.setPassword(rs.getString("psw"));
+
+            }
+            
+            
+
+        } finally {
+            try {
+                if (preparedStatement != null)
+                    preparedStatement.close();
+            } finally {
+                if (connection != null)
+                    connection.close();
+            }
+        }
+        
+        
+        return client;
+    }
 
 }

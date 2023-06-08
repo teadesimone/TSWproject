@@ -19,8 +19,8 @@ CREATE TABLE Prodotto
 	personalizzato boolean not null
 );
 
-INSERT INTO Prodotto values (1,"Anello di Rugiada", "Anello", "Giada", "AnelloRugiada.jpeg", 3, 22, 80, "Anello la cui pietra &egrave assimilabile ad una goccia di rugiada", "Argento", 0, false);
-INSERT INTO Prodotto values (2, "Collana del Cristallo dell'Ira", "Collana", "Rubino", "collanadira.jpg", 1, 22, 140, "Collana uscita da un libro fantasy, per essere pi&ugrave chic", "Argento", 0, false);
+INSERT INTO Prodotto values (1,"Anello di Rugiada", "Anello", "Giada", "AnelloRugiada.jpeg", 10, 22, 80, "Anello la cui pietra &egrave assimilabile ad una goccia di rugiada", "Argento", 0, false);
+INSERT INTO Prodotto values (2, "Collana del Cristallo dell'Ira", "Collana", "Rubino", "collanadira.jpg", 10, 22, 140, "Collana uscita da un libro fantasy, per essere pi&ugrave chic", "Argento", 0, false);
 
 CREATE TABLE Cliente
 (
@@ -38,10 +38,11 @@ CREATE TABLE Cliente
 );
 
 INSERT INTO Cliente values("JadeTear", "416b61d91f7a4396f43939f1b6dcdf84073ad190", "TREJDA97H59D615D", "Jade", "Tear", "via Roma 69", "Fisciano", "SA", "84084", "391234567890", "JadeTear@gmail.com");
+INSERT INTO Cliente values("Ciro05", "416b61d91f7a4396f43939f1b6dcdf84073ad190", "OOOOOOOOOO", "Ciro", "Esposito", "via Rome 69", "Ottaviano", "NA", "00000", "0000000000", "prova@gmail.com");
 
 CREATE TABLE Ordine
 (
-	id int primary key AUTO_INCREMENT,
+	id int primary key,
     username varchar(20) not null,
     prezzo_totale float not null,
     destinatario varchar(50) not null,
@@ -50,8 +51,6 @@ CREATE TABLE Ordine
     numero_di_tracking varchar(40) not null,
     note varchar(100),
     data date not null,
-    sconto int not null, 
-    check (sconto >= 0 and sconto < 100),
     metodo_di_spedizione varchar(20) not null,
     confezione_regalo boolean not null,
     foreign key(username) references Cliente(username)
@@ -92,7 +91,7 @@ CREATE TABLE Valutazione
 
 CREATE TABLE Composizione
 (
-	id int not null AUTO_INCREMENT,
+	id int not null,
     id_prodotto int not null,
     prezzo float not null,
     quantita int not null,
@@ -105,6 +104,7 @@ CREATE TABLE Composizione
 		on update cascade
 		on delete restrict
 );
+
 
 CREATE TABLE Wishlist
 (

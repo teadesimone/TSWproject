@@ -34,10 +34,17 @@ if (cart == null) {
                     <td> <input type="number" name="quantity" value= "<%= j.getQuantity() %>"> </td>
                     <td> <input type="submit" name="action" value="Modify Amount"> <br> <input type="submit" name="action" value="Delete from Cart"> <br> </td>
                 </tr>
+                
+                <!-- <input type ="submit" name="action" value= "procedi all'ordine"> -->
             </form>
 
             <% } %>
     </table>
+    <!-- FORM CON ACTION BUY-->
+    <form action="cart" method="post">
+        <input type="hidden" name="action" value="buy">
+        <input type ="submit" value="procedi all'ordine">
+    </form>
 
     <a href="createCatalog"> Go back </a>
 

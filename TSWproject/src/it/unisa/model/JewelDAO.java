@@ -225,4 +225,83 @@ public class JewelDAO {
 	return (result != 0);
   }
   
+  public synchronized ArrayList<JewelBean> doRetrieveAllByCategory(String category) throws SQLException {
+    Connection connection = null;
+    PreparedStatement preparedStatement = null;
+    
+
+    String selectSQL = "SELECT * FROM " + TABLE + " WHERE categoria = ?";
+
+    ArrayList<JewelBean> beans = new ArrayList<JewelBean>();
+
+    try {
+      connection = ds.getConnection();
+      preparedStatement = connection.prepareStatement(selectSQL);
+      preparedStatement.setString(1, category);
+
+      ResultSet rs = preparedStatement.executeQuery();
+
+      while (rs.next()) {
+        JewelBean jewel = new JewelBean();
+        jewel.setId(rs.getInt("id_prodotto"));
+        jewel.setNome(rs.getString("nome"));
+        jewel.setCategoria(rs.getString("categoria"));
+        jewel.setPietra(rs.getString("pietra"));
+        jewel.setImmagine(rs.getString("immagine"));
+        jewel.setDisponibilita(rs.getInt("disponibilita"));
+        jewel.setIVA(rs.getFloat("IVA"));
+        jewel.setPrezzo(rs.getFloat("prezzo"));
+        jewel.setDescrizione(rs.getString("descrizione"));
+        jewel.setMateriale(rs.getString("materiale"));
+        jewel.setSconto(rs.getInt("sconto"));
+        jewel.setPersonalizzato(rs.getBoolean("personalizzato"));
+        
+        beans.add(jewel);
+      }
+    } 
+    finally {
+      try {
+        if (preparedStatement != null)
+          preparedStatement.close();
+      } 
+      finally {
+        if (connection != null)
+          connection.close();
+      }
+    }
+    return beans;
+  }
+  
+  public synchronized void updateQuantity (int id, int newQuantity) throws SQLException {  
+
+    Connection connection = null;
+    PreparedStatement preparedStatement = null; 
+
+    String updateSQL = "UPDATE " + TABLE + " SET disponibilita = ? WHERE id_prodotto = ?";  
+
+    try {
+      connection = ds.getConnection(); 
+      preparedStatement = connection.prepareStatement(updateSQL);
+      preparedStatement.setInt(1, newQuantity);
+      preparedStatement.setInt(2, id);
+
+      preparedStatement.executeUpdate(); 
+
+      //connection.commit();
+    }
+
+    finally {
+      try {
+        if (preparedStatement != null)
+          preparedStatement.close();
+      } 
+
+      finally {
+        if (connection != null)
+          connection.close();
+      }
+    }
+  }
+  
+  
 }
