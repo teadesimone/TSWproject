@@ -17,7 +17,7 @@ import it.unisa.model.*;
 
 public class OrderDetailsServlet extends HttpServlet{
     
-    static OrderDAO orderModel = new OrderDAO();
+    static OrderDAO orderModel = new OrderDAO(); 
     static OrderProductDAO orderProdModel = new OrderProductDAO(); 
     static JewelDAO jewelModel = new JewelDAO();
     private static final Logger LOGGER = Logger.getLogger(CartServlet.class.getName() );
