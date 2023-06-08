@@ -2,7 +2,7 @@ package it.unisa.model;
 import java.sql.Date;
 import java.util.*;
 
-public class OrderBean { 
+public class OrderBean {
     
     private ArrayList<OrderProductBean> products;
     private int id;
