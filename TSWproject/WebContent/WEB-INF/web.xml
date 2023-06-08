@@ -65,5 +65,32 @@
     <servlet-name> RegistrationServlet </servlet-name>
     <url-pattern>/registration</url-pattern>
   </servlet-mapping>
+  
+  <servlet>
+    <servlet-name> PaymentServlet </servlet-name>
+    <servlet-class>it.unisa.control.PaymentServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name> PaymentServlet </servlet-name>
+    <url-pattern>/payment</url-pattern>
+  </servlet-mapping>
+  
+  <servlet>
+    <servlet-name> ClientOrdersServlet </servlet-name>
+    <servlet-class>it.unisa.control.ClientOrdersServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name> ClientOrdersServlet </servlet-name>
+    <url-pattern>/clientorders</url-pattern>
+  </servlet-mapping>
+  
+  <servlet>
+    <servlet-name> OrderDetailsServlet </servlet-name>
+    <servlet-class>it.unisa.control.OrderDetailsServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name> OrderDetailsServlet </servlet-name>
+    <url-pattern>/orderdetails</url-pattern>
+  </servlet-mapping>
 
 </web-app>
