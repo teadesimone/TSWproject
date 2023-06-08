@@ -11,7 +11,7 @@ import = "java.util.*, it.unisa.model.*" pageEncoding="UTF-8"%>
         <title> Admin Page </title>
 </head> 
 
-<body>
+<body> 
         <h1> Admin Page </h1>
 
         <h2>Add a jewel</h2>
