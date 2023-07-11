@@ -1,2 +1,4 @@
 WebContent/META-INF/context.xml
 /build/
+*.class
+TSWproject/.classpath

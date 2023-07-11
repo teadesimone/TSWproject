@@ -1,21 +1,29 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 import = "java.util.*, it.unisa.model.*" pageEncoding="UTF-8"%>
 
-<% JewelBean j = (JewelBean) request.getAttribute("jewel"); %> 
+<%
+JewelBean j = (JewelBean) request.getAttribute("jewel");
+ClientBean client = (ClientBean) request.getSession().getAttribute("utente");
+if(!client.getEmail().equalsIgnoreCase("JadeTear@gmail.com") || client==null){
+    response.sendRedirect("Error403.jsp");	
+    return;
+}
+%>
 
 
 <!DOCTYPE html>
-<html> 
+<html lang="en">
 
 <head>
         <title> Admin Page </title>
-</head> 
- 
-<body> 
+</head>
+
+<body>
+        <%@include file="/WEB-INF/header.jsp" %>
         <h1> Admin Page </h1>
 
         <h2>Add a jewel</h2>
-        <form action="admin" method="post">
+        <form action="admin" method="post" enctype="multipart/form-data">
                 <input type="hidden" name="action" value="insert">
 
                 <br>
@@ -25,20 +33,32 @@ import = "java.util.*, it.unisa.model.*" pageEncoding="UTF-8"%>
 
                 <br>
                 <label for="category">Category:</label><br>
-                <input name="category" type="text" maxlength="20" required placeholder="(Ring, Necklace,...)">
-                <br>
+                <select name="category">
+                    <option value="Necklace"> Necklace </option>
+                    <option value="Earrings"> Earrings </option>
+                    <option value="Ring"> Ring </option>
+                    <option value="Bracelet"> Bracelet </option>
+
+                </select> <br> 
 
                 <br>
                 <label for="gemstone">Gemstone:</label><br>
-                <input name="gemstone" type="text" maxlength="20" required
-                placeholder="enter gemstone">
+                <select name="gemstone">
+               	 	 <option value="Jade"> Jade </option>
+               		 <option value="Amethyst">Amethyst </option>
+               		 <option value="Obsidian"> Obsidian </option>
+               		 <option value="Ruby"> Ruby </option>
+                     <option value="Rose Quarz"> Rose Quarz </option>
+                     <option value="Diammond"> Diammond </option>
+                     <option value="Emerald"> Emerald </option>
+                     <option value="Aquamarine"> Aquamarine </option>
+             
+           		  </select>  
                 <br>
 
                 <br>
                 <label for="image">Image:</label><br>
-               
-                <input name="image" type="text" maxlength="100" required
-                placeholder="enter an url (?)">
+                <input name="image" type="file" required>
                 <br>
 
                 <br>
@@ -48,12 +68,12 @@ import = "java.util.*, it.unisa.model.*" pageEncoding="UTF-8"%>
 
                 <br>
                 <label for="IVA">IVA:</label><br>
-                <input name="IVA" type="number" min="1" value="22" required>
+                <input name="IVA" type="number" min="1" max="22" value="22" required>
                 <br>
 
                 <br>
                 <label for="price">Price:</label><br>
-                <input name="price" type="number" min="1" required>
+                <input name="price" type="number" min="1" max='5000' required>
                 <br>
 
                 <br>
@@ -63,22 +83,24 @@ import = "java.util.*, it.unisa.model.*" pageEncoding="UTF-8"%>
 
                 <br>
                 <label for="material">Material:</label><br>
-                <input name="material" type="text" maxlength="20" required>
+                 <select name="material">
+               	 	 <option value="Gold"> Gold </option>
+               		 <option value="Silver"> Silver </option>
+               		 <option value="Rose Gold"> Rose Gold </option>
+
+           		  </select>  
                 <br>
 
                 <br>
                 <label for="discount">Discount:</label><br>
-                <input name="discount" type="number" min="0" value="0">
+                <input name="discount" type="number" min="0" max="99" value="0">
                 <br>
-
-                <br>
-                <label for="personalized">Personalized:</label><br>
-                <input name="personalized" type="checkbox" value="true">
-                <br>
+                
                 <br>
                 <input type="submit" value="Add">
                 <input type="reset" value="Reset">
         </form>
+        
 
         <h2>Update with new info</h2>
         <form action="admin" method="post">
@@ -103,17 +125,31 @@ import = "java.util.*, it.unisa.model.*" pageEncoding="UTF-8"%>
 
                 <br>
                 <label for="category">Category:</label><br>
-                <input name="categoryM" type="text" maxlength="20" required value="<%=j.getCategoria() %>">
+                <select name="categoryM">
+                    <option value="Necklace"> Necklace </option>
+                    <option value="Earrings"> Earrings </option>
+                    <option value="Ring"> Ring </option>
+                    <option value="Bracelet"> Bracelet </option>
+                </select>
                 <br>
 
                 <br>
                 <label for="gemstone">Gemstone:</label><br>
-                <input name="gemstoneM" type="text" maxlength="20" required value="<%=j.getPietra() %>">
+                  <select name="gemstoneM">
+               	 	 <option value="Jade"> Jade </option>
+               		 <option value="Amethyst">Amethyst </option>
+               		 <option value="Obsidian"> Obsidian </option>
+               		 <option value="Ruby"> Ruby </option>
+                     <option value="Rose Quarz"> Rose Quarz </option>
+                     <option value="Diammond"> Diammond </option>
+                     <option value="Emerald"> Emerald </option>
+                     <option value="Aquamarine"> Aquamarine </option>
+
+           		  </select>  
                 <br>
 
                 <br>
-                <label for="image">Image:</label><br>
-               
+                <label for="image">Image:</label>
                 <input name="imageM" type="text" maxlength="100" required value="<%=j.getImmagine() %>">
                 <br>
 
@@ -124,12 +160,12 @@ import = "java.util.*, it.unisa.model.*" pageEncoding="UTF-8"%>
 
                 <br>
                 <label for="IVA">IVA:</label><br>
-                <input name="IVAM" type="number" min="1" required value="<%=j.getIVA() %>">
+                <input name="IVAM" type="number" min="1" max='22' required value="<%=j.getIVA() %>">
                 <br>
 
                 <br>
                 <label for="price">Price:</label><br>
-                <input name="priceM" type="number" min="1" required value="<%=j.getPrezzo() %>">
+                <input name="priceM" type="number" min="1" max='5000' required value="<%=j.getPrezzo() %>">
                 <br>
 
                 <br>
@@ -138,26 +174,19 @@ import = "java.util.*, it.unisa.model.*" pageEncoding="UTF-8"%>
                 <br>
 
                 <br>
-                <label for="material">Material:</label><br>
-                <input name="materialM" type="text" maxlength="20" required value="<%=j.getMateriale() %>">
+                <label for="materialM">Material:</label><br> <select name="category">
+               	  <select name="materialM">
+               	 	 <option value="Gold"> Gold </option>
+               		 <option value="Silver"> Silver </option>
+               		 <option value="Rose Gold"> Rose Gold </option>
+
+           		  </select>  
                 <br>
 
                 <br>
                 <label for="discount">Discount:</label><br>
-                <input name="discountM" type="number" min="0" value="<%=j.getSconto() %>">
+                <input name="discountM" type="number" min="0" max="99" value="<%=j.getSconto() %>">
                 <br>
-
-                <% if (!j.getPersonalizzato()) { %>
-                        <br>
-                        <label for="personalized">Personalized:</label><br>
-                        <input name="personalizedM" type="checkbox" value="<%=j.getPersonalizzato() %>">
-                        <br>
-                        <% } else { %>
-                                <br>
-                                <label for="personalized">Personalized:</label><br>
-                                <input name="personalizedM" type="checkbox" value="<%=j.getPersonalizzato() %>" checked>
-                                <br>
-                                <% } %>
 
                 <input type="submit" value="Modify">
            </form>
@@ -174,6 +203,6 @@ import = "java.util.*, it.unisa.model.*" pageEncoding="UTF-8"%>
                         <input type="submit" value="Delete">
                 </fieldset>
         </form>
-
+        <%@include file="/WEB-INF/footer.jsp" %>
 </body>
 </html>
