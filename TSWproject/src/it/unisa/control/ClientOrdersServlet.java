@@ -29,7 +29,8 @@ public class ClientOrdersServlet extends HttpServlet{
         if (client == null){
             RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/login.jsp");
             dispatcher.forward(request, response);
-        } 
+            return;
+        }
         else if (!client.getEmail().equals("JadeTear@gmail.com")){
             //cliente generico
             String username = client.getUsername();
@@ -40,63 +41,7 @@ public class ClientOrdersServlet extends HttpServlet{
 			}
             
         }
-        else {
-            //admin
-            if(action == null){
-                
-                action = "nofilter";
-                try {
-					orders = orderModel.doRetrieveAll();
-				} catch (SQLException e) {
-					LOGGER.log( Level.SEVERE, e.toString(), e );
-				}
-                
-            }
-            
-            if (Boolean.parseBoolean(request.getParameter("Order By Client"))== true){
-
-                String user = request.getParameter("cliente");
-                
-                try {
-                    orders = orderModel.doRetrieveByClient(user);
-                } catch (SQLException e) {
-                    LOGGER.log( Level.SEVERE, e.toString(), e );
-                }
-                
-            }
-            if(Boolean.parseBoolean(request.getParameter("Order By Date"))== true){
-                
-                String data_da = (String) request.getParameter("data_da");
-                String data_a = (String) request.getParameter("data_a");
-                if (data_da.compareTo(data_a)< 0){
-
-                    try {
-						orders = orderModel.DateOrders(data_da,data_a);
-					} catch (SQLException e) {
-						LOGGER.log( Level.SEVERE, e.toString(), e );
-					}
-                }
-                /*else {
-                    
-                    // pagina di errore
-                }*/
-            }
-            if ((Boolean.parseBoolean(request.getParameter("Order By Date"))== true) && (Boolean.parseBoolean(request.getParameter("Order By Client"))== true)){
-                
-                String user = request.getParameter("cliente");
-                String data_da = (String) request.getParameter("data_da");
-                String data_a = (String) request.getParameter("data_a");
-                try {
-                    orders = orderModel.ClientDateOrders(user,data_da,data_a);
-                } catch (SQLException e) {
-                    LOGGER.log( Level.SEVERE, e.toString(), e );
-                }
-            }
-           
-            
-        }
-        
-        
+ 
         request.setAttribute("ordini", orders);
 
         RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/clientorders.jsp");

@@ -4,7 +4,7 @@ import = "java.util.*, it.unisa.model.*" pageEncoding="UTF-8"%>
 <% JewelBean j = (JewelBean) request.getAttribute("detailed");%>
 
 <!DOCTYPE html>
-<html>
+<html lang ="en">
 
 <head>
     <title> Product Details </title>
@@ -15,7 +15,7 @@ import = "java.util.*, it.unisa.model.*" pageEncoding="UTF-8"%>
     <h1><%=j.getNome() %></h1>
 
     <h3>Image</h3>
-    <p><%=j.getImmagine() %></p>
+    <p><img src= "<%= "images//" + j.getImmagine() %>" alt="<%=j.getNome() %>" width="90"  height="90"></p>
 
     <h3>Description</h3>
     <p><%=j.getDescrizione() %></p>

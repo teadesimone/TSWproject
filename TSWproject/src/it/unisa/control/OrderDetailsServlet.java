@@ -17,29 +17,73 @@ import it.unisa.model.*;
 
 public class OrderDetailsServlet extends HttpServlet{
     
-    static OrderDAO orderModel = new OrderDAO(); 
+    static OrderDAO orderModel = new OrderDAO();
     static OrderProductDAO orderProdModel = new OrderProductDAO(); 
     static JewelDAO jewelModel = new JewelDAO();
+    static InvoiceDAO invoiceModel = new InvoiceDAO();
+    
     private static final Logger LOGGER = Logger.getLogger(CartServlet.class.getName() );
     
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
         
         ClientBean client = (ClientBean) request.getSession().getAttribute("utente");
+        String action = request.getParameter("action");
         
-        int id = Integer.parseInt(request.getParameter("ordine"));
         
-        OrderBean order = new OrderBean();
-        
-        try { 
-			order = orderModel.doRetrieveByKey(id);
-		} catch (SQLException e) {
-			LOGGER.log( Level.SEVERE, e.toString(), e );
-		}
-        
-        request.setAttribute("detailedOrder", order);
+        if(action==null){
+            int id = Integer.parseInt(request.getParameter("ordine"));
+
+            OrderBean order = new OrderBean();
+
+            try {
+                order = orderModel.doRetrieveByKey(id);
+            } catch (SQLException e) {
+                LOGGER.log( Level.SEVERE, e.toString(), e );
+            }
+
+            request.setAttribute("detailedOrder", order);
+        }
+        if(action!=null && action.equalsIgnoreCase("viewInvoice")){
+            
+            int idordine = Integer.parseInt(request.getParameter("idOrder"));
+            InvoiceBean invoice = new InvoiceBean();
+            
+            ArrayList<OrderProductBean> products = null;
+			try {
+				products = orderProdModel.doRetrieveByKey(idordine);
+			} catch (SQLException e) {
+                LOGGER.log( Level.SEVERE, e.toString(), e );
+            }
+            
+            ArrayList<JewelBean> jewels = new ArrayList<JewelBean>();
+            for(OrderProductBean prodotto : products){
+                JewelBean jewel = null;
+				try {
+					jewel = jewelModel.doRetrieveByKey(prodotto.getId_prodotto());
+				} catch (SQLException e) {
+	                LOGGER.log( Level.SEVERE, e.toString(), e );
+	            }
+                jewels.add(jewel);
+            }
+            
+            try {
+                invoice = invoiceModel.doRetrieveByOrder(idordine);
+            } catch (SQLException e) {
+                LOGGER.log( Level.SEVERE, e.toString(), e );
+            }
+            
+            request.setAttribute("jewels", jewels);
+            request.setAttribute("orderProducts", products);
+            request.setAttribute("invoice", invoice);
+            
+            RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/invoice.jsp");
+            dispatcher.forward(request, response);
+            return;
+        }
         
         RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/orderdetails.jsp");
         dispatcher.forward(request, response);
+        return;
         
     }
     
