@@ -1,7 +1,10 @@
 package it.unisa.control;
 
 import java.io.IOException;
+import java.security.SecureRandom;
 import java.sql.SQLException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 import javax.servlet.RequestDispatcher;
@@ -22,37 +25,47 @@ public class PaymentServlet extends HttpServlet {
 
     static OrderDAO orderModel = new OrderDAO();
     static JewelDAO jewelModel = new JewelDAO();
-
-
-    static int id_ordine = 0;
+    static AddressDAO addressmodel = new AddressDAO();
+    static PaymentMethodDAO paymentmodel = new PaymentMethodDAO();
+    static InvoiceDAO invoicemodel = new InvoiceDAO();
 
     public PaymentServlet() {
         super();
     }
- 
+
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
         String action = request.getParameter("action");
         Cart cart = (Cart) request.getSession().getAttribute("cart");
         ClientBean client = (ClientBean) request.getSession().getAttribute("utente");
         boolean check = true;
+        int idcarta = Integer.parseInt(request.getParameter("carta"));
+        int idindirizzo = Integer.parseInt(request.getParameter("indirizzo"));
+        AddressBean bean = new AddressBean();
+        InvoiceBean invoice = new InvoiceBean();
+        
+        int id_ordine;
+        
+        OrderBean lastorder = new OrderBean();
+		try {
+			lastorder = orderModel.lastOrder();
+		} catch (SQLException e) {
+			LOGGER.log( Level.SEVERE, e.toString(), e );
+		}
+        
+        if (lastorder== null){
+            id_ordine = 0;
+        }
+        else{
+            id_ordine = lastorder.getId();
+        }
+        
 
 
         if(action != null) {
 
             if (cart != null && cart.getProducts().size() != 0){
-                /*if(action.equalsIgnoreCase("buy")) {
-                    // se non è loggato lo portiamo al login
-                    if(client == null) {
-                        RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/login.jsp");
-                        dispatcher.forward(request, response);
-                    }
-
-                    RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/checkout.jsp");
-                    dispatcher.forward(request, response);
-
-                }*/
-
+                
 			     if(action.equalsIgnoreCase("confirm_buy")) {
 
                     //INIZIALIZZA L'ID, COSI DA POTER POPOLARE L'ARRAY
@@ -84,18 +97,42 @@ public class PaymentServlet extends HttpServlet {
                     
                     order.setId(id_ordine);
                     order.setClient(client);
+                    if (request.getParameter("spedizione").equalsIgnoreCase("Express")){
+                        
+                        totale = totale + 5;
+                    }
+                    
                     order.setPrezzo_totale(totale);
-                    //System.out.println(order.getData());
                     order.setDestinatario(request.getParameter("destinatario"));
-                    order.setMetodo_di_pagamento(request.getParameter("pagamento"));
-                    order.setIndirizzo_di_spedizione(request.getParameter("indirizzo"));
+                    order.setMetodo_di_pagamento(request.getParameter("metodo_di_pagamento"));
+                     
+                    try {
+						order.setCircuito(paymentmodel.doRetrieveByKey(idcarta).getCircuito());
+					} catch (SQLException e) {
+						LOGGER.log( Level.SEVERE, e.toString(), e );
+					}
+                    
+                    try {
+						order.setNumero_carta(paymentmodel.doRetrieveByKey(idcarta).getNumero_carta());
+					} catch (SQLException e) {
+						LOGGER.log( Level.SEVERE, e.toString(), e );
+					}
+                    
+                    try {
+						bean = addressmodel.doRetrieveByKey(idindirizzo);
+					} catch (SQLException e) {
+						LOGGER.log( Level.SEVERE, e.toString(), e );
+					}
+                    
+                    String indirizzospedizione = bean.getVia() + "," + bean.getCitta();
+                    order.setIndirizzo_di_spedizione(indirizzospedizione);
 
-                    Random r = new Random();
+                    SecureRandom r = new SecureRandom();
                     int low = 100000;
                     int high = 10000000;
                     String result = Integer.toString(r.nextInt(high-low) + low);
-
                     order.setNumero_di_tracking(result);
+                    
                     order.setNote(request.getParameter("note"));
                     order.setData(new java.sql.Date(Calendar.getInstance().getTime().getTime()));
                     order.setMetodo_di_spedizione(request.getParameter("spedizione"));
@@ -107,7 +144,7 @@ public class PaymentServlet extends HttpServlet {
                             if(cp.getQuantity() > cp.getProduct().getDisponibilita() ){
                                 check = false;
                             }
-                        }
+                        }  
                         if (check != false){
                             orderModel.doSave(order);
                             for(CartProduct cp : cart.getProducts()){
@@ -125,14 +162,40 @@ public class PaymentServlet extends HttpServlet {
                     } catch (SQLException e) {
                         LOGGER.log( Level.SEVERE, e.toString(), e );
                     }
-
-
+                    
+                    //GENERAZIONE DELLA FATTURA
+                    SecureRandom n = new SecureRandom();
+                    int low1 = 1000000;
+                    int high2 = 9999999;
+                    String sdi = Integer.toString(n.nextInt(high2-low1) + low1);
+                    
+                    Date date = Calendar.getInstance().getTime();  
+                    DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");  
+                    String data_emissione = dateFormat.format(date);
+                    
+                    String data_scadenza = (data_emissione.substring(0, 9)+"4");
+                    
+                    invoice.setSdi(sdi);
+                    invoice.setImporto(totale);
+                    invoice.setData_emissione(data_emissione);
+                    invoice.setData_scadenza(data_scadenza);
+                    invoice.setStato_pagamento("Paid");
+                    invoice.setIva(22);
+                    invoice.setId(id_ordine);
+                    
+                    try {
+						invoicemodel.doSave(invoice);
+					}  catch (SQLException e) {
+                        LOGGER.log( Level.SEVERE, e.toString(), e );
+                    }
+                    
+                    //IL CARRELLO ADESSO E' VUOTO
                     request.getSession().removeAttribute("cart");
                     request.getSession().setAttribute("cart", null);
 
-
                     RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/catalog.jsp");
                     dispatcher.forward(request, response);
+                    return;
 
                 }
 
@@ -145,6 +208,7 @@ public class PaymentServlet extends HttpServlet {
 
             }    
         }
+        
     }    
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

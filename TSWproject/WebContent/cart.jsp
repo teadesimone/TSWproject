@@ -8,19 +8,20 @@ if (cart == null) {
 } %>
 
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
     <title> Cart </title>
 </head>
 
 <body>
+    <%@include file="/WEB-INF/header.jsp" %>
     <h1> Cart Details </h1>
     <table border = "1">
         <tr>
-            <th>Name</th>
-            <th>Price per unit</th>
-            <th>Amount</th>
+            <th> Name </th>
+            <th> Price per unit </th>
+            <th> Amount </th>
             <th> Operations </th>
         </tr>
 
@@ -34,8 +35,7 @@ if (cart == null) {
                     <td> <input type="number" name="quantity" value= "<%= j.getQuantity() %>"> </td>
                     <td> <input type="submit" name="action" value="Modify Amount"> <br> <input type="submit" name="action" value="Delete from Cart"> <br> </td>
                 </tr>
-                
-                <!-- <input type ="submit" name="action" value= "procedi all'ordine"> -->
+               
             </form>
 
             <% } %>
@@ -43,10 +43,11 @@ if (cart == null) {
     <!-- FORM CON ACTION BUY-->
     <form action="cart" method="post">
         <input type="hidden" name="action" value="buy">
-        <input type ="submit" value="procedi all'ordine">
+        <input type ="submit" value="Proceed to checkout">
     </form>
 
     <a href="createCatalog"> Go back </a>
-
+    
+    <%@include file="/WEB-INF/footer.jsp" %>
 </body>
 </html>

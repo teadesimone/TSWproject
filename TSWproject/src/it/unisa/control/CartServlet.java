@@ -1,5 +1,7 @@
 package it.unisa.control;
 
+import it.unisa.model.*;
+
 import java.io.IOException; 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -18,6 +20,10 @@ import it.unisa.model.*;
 public class CartServlet extends HttpServlet {
 	
 	private static final Logger LOGGER = Logger.getLogger( CartServlet.class.getName() );
+    
+    private static JewelDAO model = new JewelDAO();
+    private static AddressDAO addressModel = new AddressDAO();
+    private static PaymentMethodDAO paymentModel = new PaymentMethodDAO();
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
@@ -28,8 +34,6 @@ public class CartServlet extends HttpServlet {
         }
             
         ClientBean client = (ClientBean) request.getSession().getAttribute("utente");
-
-        JewelDAO model = new JewelDAO();
 
         String id = request.getParameter("id");
 
@@ -72,16 +76,49 @@ public class CartServlet extends HttpServlet {
                 if(client == null) {
                     RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/login.jsp");
                     dispatcher.forward(request, response);
+                    return;
                 }
                 request.getSession().setAttribute("cart", cart);
-
-                RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/checkout.jsp");
-                dispatcher.forward(request, response);
+                
+                ArrayList<AddressBean> indirizzi = null;
+				try {
+					indirizzi = addressModel.doRetrieveByClient(client.getUsername());
+				} catch (SQLException e) {
+					LOGGER.log( Level.SEVERE, e.toString(), e );
+				}
+				
+                ArrayList<PaymentMethodBean> carte = null;
+				try {
+                    carte =  paymentModel.doRetrieveByClient(client.getUsername());
+				} catch (SQLException e) {
+					LOGGER.log( Level.SEVERE, e.toString(), e );
+                    
+				}
+                
+             
+				
+                if(!indirizzi.isEmpty() && !carte.isEmpty()){
+                
+                	request.setAttribute("addresses", indirizzi);
+                	request.setAttribute("payments",carte);
+                    RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/checkout.jsp");
+                    dispatcher.forward(request, response);       
+                    
+                    return;
+                }
+                else{
+                	
+                    //QUI DOVREMMO INSERIRE UN ERRORE IN SOVRAIMPRESSIONE SULLA PAGINA 
+                    
+                   RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/generalError.jsp");
+                   dispatcher.forward(request, response);
+                   return;
+                }
 
             }
         }
-           
-
+        
+  
         request.getSession().setAttribute("cart", cart);
 
         RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/cart.jsp");
