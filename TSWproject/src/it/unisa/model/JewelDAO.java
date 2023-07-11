@@ -29,17 +29,18 @@ public class JewelDAO {
     //costruttore vuoto
   }
   
-  public synchronized void doSave(JewelBean jewel) throws SQLException{
+  public synchronized int doSave(JewelBean jewel) throws SQLException{
     //SALVARE NEL DATABASE
     Connection connection = null;
     PreparedStatement preparedStatement = null;
+    int id = -1;
     
     String insertSQL = "INSERT INTO " + JewelDAO.TABLE
                        + " (nome, categoria, pietra, immagine, disponibilita, IVA, prezzo, descrizione, materiale, sconto, personalizzato) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
     
     try {
       connection = ds.getConnection();
-      preparedStatement = connection.prepareStatement(insertSQL);
+      preparedStatement = connection.prepareStatement(insertSQL,Statement.RETURN_GENERATED_KEYS);
       preparedStatement.setString(1, jewel.getNome());
       preparedStatement.setString(2, jewel.getCategoria());
       preparedStatement.setString(3, jewel.getPietra());
@@ -54,7 +55,14 @@ public class JewelDAO {
 
       preparedStatement.executeUpdate();
 
-      connection.commit();
+      //connection.commit();
+      
+      ResultSet key = preparedStatement.getGeneratedKeys();
+
+      while(key.next()) {
+        id = key.getInt(1);
+      }
+      
     } finally {
       try {
         if (preparedStatement != null)
@@ -64,6 +72,7 @@ public class JewelDAO {
           connection.close();
       }
     }
+    return id;
   }
   
   public synchronized JewelBean doRetrieveByKey(int id) throws SQLException{
@@ -145,7 +154,7 @@ public class JewelDAO {
 
     List<JewelBean> products = new ArrayList<JewelBean>();
     
-    String selectSQL = "SELECT * FROM " + JewelDAO.TABLE;
+    String selectSQL = "SELECT * FROM " + JewelDAO.TABLE + " WHERE personalizzato = false";
     
     try{
       connection = ds.getConnection();
@@ -230,7 +239,7 @@ public class JewelDAO {
     PreparedStatement preparedStatement = null;
     
 
-    String selectSQL = "SELECT * FROM " + TABLE + " WHERE categoria = ?";
+    String selectSQL = "SELECT * FROM " + TABLE + " WHERE categoria = ? AND personalizzato=false";
 
     ArrayList<JewelBean> beans = new ArrayList<JewelBean>();
 
@@ -272,6 +281,195 @@ public class JewelDAO {
     return beans;
   }
   
+  public synchronized ArrayList<JewelBean> doRetrieveAllByGemstone(String gemstone) throws SQLException {
+    Connection connection = null;
+    PreparedStatement preparedStatement = null;
+
+
+    String selectSQL = "SELECT * FROM " + TABLE + " WHERE pietra = ? AND personalizzato=false";
+
+    ArrayList<JewelBean> beans = new ArrayList<JewelBean>();
+
+    try {
+      connection = ds.getConnection();
+      preparedStatement = connection.prepareStatement(selectSQL);
+      preparedStatement.setString(1, gemstone);
+
+      ResultSet rs = preparedStatement.executeQuery();
+
+      while (rs.next()) {
+        JewelBean jewel = new JewelBean();
+        jewel.setId(rs.getInt("id_prodotto"));
+        jewel.setNome(rs.getString("nome"));
+        jewel.setCategoria(rs.getString("categoria"));
+        jewel.setPietra(rs.getString("pietra"));
+        jewel.setImmagine(rs.getString("immagine"));
+        jewel.setDisponibilita(rs.getInt("disponibilita"));
+        jewel.setIVA(rs.getFloat("IVA"));
+        jewel.setPrezzo(rs.getFloat("prezzo"));
+        jewel.setDescrizione(rs.getString("descrizione"));
+        jewel.setMateriale(rs.getString("materiale"));
+        jewel.setSconto(rs.getInt("sconto"));
+        jewel.setPersonalizzato(rs.getBoolean("personalizzato"));
+
+        beans.add(jewel);
+      }
+    } 
+    finally {
+      try {
+        if (preparedStatement != null)
+          preparedStatement.close();
+      } 
+      finally {
+        if (connection != null)
+          connection.close();
+      }
+    }
+    return beans;
+  }
+  
+  public synchronized ArrayList<JewelBean> doSearch(String query) throws SQLException {
+    Connection connection = null;
+    PreparedStatement preparedStatement = null;
+
+
+    String selectSQL = "SELECT * FROM " + TABLE + " " + query + " AND personalizzato = false";
+
+    ArrayList<JewelBean> beans = new ArrayList<JewelBean>();
+
+    try {
+      connection = ds.getConnection();
+      preparedStatement = connection.prepareStatement(selectSQL);
+
+      ResultSet rs = preparedStatement.executeQuery();
+
+      while (rs.next()) {
+        JewelBean jewel = new JewelBean();
+        jewel.setId(rs.getInt("id_prodotto"));
+        jewel.setNome(rs.getString("nome"));
+        jewel.setCategoria(rs.getString("categoria"));
+        jewel.setPietra(rs.getString("pietra"));
+        jewel.setImmagine(rs.getString("immagine"));
+        jewel.setDisponibilita(rs.getInt("disponibilita"));
+        jewel.setIVA(rs.getFloat("IVA"));
+        jewel.setPrezzo(rs.getFloat("prezzo"));
+        jewel.setDescrizione(rs.getString("descrizione"));
+        jewel.setMateriale(rs.getString("materiale"));
+        jewel.setSconto(rs.getInt("sconto"));
+        jewel.setPersonalizzato(rs.getBoolean("personalizzato"));
+
+        beans.add(jewel);
+      }
+    } 
+    finally {
+      try {
+        if (preparedStatement != null)
+          preparedStatement.close();
+      } 
+      finally {
+        if (connection != null)
+          connection.close();
+      }
+    }
+    return beans;
+  }
+  /*
+  public synchronized ArrayList<JewelBean> doRetrieveAllByMaterial(String material) throws SQLException {
+    Connection connection = null;
+    PreparedStatement preparedStatement = null;
+
+
+    String selectSQL = "SELECT * FROM " + TABLE + " WHERE materiale = ? AND personalizzato=false";
+
+    ArrayList<JewelBean> beans = new ArrayList<JewelBean>();
+
+    try {
+      connection = ds.getConnection();
+      preparedStatement = connection.prepareStatement(selectSQL);
+      preparedStatement.setString(1, material);
+
+      ResultSet rs = preparedStatement.executeQuery();
+
+      while (rs.next()) {
+        JewelBean jewel = new JewelBean();
+        jewel.setId(rs.getInt("id_prodotto"));
+        jewel.setNome(rs.getString("nome"));
+        jewel.setCategoria(rs.getString("categoria"));
+        jewel.setPietra(rs.getString("pietra"));
+        jewel.setImmagine(rs.getString("immagine"));
+        jewel.setDisponibilita(rs.getInt("disponibilita"));
+        jewel.setIVA(rs.getFloat("IVA"));
+        jewel.setPrezzo(rs.getFloat("prezzo"));
+        jewel.setDescrizione(rs.getString("descrizione"));
+        jewel.setMateriale(rs.getString("materiale"));
+        jewel.setSconto(rs.getInt("sconto"));
+        jewel.setPersonalizzato(rs.getBoolean("personalizzato"));
+
+        beans.add(jewel);
+      }
+    } 
+    finally {
+      try {
+        if (preparedStatement != null)
+          preparedStatement.close();
+      } 
+      finally {
+        if (connection != null)
+          connection.close();
+      }
+    }
+    return beans;
+  }*/
+  
+  /*
+  public synchronized ArrayList<JewelBean> doRetrieveAllByPrice(float price1, float price2) throws SQLException {
+    Connection connection = null;
+    PreparedStatement preparedStatement = null;
+
+
+    String selectSQL = "SELECT * FROM " + TABLE + " WHERE prezzo > ? AND prezzo < ?  AND personalizzato=false";
+
+    ArrayList<JewelBean> beans = new ArrayList<JewelBean>();
+
+    try {
+      connection = ds.getConnection();
+      preparedStatement = connection.prepareStatement(selectSQL);
+      preparedStatement.setFloat(1, price1);
+      preparedStatement.setFloat(2, price2);
+
+      ResultSet rs = preparedStatement.executeQuery();
+
+      while (rs.next()) {
+        JewelBean jewel = new JewelBean();
+        jewel.setId(rs.getInt("id_prodotto"));
+        jewel.setNome(rs.getString("nome"));
+        jewel.setCategoria(rs.getString("categoria"));
+        jewel.setPietra(rs.getString("pietra"));
+        jewel.setImmagine(rs.getString("immagine"));
+        jewel.setDisponibilita(rs.getInt("disponibilita"));
+        jewel.setIVA(rs.getFloat("IVA"));
+        jewel.setPrezzo(rs.getFloat("prezzo"));
+        jewel.setDescrizione(rs.getString("descrizione"));
+        jewel.setMateriale(rs.getString("materiale"));
+        jewel.setSconto(rs.getInt("sconto"));
+        jewel.setPersonalizzato(rs.getBoolean("personalizzato"));
+
+        beans.add(jewel);
+      }
+    } 
+    finally {
+      try {
+        if (preparedStatement != null)
+          preparedStatement.close();
+      } 
+      finally {
+        if (connection != null)
+          connection.close();
+      }
+    }
+    return beans;
+  } */
+  
   public synchronized void updateQuantity (int id, int newQuantity) throws SQLException {  
 
     Connection connection = null;
@@ -302,6 +500,53 @@ public class JewelDAO {
       }
     }
   }
+  
+  public synchronized ArrayList<JewelBean> doRetrieveAllByKeyword(String keyword) throws SQLException {
+    Connection connection = null;
+    PreparedStatement preparedStatement = null;
+
+    String selectSQL = "SELECT * FROM " + TABLE + " WHERE descrizione LIKE " + "'%" + keyword + "%'";
+
+    ArrayList<JewelBean> beans = new ArrayList<JewelBean>();
+
+    try {
+      connection = ds.getConnection();
+      preparedStatement = connection.prepareStatement(selectSQL);
+
+      ResultSet rs = preparedStatement.executeQuery();
+
+      while (rs.next()) {
+         JewelBean jewel = new JewelBean();
+        jewel.setId(rs.getInt("id_prodotto"));
+        jewel.setNome(rs.getString("nome"));
+        jewel.setCategoria(rs.getString("categoria"));
+        jewel.setPietra(rs.getString("pietra"));
+        jewel.setImmagine(rs.getString("immagine"));
+        jewel.setDisponibilita(rs.getInt("disponibilita"));
+        jewel.setIVA(rs.getFloat("IVA"));
+        jewel.setPrezzo(rs.getFloat("prezzo"));
+        jewel.setDescrizione(rs.getString("descrizione"));
+        jewel.setMateriale(rs.getString("materiale"));
+        jewel.setSconto(rs.getInt("sconto"));
+        jewel.setPersonalizzato(rs.getBoolean("personalizzato"));
+
+        beans.add(jewel);
+      }
+    } 
+    finally {
+      try {
+        if (preparedStatement != null)
+          preparedStatement.close();
+      } 
+      finally {
+        if (connection != null)
+          connection.close();
+      }
+    }
+    return beans;
+  }
+  
+  
   
   
 }
