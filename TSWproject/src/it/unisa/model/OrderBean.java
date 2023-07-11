@@ -1,8 +1,9 @@
 package it.unisa.model;
 import java.sql.Date;
+import java.time.LocalDate;
 import java.util.*;
 
-public class OrderBean { 
+public class OrderBean {
     
     private ArrayList<OrderProductBean> products;
     private int id;
@@ -10,6 +11,8 @@ public class OrderBean {
     private float prezzo_totale;
     private String destinatario;
     private String metodo_di_pagamento;
+    private String circuito;
+    private String numero_carta;
     private String indirizzo_di_spedizione;
     private String numero_di_tracking;
     private String note;
@@ -24,7 +27,7 @@ public class OrderBean {
         this.id = 0;
         this.client = null;
         this.prezzo_totale = 0;
-        this.destinatario = null; 
+        this.destinatario = null;
         this.metodo_di_pagamento = null;
         this.indirizzo_di_spedizione = null;
         this.numero_di_tracking = null;
@@ -114,6 +117,22 @@ public class OrderBean {
         this.metodo_di_pagamento = metodo_di_pagamento;
     }
     
+    public String getCircuito(){
+        return circuito;
+    }
+    
+    public void setCircuito(String circuito){
+        this.circuito = circuito;
+    }
+    
+    public String getNumero_carta(){
+        return numero_carta;
+    }
+    
+    public void setNumero_carta(String numero_carta){
+        this.numero_carta = numero_carta;
+    }
+    
     public String getIndirizzo_di_spedizione() {
         return indirizzo_di_spedizione;
     }
@@ -161,4 +180,12 @@ public class OrderBean {
     public void setConfezione_regalo(boolean confezione_regalo) {
         this.confezione_regalo = confezione_regalo;
     }
+
+	@Override
+	public String toString() {
+		LocalDate date = data.toLocalDate();
+		String finalDate = date.getDayOfYear()+"-"+date.getMonthValue()+"-"+date.getYear();
+		return finalDate;
+	}
+    
 }

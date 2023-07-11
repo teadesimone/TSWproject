@@ -11,7 +11,7 @@ public class OrderProductBean {
     public OrderProductBean(){
         //costruttore vuoto
     }
-     
+    
     public int getId_ordine(){
         return id_ordine;
     }

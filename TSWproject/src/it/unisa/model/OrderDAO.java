@@ -21,7 +21,7 @@ public class OrderDAO {
     private static DataSource ds;
 
     static {
-        try { 
+        try {
             Context initCtx = new InitialContext();
             Context envCtx = (Context) initCtx.lookup("java:comp/env");
 
@@ -43,7 +43,7 @@ public class OrderDAO {
 
 
         String insertSQL = "INSERT INTO " + TABLE_NAME +
-                           " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                           " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         try {
             connection = ds.getConnection();
@@ -52,13 +52,15 @@ public class OrderDAO {
             preparedStatement.setString(2, order.getClient().getUsername());
             preparedStatement.setFloat(3, order.getPrezzo_totale());
             preparedStatement.setString(4, order.getDestinatario());
-            preparedStatement.setString(5,order.getMetodo_di_pagamento()); 
-            preparedStatement.setString(6, order.getIndirizzo_di_spedizione());
-            preparedStatement.setString(7, order.getNumero_di_tracking());
-            preparedStatement.setString(8, order.getNote());
-            preparedStatement.setDate(9, order.getData());
-            preparedStatement.setString(10, order.getMetodo_di_spedizione());
-            preparedStatement.setBoolean(11, order.getConfezione_regalo());
+            preparedStatement.setString(5,order.getMetodo_di_pagamento());
+            preparedStatement.setString(6, order.getCircuito());
+            preparedStatement.setString(7, order.getNumero_carta());
+            preparedStatement.setString(8, order.getIndirizzo_di_spedizione());
+            preparedStatement.setString(9, order.getNumero_di_tracking());
+            preparedStatement.setString(10, order.getNote());
+            preparedStatement.setDate(11, order.getData());
+            preparedStatement.setString(12, order.getMetodo_di_spedizione());
+            preparedStatement.setBoolean(13, order.getConfezione_regalo());
 
             preparedStatement.executeUpdate();
             //connection.commit();
@@ -104,7 +106,9 @@ public class OrderDAO {
                 bean.setClient(userModel.doRetrieveByKey(rs.getString("username")) );
                 bean.setPrezzo_totale(rs.getFloat("prezzo_totale"));
                 bean.setDestinatario(rs.getString("destinatario"));
-                bean.setMetodo_di_pagamento(rs.getString("metodo_di_pagamento")); 
+                bean.setMetodo_di_pagamento(rs.getString("metodo_di_pagamento"));
+                bean.setCircuito(rs.getString("circuito"));
+                bean.setNumero_carta(rs.getString("numero_carta"));
                 bean.setIndirizzo_di_spedizione(rs.getString("indirizzo_di_spedizione"));
                 bean.setNumero_di_tracking(rs.getString("numero_di_tracking"));
                 bean.setNote(rs.getString("note"));
@@ -127,30 +131,30 @@ public class OrderDAO {
         return bean;
     }
 
- /*   public synchronized OrderBean lastClientOrder(String username) throws SQLException {
+    public synchronized OrderBean lastOrder() throws SQLException {
         Connection connection = null;
         PreparedStatement preparedStatement = null;
 
         ClientDAO userModel = new ClientDAO(); 
         
-
         OrderBean bean = new OrderBean();
 
-        String selectSQL = "SELECT * FROM " + TABLE_NAME + " where username = ? ORDER BY id DESC LIMIT 1";
+        String selectSQL = "SELECT * FROM " + TABLE_NAME + " ORDER BY id DESC LIMIT 1";
 
         try {
             connection = ds.getConnection();
             preparedStatement = connection.prepareStatement(selectSQL);
-            preparedStatement.setString(1, username);
-
+            
             ResultSet rs = preparedStatement.executeQuery();
 
             while (rs.next()) {
                 bean.setId(rs.getInt("id"));
-                bean.setUsername(userModel.doRetrieveByKey(rs.getString("username")) );
+                bean.setClient(userModel.doRetrieveByKey(rs.getString("username")) );
                 bean.setPrezzo_totale(rs.getFloat("prezzo_totale"));
-                bean.setDestinario(rs.getString("destinatario"));
-                bean.setMetodo_di_pagamento(rs.getString("metodo_di_pagamento")); 
+                bean.setDestinatario(rs.getString("destinatario"));
+                bean.setMetodo_di_pagamento(rs.getString("metodo_di_pagamento"));
+                bean.setCircuito(rs.getString("circuito"));
+                bean.setNumero_carta(rs.getString("numero_carta"));
                 bean.setIndirizzo_di_spedizione(rs.getString("indirizzo_di_spedizione"));
                 bean.setNumero_di_tracking(rs.getString("numero_di_tracking"));
                 bean.setNote(rs.getString("note"));
@@ -169,7 +173,7 @@ public class OrderDAO {
             }
         }
         return bean;
-    } */
+    } 
 
     public synchronized ArrayList<OrderBean> doRetrieveByClient(String username) throws SQLException {
         Connection connection = null;
@@ -196,7 +200,9 @@ public class OrderDAO {
                 bean.setClient(userModel.doRetrieveByKey(rs.getString("username")) );
                 bean.setPrezzo_totale(rs.getFloat("prezzo_totale"));
                 bean.setDestinatario(rs.getString("destinatario"));
-                bean.setMetodo_di_pagamento(rs.getString("metodo_di_pagamento")); 
+                bean.setMetodo_di_pagamento(rs.getString("metodo_di_pagamento"));
+                bean.setCircuito(rs.getString("circuito"));
+                bean.setNumero_carta(rs.getString("numero_carta"));
                 bean.setIndirizzo_di_spedizione(rs.getString("indirizzo_di_spedizione"));
                 bean.setNumero_di_tracking(rs.getString("numero_di_tracking"));
                 bean.setNote(rs.getString("note"));
@@ -246,7 +252,9 @@ public class OrderDAO {
                 bean.setClient(userModel.doRetrieveByKey(rs.getString("username")) );
                 bean.setPrezzo_totale(rs.getFloat("prezzo_totale"));
                 bean.setDestinatario(rs.getString("destinatario"));
-                bean.setMetodo_di_pagamento(rs.getString("metodo_di_pagamento")); 
+                bean.setMetodo_di_pagamento(rs.getString("metodo_di_pagamento"));
+                bean.setCircuito(rs.getString("circuito"));
+                bean.setNumero_carta(rs.getString("numero_carta"));
                 bean.setIndirizzo_di_spedizione(rs.getString("indirizzo_di_spedizione"));
                 bean.setNumero_di_tracking(rs.getString("numero_di_tracking"));
                 bean.setNote(rs.getString("note"));
@@ -292,11 +300,13 @@ public class OrderDAO {
             while (rs.next()) {
                 OrderBean bean = new OrderBean();
 
-                bean.setId(rs.getInt("id"));
+              bean.setId(rs.getInt("id"));
                 bean.setClient(userModel.doRetrieveByKey(rs.getString("username")) );
                 bean.setPrezzo_totale(rs.getFloat("prezzo_totale"));
                 bean.setDestinatario(rs.getString("destinatario"));
-                bean.setMetodo_di_pagamento(rs.getString("metodo_di_pagamento")); 
+                bean.setMetodo_di_pagamento(rs.getString("metodo_di_pagamento"));
+                bean.setCircuito(rs.getString("circuito"));
+                bean.setNumero_carta(rs.getString("numero_carta"));
                 bean.setIndirizzo_di_spedizione(rs.getString("indirizzo_di_spedizione"));
                 bean.setNumero_di_tracking(rs.getString("numero_di_tracking"));
                 bean.setNote(rs.getString("note"));
@@ -372,11 +382,13 @@ public class OrderDAO {
             while (rs.next()) {
                 OrderBean bean = new OrderBean();
 
-                bean.setId(rs.getInt("id"));
+              bean.setId(rs.getInt("id"));
                 bean.setClient(userModel.doRetrieveByKey(rs.getString("username")) );
                 bean.setPrezzo_totale(rs.getFloat("prezzo_totale"));
                 bean.setDestinatario(rs.getString("destinatario"));
-                bean.setMetodo_di_pagamento(rs.getString("metodo_di_pagamento")); 
+                bean.setMetodo_di_pagamento(rs.getString("metodo_di_pagamento"));
+                bean.setCircuito(rs.getString("circuito"));
+                bean.setNumero_carta(rs.getString("numero_carta"));
                 bean.setIndirizzo_di_spedizione(rs.getString("indirizzo_di_spedizione"));
                 bean.setNumero_di_tracking(rs.getString("numero_di_tracking"));
                 bean.setNote(rs.getString("note"));

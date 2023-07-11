@@ -11,18 +11,18 @@ import = "java.util.*, java.sql.*, it.unisa.model.*" pageEncoding="UTF-8"%>
 <!-- STAMPA: nome, immagine, personalizzato, quantità, prezzo -->
 
 <!DOCTYPE html>
-<html>
+<html lang="en">
 	<head>
 		<meta charset="UTF-8">
 		<meta content="width=device-width, initial-scale=1" name="viewport" />
 		<!-- <link rel="stylesheet" href="styles/orderdetails.css"> -->
-		<title>Dettaglio Ordine <%=order.getId()%></title>
+		<title>Order Details <%=order.getId()%></title>
 	</head>
 
 	<body>
 		<%@include file="/WEB-INF/header.jsp" %>
 		<h1>
-			Ordine effettuato il: <%=order.getData() %>
+			Order date: <%=order.getData() %>
 		</h1>
 
 
@@ -30,13 +30,9 @@ import = "java.util.*, java.sql.*, it.unisa.model.*" pageEncoding="UTF-8"%>
 
 			<div>
 				<p>
-					Totale € <%=order.getPrezzo_totale()%>
+					Total Price € <%=order.getPrezzo_totale()%>
 				</p>
 
-
-			<!-- <p class="fattura-prodotto">
-					<a href="#">Scarica Fattura</a>
-				</p>  -->
 			</div>
 
 			<div >
@@ -45,11 +41,11 @@ import = "java.util.*, java.sql.*, it.unisa.model.*" pageEncoding="UTF-8"%>
 				<div >
 						<table>
 							<tr>
-								<th>Nome</th>
-								<th>Immagine</th>
-								<th>Personalizzato</th>
-								<th>Quantità</th>
-								<th>Prezzo</th>
+								<th>Name</th>
+								<th>Image</th>
+								<th>Customized</th>
+								<th>Quantity</th>
+								<th>Price</th>
 							</tr>
 						<%
 							
@@ -68,10 +64,20 @@ import = "java.util.*, java.sql.*, it.unisa.model.*" pageEncoding="UTF-8"%>
 							
 							<%	} %>
 						</table>
+						
+						<form action="orderdetails?action=viewInvoice" method="post">
+							<input type="hidden" name="idOrder" value="<%= order.getId() %>" >
+							<input type="submit" value="View Invoice">
+						</form>
+						
 				</div>
 			</div>
 			
 		</div>
-
+		
+		<br>
+		 <a href="clientorders"> Go back </a>
+		
+		<%@include file="/WEB-INF/footer.jsp" %>
 	</body>
 </html>
