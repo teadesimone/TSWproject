@@ -2,7 +2,7 @@
 <web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd" id="WebApp_ID" version="4.0">
   <display-name>JadeTear</display-name>
   <welcome-file-list>
-    <welcome-file>catalog.jsp</welcome-file>
+    <welcome-file>home.jsp</welcome-file>
   </welcome-file-list>
   <resource-ref>
     <description>JNDI reference to a data source</description>
@@ -11,7 +11,29 @@
     <res-auth>Container</res-auth>
   </resource-ref>
 
-
+  
+<error-page>
+    <!-- credenziali sbagliate/problemi login -->
+    <error-code>401</error-code>
+    <location>/loginError.jsp</location>
+</error-page>
+<error-page>
+    <!-- accesso non autorizzato -->
+    <error-code>403</error-code>
+    <location>/Error403.jsp</location>
+</error-page>
+<error-page>
+    <!-- pagina mancante -->
+    <error-code>404</error-code>
+    <location>/Error404.jsp</location>
+</error-page>
+<error-page>
+    <!-- errore server -->
+    <error-code>500</error-code>
+    <location>/generalError.jsp</location>
+</error-page>
+  
+  
   <servlet>
     <servlet-name> CatalogServlet </servlet-name>
     <servlet-class>it.unisa.control.CatalogServlet</servlet-class>
@@ -91,6 +113,24 @@
   <servlet-mapping>
     <servlet-name> OrderDetailsServlet </servlet-name>
     <url-pattern>/orderdetails</url-pattern>
+  </servlet-mapping>
+  
+  <servlet>
+    <servlet-name> ClientServlet </servlet-name>
+    <servlet-class>it.unisa.control.ClientServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name> ClientServlet </servlet-name>
+    <url-pattern>/userdetails</url-pattern>
+  </servlet-mapping>
+  
+    <servlet>
+    <servlet-name> PersonalizedServlet </servlet-name>
+    <servlet-class>it.unisa.control.PersonalizedServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name> PersonalizedServlet </servlet-name>
+    <url-pattern>/personalized</url-pattern>
   </servlet-mapping>
 
 </web-app>
