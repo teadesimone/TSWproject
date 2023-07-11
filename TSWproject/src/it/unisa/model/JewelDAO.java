@@ -35,7 +35,7 @@ public class JewelDAO {
     PreparedStatement preparedStatement = null;
     int id = -1;
     
-    String insertSQL = "INSERT INTO " + JewelDAO.TABLE
+    String insertSQL = "INSERT INTO " + TABLE
                        + " (nome, categoria, pietra, immagine, disponibilita, IVA, prezzo, descrizione, materiale, sconto, personalizzato) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
     
     try {
@@ -80,7 +80,7 @@ public class JewelDAO {
     Connection connection = null;
     PreparedStatement preparedStatement = null;
 
-    String selectSQL = "SELECT * FROM " + JewelDAO.TABLE + " WHERE id_prodotto = ?";
+    String selectSQL = "SELECT * FROM " + TABLE + " WHERE id_prodotto = ?";
     JewelBean jewel = new JewelBean();
     
     try {
@@ -126,7 +126,7 @@ public class JewelDAO {
     
     int result = 0;
     
-    String deleteSQL = "DELETE FROM " + JewelDAO.TABLE + " WHERE id_prodotto = ?";
+    String deleteSQL = "DELETE FROM " + TABLE + " WHERE id_prodotto = ?";
     try {
       connection = ds.getConnection();
       preparedStatement = connection.prepareStatement(deleteSQL);
@@ -154,7 +154,7 @@ public class JewelDAO {
 
     List<JewelBean> products = new ArrayList<JewelBean>();
     
-    String selectSQL = "SELECT * FROM " + JewelDAO.TABLE + " WHERE personalizzato = false";
+    String selectSQL = "SELECT * FROM " + TABLE + " WHERE personalizzato = false";
     
     try{
       connection = ds.getConnection();
@@ -200,7 +200,7 @@ public class JewelDAO {
     
     int result = 0;
     
-    String updateSQL = "UPDATE "+ JewelDAO.TABLE+ " SET nome = ?, categoria = ?, pietra = ?, immagine = ?, disponibilita = ?, IVA = ?, prezzo = ?, descrizione = ?, materiale = ?, sconto = ?, personalizzato = ? " + "WHERE id_prodotto = ?";
+    String updateSQL = "UPDATE "+ TABLE+ " SET nome = ?, categoria = ?, pietra = ?, immagine = ?, disponibilita = ?, IVA = ?, prezzo = ?, descrizione = ?, materiale = ?, sconto = ?, personalizzato = ? " + "WHERE id_prodotto = ?";
     
     try{
       connection = ds.getConnection();
@@ -501,11 +501,11 @@ public class JewelDAO {
     }
   }
   
-  public synchronized ArrayList<JewelBean> doRetrieveAllByKeyword(String keyword) throws SQLException {
+  public synchronized ArrayList<JewelBean> doRetrieveAllByKeyword(String keyword, String query) throws SQLException {
     Connection connection = null;
     PreparedStatement preparedStatement = null;
 
-    String selectSQL = "SELECT * FROM " + TABLE + " WHERE descrizione LIKE " + "'%" + keyword + "%'";
+    String selectSQL = "SELECT * FROM " + TABLE + " WHERE descrizione LIKE " + "'%" + keyword + "%'" + query;
 
     ArrayList<JewelBean> beans = new ArrayList<JewelBean>();
 

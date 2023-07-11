@@ -19,8 +19,8 @@ CREATE TABLE Prodotto
 	personalizzato boolean not null
 );
 
-INSERT INTO Prodotto values (1,"Anello di Rugiada", "Ring", "Giada", "AnelloRugiada.jpeg", 10, 22, 80, "Anello la cui pietra &egrave assimilabile ad una goccia di rugiada", "Argento", 0, false);
-INSERT INTO Prodotto values (2, "Collana del Cristallo dell'Ira", "Necklace", "Rubino", "collanadira.jpg", 10, 22, 140, "Collana uscita da un libro fantasy, per essere pi&ugrave chic", "Argento", 0, false);
+INSERT INTO Prodotto values (1,"Anello di Rugiada", "Ring", "Jade", "AnelloRugiada.jpeg", 10, 22, 80, "Anello la cui pietra &egrave assimilabile ad una goccia di rugiada", "Silver", 0, false);
+INSERT INTO Prodotto values (2, "Collana del Cristallo dell'Ira", "Necklace", "Ruby", "collanadira.jpg", 10, 22, 140, "Collana uscita da un libro fantasy, per essere pi&ugrave chic", "Silver", 0, false);
 
 CREATE TABLE Cliente
 (

@@ -37,7 +37,7 @@ public class PersonalizedServlet extends HttpServlet {
             jewel.setNome("Customized");
             jewel.setCategoria(request.getParameter("category"));
             jewel.setPietra(request.getParameter("gemstone"));
-            jewel.setImmagine("personalized jewel");
+            jewel.setImmagine("Customized.jpg");
             jewel.setDisponibilita(1);
             jewel.setIVA(22);
             jewel.setPrezzo(result);

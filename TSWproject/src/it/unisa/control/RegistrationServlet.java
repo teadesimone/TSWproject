@@ -34,40 +34,24 @@ public class RegistrationServlet extends HttpServlet {
         String action = request.getParameter("action");
         boolean ajax = "XMLHttpRequest".equals(request.getHeader("X-Requested-With"));
         
-        
-        if (action != null && action.equalsIgnoreCase("check") && ajax){
+        if(action != null && ajax){
             boolean bol;
-            ClientBean result1=null;
-            
-            try {
-                result1 = (ClientBean) clientmodel.doRetrieveByKey(request.getParameter("username"));
-             //   System.out.println("Test doRetr" +result1.getNome());
-            }catch (SQLException e) {
-                LOGGER.log( Level.SEVERE, e.toString(), e );
+            ClientBean result = null;
+            if (action.equalsIgnoreCase("check") ){
+                try {
+                    result = (ClientBean) clientmodel.doRetrieveByKey(request.getParameter("username"));
+                }catch (SQLException e) {
+                    LOGGER.log( Level.SEVERE, e.toString(), e );
+                }
+
+            }else  if (action.equalsIgnoreCase("checkemail")){
+                try {
+                    result = (ClientBean) clientmodel.doRetrieveByEmail(request.getParameter("email"));
+                }catch (SQLException e) {
+                    LOGGER.log( Level.SEVERE, e.toString(), e );
+                }
             }
-            
-            if (result1 != null) bol=true;
-            else bol=false;
-            
-            Gson gson = new Gson();
-            String json = gson.toJson(bol);
-
-            response.setContentType("application/json");
-            PrintWriter out = response.getWriter();
-            out.write(json);
-            
-        }else  if (action != null && action.equalsIgnoreCase("checkemail") && ajax){
-            boolean bol;
-            ClientBean result2=null;
-
-            try {
-                result2 = (ClientBean) clientmodel.doRetrieveByEmail(request.getParameter("email"));
-                
-            }catch (SQLException e) {
-                LOGGER.log( Level.SEVERE, e.toString(), e );
-            }
-
-            if (result2 != null) bol=true;
+            if (result != null) bol=true;
             else bol=false;
 
             Gson gson = new Gson();
@@ -77,8 +61,7 @@ public class RegistrationServlet extends HttpServlet {
             PrintWriter out = response.getWriter();
             out.write(json);
         }
-        
-        else if (!ajax){
+        else{
 
 
             int result = 0;

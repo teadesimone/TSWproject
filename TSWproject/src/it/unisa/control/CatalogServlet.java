@@ -28,24 +28,81 @@ public class CatalogServlet extends HttpServlet {
      boolean ajax = "XMLHttpRequest".equals(request.getHeader("X-Requested-With"));
      
      String action = request.getParameter("action");
-     String query = request.getParameter("query");
-     System.out.println("Test query: "+query);
      ArrayList<JewelBean> result = null;
      
      
-     if (action == null) {
+     if (action == null && ajax) {
+         
+         System.out.println("frate sono null");
          try {
 			result = (ArrayList<JewelBean>)model.doRetrieveAll();
 		}catch (SQLException e) {
 			LOGGER.log( Level.SEVERE, e.toString(), e );
 		}
-     } else if (action.equals("search")) {
+     }/*
+     else if (action.equals("search")) {
+         String query = request.getParameter("query");
+         
          try {
-			result = model.doRetrieveAllByKeyword(query);
+			result = model.doRetrieveAllByKeyword(query,"");
 		}catch (SQLException e) {
 			LOGGER.log( Level.SEVERE, e.toString(), e );
 		}
-     }
+     }*/
+     else if(action.equals("filter")){
+         System.out.println("Debug sono nella filter");
+         String sql ="";
+         
+         String keyword = request.getParameter("keyword");
+         
+         String prezzo = request.getParameter("prezzo");
+         float prezzo_da = 0;
+         float prezzo_a = 5000; 
+         if (!request.getParameter("prezzo_da").equals("")){
+             System.out.println("prezzo non è null");
+             prezzo_da = Float.parseFloat(request.getParameter("prezzo_da"));
+         }
+         if (!request.getParameter("prezzo_a").equals(""))
+             prezzo_a = Float.parseFloat(request.getParameter("prezzo_a"));
+         
+             String materiale = request.getParameter("materiale");
+             String argento = request.getParameter("argento");
+             String oro = request.getParameter("oro");
+             String ororosa = request.getParameter("ororosa");
+         
+             String categoria = request.getParameter("categoria");
+             String collana = request.getParameter("collana");
+             String bracciale = request.getParameter("bracciale");
+             String anello = request.getParameter("anello");
+             String orecchini = request.getParameter("orecchini");
+        
+             String pietra = request.getParameter("pietra");
+             String giada = request.getParameter("giada");
+             String ametista = request.getParameter("ametista");
+             String smeraldo = request.getParameter("smeraldo");
+             String acquamarina = request.getParameter("acquamarina");
+             String rubino = request.getParameter("rubino");
+             String quarzorosa = request.getParameter("quarzorosa");
+             
+             if (!pietra.equals("") || !materiale.equals("") || !categoria.equals("")){
+                 sql = " AND (prezzo > "+ prezzo_da +" AND prezzo < "+ prezzo_a + ") AND (materiale = '"+ argento + "' OR materiale = '" + oro + "' OR materiale='" + ororosa ;
+                 sql+= "' OR categoria = '"+collana+"' OR categoria = '"+bracciale+"' OR categoria ='"+anello+"' OR categoria ='"+orecchini;
+                 sql+= "' OR pietra = '"+giada+"' OR pietra = '"+ametista+"' OR pietra = '"+smeraldo+"' OR pietra = '"+acquamarina+"' OR pietra = '"+rubino+"' OR pietra = '"+quarzorosa + "')";
+                
+             }
+             else if (pietra.equals("") && materiale.equals("") && categoria.equals("")){
+                  sql = " AND prezzo > "+ prezzo_da +" AND prezzo < "+ prezzo_a;
+            }
+         
+            System.out.println(sql);
+
+             try {
+                 result = model.doRetrieveAllByKeyword(keyword,sql);
+             }catch (SQLException e) {
+                 LOGGER.log( Level.SEVERE, e.toString(), e );
+             }
+         
+     } 
         
      Gson gson = new Gson();
      String json = gson.toJson(result);

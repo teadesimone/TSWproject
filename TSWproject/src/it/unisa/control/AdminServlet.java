@@ -53,14 +53,14 @@ public class AdminServlet extends HttpServlet {
       String fileName = nome + "." + estensione;
       System.getProperty("user.dir");
 
-      String destinazione = System.getProperty("user.dir") + File.separator + "TSWproject" + File.separator + "WebContent" + File.separator + CARTELLA_UPLOAD + File.separator + fileName;
+      String destinazione = System.getProperty("user.dir") + File.separator + "progettoTSW" + File.separator + "WebContent" + File.separator + CARTELLA_UPLOAD + File.separator + fileName;
       Path pathDestinazione = Path.of(destinazione);
 
 
       // se un file con quel nome esiste già, gli cambia nome
       for (int i = 2; Files.exists(pathDestinazione); i++) {
         String newFileName = i + "_" + nome + "." + estensione;
-        destinazione = System.getProperty("user.dir") + File.separator + "TSWproject" + File.separator + "WebContent" + File.separator + CARTELLA_UPLOAD + File.separator+ newFileName;
+        destinazione = System.getProperty("user.dir") + File.separator + "progettoTSW" + File.separator + "WebContent" + File.separator + CARTELLA_UPLOAD + File.separator+ newFileName;
         pathDestinazione = Path.of(destinazione);
       }
 
@@ -75,7 +75,7 @@ public class AdminServlet extends HttpServlet {
       //UPLOAD NEL .war
       /*
         String tomcatBase = System.getProperty("catalina.base");
-        String targetPath = tomcatBase + "//webapps//TSWproject//images//" + fileName;
+        String targetPath = tomcatBase + "//webapps//progettoTSW//images//" + fileName;
         InputStream fileInputStream2 = filePart.getInputStream();
 
         Path targetImagePath = Path.of(targetPath);
