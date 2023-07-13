@@ -39,10 +39,44 @@ public class PaymentServlet extends HttpServlet {
         Cart cart = (Cart) request.getSession().getAttribute("cart");
         ClientBean client = (ClientBean) request.getSession().getAttribute("utente");
         boolean check = true;
-        int idcarta = Integer.parseInt(request.getParameter("carta"));
-        int idindirizzo = Integer.parseInt(request.getParameter("indirizzo"));
         AddressBean bean = new AddressBean();
         InvoiceBean invoice = new InvoiceBean();
+        
+        int idcarta;
+        int idindirizzo;
+        
+        if(request.getParameter("carta")=="")
+            idcarta = 0;
+        else
+            idcarta = Integer.parseInt(request.getParameter("carta"));
+
+        if(request.getParameter("indirizzo")=="")
+            idindirizzo = 0;
+        else
+            idindirizzo = Integer.parseInt(request.getParameter("indirizzo"));
+        
+        
+        String destinatario = request.getParameter("destinatario");
+        String note = request.getParameter("note");
+        String spedizione= request.getParameter("spedizione");
+        String metpag = request.getParameter("metodo_di_pagamento");
+        
+        if(destinatario==null || !destinatario.matches("^[A-Za-z ]+$")){
+            sendError(request, response);
+            return;
+        }
+        if(spedizione==null || !spedizione.equals("Express") || !spedizione.equals("Standard") || !spedizione.equals("Economic") ){
+            sendError(request, response);
+            return;
+        }
+        if(note==null || !note.matches("^[A-Za-z ]+$")){
+            sendError(request, response);
+            return;
+        }
+        if(metpag==null || !metpag.equals("carta_di_credito") || !metpag.equals("carta_di_debito") || !metpag.equals("Paypal")){
+            sendError(request, response);
+            return;
+        }
         
         int id_ordine;
         
@@ -61,12 +95,9 @@ public class PaymentServlet extends HttpServlet {
         }
         
 
-
-        if(action != null) {
-
             if (cart != null && cart.getProducts().size() != 0){
                 
-			     if(action.equalsIgnoreCase("confirm_buy")) {
+			     if(action != null && action.equalsIgnoreCase("confirm_buy")) {
 
                     //INIZIALIZZA L'ID, COSI DA POTER POPOLARE L'ARRAY
                     id_ordine++;
@@ -97,14 +128,14 @@ public class PaymentServlet extends HttpServlet {
                     
                     order.setId(id_ordine);
                     order.setClient(client);
-                    if (request.getParameter("spedizione").equalsIgnoreCase("Express")){
+                    if (spedizione.equalsIgnoreCase("Express")){
                         
                         totale = totale + 5;
                     }
                     
                     order.setPrezzo_totale(totale);
-                    order.setDestinatario(request.getParameter("destinatario"));
-                    order.setMetodo_di_pagamento(request.getParameter("metodo_di_pagamento"));
+                    order.setDestinatario(destinatario);
+                    order.setMetodo_di_pagamento(metpag);
                      
                     try {
 						order.setCircuito(paymentmodel.doRetrieveByKey(idcarta).getCircuito());
@@ -133,9 +164,9 @@ public class PaymentServlet extends HttpServlet {
                     String result = Integer.toString(r.nextInt(high-low) + low);
                     order.setNumero_di_tracking(result);
                     
-                    order.setNote(request.getParameter("note"));
+                    order.setNote(note);
                     order.setData(new java.sql.Date(Calendar.getInstance().getTime().getTime()));
-                    order.setMetodo_di_spedizione(request.getParameter("spedizione"));
+                    order.setMetodo_di_spedizione(spedizione);
                     order.setConfezione_regalo(Boolean.parseBoolean(request.getParameter("regalo")));
 
                     try {
@@ -154,8 +185,8 @@ public class PaymentServlet extends HttpServlet {
                         }
                         else{
                             //scritta di errore generale oppure dispatch alla pagina di errore generale 
-                            RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/generalError.jsp");
-                            dispatcher.forward(request, response);
+                            response.sendRedirect("generalError.jsp");
+                            return;
                         }
                         
 
@@ -199,20 +230,21 @@ public class PaymentServlet extends HttpServlet {
 
                 }
 
-            else {
-
-                //rimanda a pagina di errore (carrello vuoto)  cambia login error obv
-                RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/cartError.jsp");
-                dispatcher.forward(request, response);
+            }else {
+                response.sendRedirect("cartError.jsp");
+                return;
             }
-
-            }    
-        }
         
     }    
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
         doGet(request, response);
+    }
+    
+    public void sendError(HttpServletRequest request, HttpServletResponse response)throws ServletException, IOException{
+        request.setAttribute("error", "JadeTear encountered a problem during the payment. Please, try to fill up the form correctly and check your data before submitting.");
+        RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/registration.jsp");
+        dispatcher.forward(request, response);
     }
 }

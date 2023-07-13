@@ -33,16 +33,39 @@ public class PersonalizedServlet extends HttpServlet {
         int id= -1;
         
         if (action.equals("insert")) {
+            
+            String category = request.getParameter("category");
+            String gemstone = request.getParameter("gemstone");
+            String description = request.getParameter("description");
+            String material =request.getParameter("material");
+            
+            if(category==null || !category.equals("Necklace") || !category.equals("Earrings") || !category.equals("Ring") || !category.equals("Bracelet")){
+                sendError(request, response);
+                return;
+            }
+            if(gemstone==null || !gemstone.equals("Ruby") || !gemstone.equals("Jade") || !gemstone.equals("Amethyst") || !gemstone.equals("Emerald") || !gemstone.equals("Rose Quarz") || !gemstone.equals("Aquamarine")){
+                sendError(request, response);
+                return;
+            }
+            if(description==null || !description.matches("^[a-zA-Z0-9]{1,100}$")){
+                sendError(request, response);
+                return;
+            }
+            if(material==null || !material.equals("Gold") || !material.equals("Silver") || !material.equals("Rose Gold")){
+                sendError(request, response);
+                return;
+            }
+            
             JewelBean jewel = new JewelBean();
             jewel.setNome("Customized");
-            jewel.setCategoria(request.getParameter("category"));
-            jewel.setPietra(request.getParameter("gemstone"));
+            jewel.setCategoria(category);
+            jewel.setPietra(gemstone);
             jewel.setImmagine("Customized.jpg");
             jewel.setDisponibilita(1);
             jewel.setIVA(22);
             jewel.setPrezzo(result);
-            jewel.setDescrizione(request.getParameter("description"));
-            jewel.setMateriale(request.getParameter("material"));
+            jewel.setDescrizione(description);
+            jewel.setMateriale(material);
             jewel.setSconto(0);
             jewel.setPersonalizzato(true);
 
@@ -59,5 +82,11 @@ public class PersonalizedServlet extends HttpServlet {
     
     protected void doPost(HttpServletRequest request, HttpServletResponse response)throws ServletException, IOException {
         doGet(request, response);
+    }
+    
+    public void sendError(HttpServletRequest request, HttpServletResponse response)throws ServletException, IOException{
+        request.setAttribute("error", "JadeTear encountered a problem during submission. Please, try to fill up the form again.");
+        RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/personalized.jsp");
+        dispatcher.forward(request, response);
     }
 }

@@ -3,6 +3,8 @@
     
     <%ArrayList<AddressBean> addresses = (ArrayList<AddressBean>) request.getAttribute("addresses");
       ArrayList<PaymentMethodBean> payments = (ArrayList<PaymentMethodBean>) request.getAttribute("payments");
+      
+      String error = (String) request.getAttribute("error");
     %>
 
 
@@ -17,8 +19,14 @@
 	<body>
  <%@include file="/WEB-INF/header.jsp" %>
 	<h1>Checkout</h1>
+
     
     <form action="payment" method="post" onsubmit="event.preventDefault(); validate(this)">
+    
+      <% if (error != null){%>
+                <div><%=error%></div>
+        <%}%>
+        
 		<input type="hidden" name="action" value="confirm_buy">
         
         <br>
@@ -29,7 +37,7 @@
         
         <br>
         <label for="note">Notes:</label><br>
-        <input name="note" type="text" maxlenght="30" required placeholder="bla">
+        <input name="note" type="text" maxlenght="100" placeholder="bla">
         <br>
         
         <br>
@@ -65,7 +73,7 @@
         </div>
         
             <label for="carta">Insert card:</label><br>
-            <select name="carta" id="carta" disabled>
+            <select name="carta" id="carta" disabled required>
 
 
          <%  for(int i=0; i<payments.size(); i++) { %>
@@ -79,7 +87,7 @@
         <br>
         
         <label for="indirizzo">Insert shipping address:</label><br>
-         <select name="indirizzo" id="indirizzo">
+         <select name="indirizzo" id="indirizzo" required>
 
 
          <%  for(int i=0; i<addresses.size(); i++) { %>

@@ -62,28 +62,82 @@ public class RegistrationServlet extends HttpServlet {
             out.write(json);
         }
         else{
-
-
             int result = 0;
-
-            client.setUsername(request.getParameter("username"));
-            client.setCf(request.getParameter("cf"));
-            client.setNome(request.getParameter("nome"));
-            client.setCognome(request.getParameter("cognome"));
-            client.setVia(request.getParameter("indirizzo"));
-            client.setCitta(request.getParameter("citta"));
-            client.setProvincia(request.getParameter("provincia"));
-            client.setCap(request.getParameter("cap"));
-            client.setTelefono(request.getParameter("telefono"));
-            client.setEmail(request.getParameter("email"));
-            client.setPassword(request.getParameter("password"));
+            String username = request.getParameter("username");
+            String cf = request.getParameter("cf");
+            String nome = request.getParameter("nome");
+            String cognome = request.getParameter("cognome");
+            String indirizzo = request.getParameter("indirizzo");
+            String citta = request.getParameter("citta");
+            String provincia = request.getParameter("provincia");
+            String cap = request.getParameter("cap");
+            String telefono = request.getParameter("telefono");
+            String email = request.getParameter("email");
+            String password = request.getParameter("password");
+            
+            if(username==null || !username.matches("^[a-zA-Z0-9_-]{6,20}$")){
+                sendError(request, response);
+                return;
+            }
+            if(cf==null || !cf.matches("^[A-Z]{6}[0-9]{2}[A-Z][0-9]{2}[A-Z][0-9]{3}[A-Z]$")){
+            	sendError(request, response);
+            	return;
+            }
+            if(nome==null || !nome.matches("^[A-Za-z ]+$")){
+            	sendError(request, response);
+            	return;
+            }
+            if(cognome==null || !cognome.matches("^[A-Za-z ]+$")){
+            	sendError(request, response);
+            	return;
+            }
+            if(indirizzo==null || !indirizzo.matches("^([A-Za-z]+\\s)+\\d+$")){
+            	sendError(request, response);
+            	return;
+            }
+            if(citta==null || !citta.matches("^[A-Za-z ]+$")){
+            	sendError(request, response);
+            	return;
+            }
+            if(provincia==null || !provincia.matches("^[A-Za-z ]+$")){
+            	sendError(request, response);
+            	return;
+            }
+            if(cap==null || !cap.matches("^\\d{5}$")){
+            	sendError(request, response);
+            	return;
+            }
+            if(telefono==null || !telefono.matches("^\\d{10}$")){
+            	sendError(request, response);
+            	return;
+            }
+            if(email==null || !email.matches("^\\w+([\\.-]?\\w+)*@\\w+([\\.-]?\\w+)*(\\.\\w{2,3})+$")){
+            	sendError(request, response);
+            	return;
+            }
+            if(password==null || !password.matches("^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{6,20}$")){
+            	sendError(request, response);
+            	return;
+            }
+            
+            client.setUsername(username);
+            client.setCf(cf);
+            client.setNome(nome);
+            client.setCognome(cognome);
+            client.setVia(indirizzo);
+            client.setCitta(citta);
+            client.setProvincia(provincia);
+            client.setCap(cap);
+            client.setTelefono(telefono);
+            client.setEmail(email);
+            client.setPassword(password);
 
             AddressBean indirizzobase = new AddressBean();
             //indirizzobase.setId(1);
-            indirizzobase.setVia(request.getParameter("indirizzo"));
-            indirizzobase.setCitta(request.getParameter("citta"));
-            indirizzobase.setCAP(request.getParameter("cap"));
-            indirizzobase.setUsername(request.getParameter("username"));
+            indirizzobase.setVia(indirizzo);
+            indirizzobase.setCitta(citta);
+            indirizzobase.setCAP(cap);
+            indirizzobase.setUsername(username);
 
             try {
                 result = model.doSave(client);
@@ -113,5 +167,11 @@ public class RegistrationServlet extends HttpServlet {
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response)throws ServletException, IOException {
         doGet(request, response);
-    }  
+    }
+    
+    public void sendError(HttpServletRequest request, HttpServletResponse response)throws ServletException, IOException{
+        request.setAttribute("error", "JadeTear encountered a problem during your registration. Please, try to fill up the form correctly and check your data before submitting.");
+        RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/registration.jsp");
+        dispatcher.forward(request, response);
+    }
 }

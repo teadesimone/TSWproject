@@ -8,7 +8,7 @@ import = "java.util.*, it.unisa.model.*" pageEncoding="UTF-8"%>
 <title>Error</title>
 </head>
 <body>
-    <h3> Page not found!</h3>
+    <h3> Resource not found!</h3>
 
     <p> 
         Go back <a href="home.jsp">here</a> !

@@ -38,13 +38,16 @@ public class LoginServlet extends HttpServlet {
         try {
 			client = model.doRetrieveByEmailAndPassword(email, password);
 		} catch (SQLException e) {
+            
 			LOGGER.log( Level.SEVERE, e.toString(), e );
+			response.sendRedirect("loginError.jsp");	
+            return;
 		}  
         
         
         if(client == null){
-        	RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/loginError.jsp");
-            dispatcher.forward(request, response);
+            
+            response.sendRedirect("loginError.jsp");	
             return;
         }
         else {

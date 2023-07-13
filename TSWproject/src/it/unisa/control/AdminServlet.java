@@ -36,15 +36,15 @@ public class AdminServlet extends HttpServlet {
     String action = request.getParameter("action");
     ArrayList<OrderBean> orders = new ArrayList<OrderBean>();
     ArrayList<ClientBean> clients = new ArrayList<ClientBean>();
-    
+
     ClientBean client = (ClientBean) request.getSession().getAttribute("utente");
     if(!client.getEmail().equals("JadeTear@gmail.com")||client==null){
       response.sendRedirect("Error403.jsp");	
       return;
     }
-    
+
     if (action.equals("insert")) {
-      
+
       //UPLOAD DELLE IMMAGINI NELLA CARTELLA
       Part filePart = request.getPart("image");
 
@@ -71,31 +71,99 @@ public class AdminServlet extends HttpServlet {
       // scrive il file
       Files.copy(fileInputStream, pathDestinazione);
       request.setAttribute("uploaded", destinazione);
-      
+
       //UPLOAD NEL .war
       /*
-        String tomcatBase = System.getProperty("catalina.base");
-        String targetPath = tomcatBase + "//webapps//progettoTSW//images//" + fileName;
-        InputStream fileInputStream2 = filePart.getInputStream();
+      String tomcatBase = System.getProperty("catalina.base");  
+      String targetPath = tomcatBase + "//webapps//progettoTSW//images//" + fileName;
+      InputStream fileInputStream2 = filePart.getInputStream();
 
-        Path targetImagePath = Path.of(targetPath);
-        Files.copy(fileInputStream2, targetImagePath);
+      Path targetImagePath = Path.of(targetPath);
+      Files.copy(fileInputStream2, targetImagePath);
       */
+
+      int availability;
+      float IVA;
+      float price;
+      int discount;
       
+      if(request.getParameter("availability")=="")
+        availability = 0;
+      else
+        availability = Integer.parseInt(request.getParameter("availability"));
+
+      if(request.getParameter("IVA")=="")
+        IVA = 0;
+      else
+        IVA = Float.parseFloat(request.getParameter("IVA"));
+
+      if(request.getParameter("price")=="")
+        price = 0;
+      else
+        price = Float.parseFloat(request.getParameter("price"));
+
+      if(request.getParameter("discount")=="")
+        discount = 0;
+      else
+        discount = Integer.parseInt(request.getParameter("discount"));
+      
+      
+      String category = request.getParameter("category");
+      String gemstone = request.getParameter("gemstone");
+      String description = request.getParameter("description");
+      String material = request.getParameter("material");
+
+      if(nome==null || !nome.matches("^[A-Za-z ]+$")){
+        sendError(request, response);
+        return;
+      }
+      if(category==null || !category.equals("Necklace") || !category.equals("Earrings") || !category.equals("Ring") || !category.equals("Bracelet")){
+        sendError(request, response);
+        return;
+      }
+      if(gemstone==null || !gemstone.equals("Ruby") || !gemstone.equals("Jade") || !gemstone.equals("Amethyst") || !gemstone.equals("Emerald") || !gemstone.equals("Rose Quarz") || !gemstone.equals("Aquamarine")){
+        sendError(request, response);
+        return;
+      }
+      if(availability==0 || !(availability > 0 && availability < 100)){
+        sendError(request, response);
+        return;
+      }
+      if(IVA==0 || !(IVA > 0 && IVA < 100)){
+        sendError(request, response);
+        return;
+      }
+      if(price==0 || !(price > 0 && price <= 5000)){
+        sendError(request, response);
+        return;
+      }
+      if(description==null || !description.matches("^[a-zA-Z0-9]{1,100}$")){
+        sendError(request, response);
+        return;
+      }
+      if(material==null || !material.equals("Gold") || !material.equals("Silver") || !material.equals("Rose Gold")){
+        sendError(request, response);
+        return;
+      }
+      if(discount==0 || !(discount > 0 && discount < 100)){
+        sendError(request, response);
+        return;
+      }
+      
+
       //AGGIUNTA DEL PRODOTTO NEL DATABASE
       JewelBean jewel = new JewelBean();
-      jewel.setNome(request.getParameter("name"));
-      jewel.setCategoria(request.getParameter("category"));
-      jewel.setPietra(request.getParameter("gemstone"));
+      jewel.setNome(nome);
+      jewel.setCategoria(category);
+      jewel.setPietra(gemstone);
       jewel.setImmagine(fileName);
-      jewel.setDisponibilita(Integer.parseInt(request.getParameter("availability")));
-      jewel.setIVA(Float.parseFloat(request.getParameter("IVA")));
-      jewel.setPrezzo(Float.parseFloat(request.getParameter("price")));
-      jewel.setDescrizione(request.getParameter("description"));
-      jewel.setMateriale(request.getParameter("material"));
-      jewel.setSconto(Integer.parseInt(request.getParameter("discount")));
+      jewel.setDisponibilita(availability);
+      jewel.setIVA(IVA);
+      jewel.setPrezzo(price);
+      jewel.setDescrizione(description);
+      jewel.setMateriale(material);
+      jewel.setSconto(discount);
       jewel.setPersonalizzato(false);
-      
       
       try {
 		    model.doSave(jewel);
@@ -121,17 +189,98 @@ public class AdminServlet extends HttpServlet {
     
     if (action.equals("modify")) {
       JewelBean jewel = new JewelBean();
-      jewel.setId(Integer.parseInt(request.getParameter("idM")));
-      jewel.setNome(request.getParameter("nameM"));
-      jewel.setCategoria(request.getParameter("categoryM"));
-      jewel.setPietra(request.getParameter("gemstoneM"));
+      
+      int idM;
+      int availabilityM;
+      float IVAM;
+      float priceM;
+      int discountM;
+      
+      if(request.getParameter("idM")=="")
+        idM = 0;
+      else
+        idM = Integer.parseInt(request.getParameter("idM"));
+      
+      if(request.getParameter("availabilityM")=="")
+        availabilityM = 0;
+      else
+        availabilityM = Integer.parseInt(request.getParameter("availabilityM"));
+      
+      if(request.getParameter("IVAM")=="")
+        IVAM = 0;
+      else
+        IVAM = Float.parseFloat(request.getParameter("IVAM"));
+      
+      if(request.getParameter("priceM")=="")
+        priceM = 0;
+      else
+        priceM = Float.parseFloat(request.getParameter("priceM"));
+      
+      if(request.getParameter("discountM")=="")
+        discountM = 0;
+      else
+        discountM = Integer.parseInt(request.getParameter("discountM"));
+      
+      String nameM = request.getParameter("nameM");
+      String categoryM = request.getParameter("categoryM");
+      String gemstoneM = request.getParameter("gemstoneM");
+      String descriptionM = request.getParameter("descriptionM");
+      String materialM = request.getParameter("materialM");
+      
+      if(idM==0 || !(idM==Integer.parseInt(request.getParameter("id")))){
+        sendError(request, response);
+        return;
+      }
+      if(nameM==null || !nameM.matches("^[A-Za-z ]+$")){
+        sendError(request, response);
+        return;
+      }
+      if(categoryM==null || !categoryM.equals("Necklace") || !categoryM.equals("Earrings") || !categoryM.equals("Ring") || !categoryM.equals("Bracelet")){
+        sendError(request, response);
+        return;
+      }
+      if(gemstoneM==null || !gemstoneM.equals("Ruby") || !gemstoneM.equals("Jade") || !gemstoneM.equals("Amethyst") || !gemstoneM.equals("Emerald") || !gemstoneM.equals("Rose Quarz") || !gemstoneM.equals("Aquamarine")){
+        sendError(request, response);
+        return;
+      }
+      if(availabilityM==0 || !(availabilityM > 0 && availabilityM <= 100)){
+        sendError(request, response);
+        return;
+      }
+      if(IVAM==0 || !(IVAM > 0 && IVAM < 100)){
+        sendError(request, response);
+        return;
+      }
+      if(priceM==0 || !(priceM > 0 && priceM <= 5000)){
+
+        sendError(request, response);
+        return;
+      }
+      if(descriptionM==null || !descriptionM.matches("^[a-zA-Z0-9]{1,100}$")){
+        sendError(request, response);
+        return;
+      }
+      if(materialM==null || !materialM.equals("Gold") || !materialM.equals("Silver") || !materialM.equals("Rose Gold")){
+        sendError(request, response);
+        return;
+      }
+      if(discountM==0 || !(discountM > 0 && discountM < 100)){
+        sendError(request, response);
+        return;
+      }
+      
+      
+      jewel.setId(idM);
+      jewel.setNome(nameM);
+      jewel.setCategoria(categoryM);
+      jewel.setPietra(gemstoneM);
       jewel.setImmagine(request.getParameter("imageM"));
-      jewel.setDisponibilita(Integer.parseInt(request.getParameter("availabilityM")));
-      jewel.setIVA(Float.parseFloat(request.getParameter("IVAM")));
-      jewel.setPrezzo(Float.parseFloat(request.getParameter("priceM")));
-      jewel.setDescrizione(request.getParameter("descriptionM"));
-      jewel.setMateriale(request.getParameter("materialM"));
-      jewel.setSconto(Integer.parseInt(request.getParameter("discountM")));
+      jewel.setDisponibilita(availabilityM);
+      jewel.setIVA(IVAM);
+      jewel.setPrezzo(priceM);
+      jewel.setDescrizione(descriptionM);
+      jewel.setMateriale(materialM);
+      jewel.setSconto(discountM);
       jewel.setPersonalizzato(false);
       
       try {
@@ -248,14 +397,13 @@ public class AdminServlet extends HttpServlet {
         clients.add(clientModel.doRetrieveByKey(user));
       } catch (SQLException e) {
         LOGGER.log( Level.SEVERE, e.toString(), e );
+        response.sendRedirect("Error404.jsp");
+        return;
       }
       
       if (clients.get(0)== null){  // si inserisce un cliente che non esiste
-        
-        RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/generalError.jsp");
-        dispatcher.forward(request, response);
+        response.sendRedirect("Error404.jsp");
         return;
-        
       }
       
       request.setAttribute("clienti", clients);
@@ -271,6 +419,12 @@ public class AdminServlet extends HttpServlet {
 
   protected void doPost(HttpServletRequest request, HttpServletResponse response)throws ServletException, IOException {
     doGet(request, response);
+  }
+  
+  public void sendError(HttpServletRequest request, HttpServletResponse response)throws ServletException, IOException{
+    request.setAttribute("error", "JadeTear encountered a problem during submission. Please, try to fill up the form again.");
+    RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/personalized.jsp");
+    dispatcher.forward(request, response);
   }
 
 }

@@ -8,6 +8,8 @@ if(!client.getEmail().equalsIgnoreCase("JadeTear@gmail.com") || client==null){
     response.sendRedirect("Error403.jsp");	
     return;
 }
+String error = (String) request.getAttribute("error");
+
 %>
 
 
@@ -23,6 +25,9 @@ if(!client.getEmail().equalsIgnoreCase("JadeTear@gmail.com") || client==null){
         <h1> Admin Page </h1>
 
         <h2>Add a jewel</h2>
+        <% if (error != null){%>
+                <div><%=error%></div>
+        <%}%>
         <form action="admin" method="post" enctype="multipart/form-data">
                 <input type="hidden" name="action" value="insert">
 
@@ -46,10 +51,8 @@ if(!client.getEmail().equalsIgnoreCase("JadeTear@gmail.com") || client==null){
                 <select name="gemstone">
                	 	 <option value="Jade"> Jade </option>
                		 <option value="Amethyst">Amethyst </option>
-               		 <option value="Obsidian"> Obsidian </option>
                		 <option value="Ruby"> Ruby </option>
                      <option value="Rose Quarz"> Rose Quarz </option>
-                     <option value="Diammond"> Diammond </option>
                      <option value="Emerald"> Emerald </option>
                      <option value="Aquamarine"> Aquamarine </option>
              
@@ -138,10 +141,8 @@ if(!client.getEmail().equalsIgnoreCase("JadeTear@gmail.com") || client==null){
                   <select name="gemstoneM">
                	 	 <option value="Jade"> Jade </option>
                		 <option value="Amethyst">Amethyst </option>
-               		 <option value="Obsidian"> Obsidian </option>
                		 <option value="Ruby"> Ruby </option>
-                     <option value="Rose Quarz"> Rose Quarz </option>
-                     <option value="Diammond"> Diammond </option>
+                     <option value="Rose Quarz"> Rose Quarz </option>       
                      <option value="Emerald"> Emerald </option>
                      <option value="Aquamarine"> Aquamarine </option>
 

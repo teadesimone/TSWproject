@@ -1,8 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 import = "java.util.*, it.unisa.model.*" pageEncoding="UTF-8"%>
 
-
-
 <!--
 List<JewelBean> products = (ArrayList<JewelBean>) request.getAttribute("products");
 if(products == null) {
@@ -10,7 +8,7 @@ if(products == null) {
     return;
 
 } -->   
- 
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -18,13 +16,14 @@ if(products == null) {
 <head>
     <title> JadeTear Catalog </title>
     <style>
+        /*
         #filter{
             display: none;
         }
         
         .checkboxInterne{
             display: none;
-        }
+        }*/
         
     </style>
 </head>
@@ -34,10 +33,21 @@ if(products == null) {
     
     <h2>Our Catalog</h2>
     <div>
-        <input type="text" id="search" placeholder="Search products..." >
+        <input type="text" list="list" id="search" placeholder="Search products..." style="width: 300px;" oninput="doSuggest()" >
+        <span class="suggestBar">
+            <datalist class="suggestBar" id="list" style="width: 300px;">
+            
+            </datalist>
+        </span>
         <button onclick="ajaxFilter()">Search</button>
         <button onclick="reset()">Reset</button>
         <button onclick="activeFilter()">Filter</button>
+        &nbsp;&nbsp;
+        <button class="categoria" value="Necklace"><b>Necklaces</b></button>
+        <button class="categoria" value="Ring"><b>Rings</b></button>
+        <button class="categoria" value="Earrings"> <b>Earrings</b></button>
+        <button class="categoria" value="Bracelet"><b>Bracelets</b></button>
+        
     </div>
     
     <div id="filter">
@@ -118,6 +128,9 @@ if(products == null) {
     
     <script>
         $(document).ready(function(){
+        	$("#filter").css("display", "none");
+        	$(".checkboxInterne").css("display", "none");
+            
             $.ajax({
                 url: 'createCatalog',
                 type: 'GET',
@@ -146,39 +159,61 @@ if(products == null) {
             });
             
         });
-        
-    /*
-        function ajaxSearch(){
-            var query = $('#search').val();
-                $.ajax({
-                    url: 'createCatalog?action=search',
-                    method: 'GET',
-                    data: { query: query },
-                    success: function(resp) {
-                        $("#catalogTable").empty();
-                        $("#catalogTable").append("<tr>");
-                            $("#catalogTable").append("<th>Nome</th>");
-                            $("#catalogTable").append("<th>Image</th>");
-                            $("#catalogTable").append("<th>Description</th>");
-                            $("#catalogTable").append("<th>Price</th>");
-                            $("#catalogTable").append("<th>Detailed Description</th>");
-                            $("#catalogTable").append("<th>Add to Cart</th>");
-                            $("#catalogTable").append("</tr>");
-                        for (let item of resp) {
-                            $("#catalogTable").append("<tr>");
-                                $("#catalogTable").append("<td>"+item.nome+"</td>");
-                                $("#catalogTable").append("<td><img src='images//" +item.immagine+"' alt='"+item.nome+"' width='"+90+"'  height='"+90+"'></td>");
-                                $("#catalogTable").append("<td>"+item.descrizione+"</td>");
-                                $("#catalogTable").append("<td>"+item.prezzo+"</td>");
-                                $("#catalogTable").append("<td><a href='details?id="+item.id+"'> Show Details</a><br></td>");
-                                $("#catalogTable").append("<td><a href='cart?action=add&id="+item.id+"'> Add To Cart</a><br></td>");
-                                $("#catalogTable").append("</tr>");
-                                
-                            }
-                        }
-                    });
-                    
-        } */
+    
+    
+         
+         $("button.categoria").click(function() {
+             var fired_button = $(this).val();
+             
+             $.ajax({
+                 url: 'createCatalog?action=searchByCategory',
+                 type: 'GET',
+                 data : {category : fired_button},
+                 success: function(resp) {
+                     $("#catalogTable").empty();
+                     $("#catalogTable").append("<tr>");
+                     $("#catalogTable").append("<th>Nome</th>");
+                     $("#catalogTable").append("<th>Image</th>");
+                     $("#catalogTable").append("<th>Description</th>");
+                     $("#catalogTable").append("<th>Price</th>");
+                     $("#catalogTable").append("<th>Detailed Description</th>");
+                     $("#catalogTable").append("<th>Add to Cart</th>");
+                     $("#catalogTable").append("</tr>");
+                     for (let item of resp) {
+                         $("#catalogTable").append("<tr>");
+                         $("#catalogTable").append("<td>"+item.nome+"</td>");
+                         $("#catalogTable").append("<td><img src='images//" +item.immagine+"' alt='"+item.nome+"' width='"+90+"'  height='"+90+"'></td>");
+                         $("#catalogTable").append("<td>"+item.descrizione+"</td>");
+                         $("#catalogTable").append("<td>"+item.prezzo+"€</td>");
+                         $("#catalogTable").append("<td><a href='details?id="+item.id+"'> Show Details</a><br></td>");
+                         $("#catalogTable").append("<td><a href='cart?action=add&id="+item.id+"'> Add To Cart</a><br></td>");
+                         $("#catalogTable").append("</tr>");
+
+                     }
+                 }
+             });
+             
+         });
+         
+         
+
+     
+    
+        function doSuggest(){
+            var keyword = $('#search').val();
+            $.ajax({
+                url: 'createCatalog?action=suggest',
+                method: 'GET',
+                data: { keyword : keyword },
+                success: function(resp){
+                    $("#list").empty();
+                    for (let item of resp){
+                        $("#list").append("<option style='width: 300px;'>"+item.nome+"</option>");
+                        
+                    }
+                }
+            });
+        }
         
         function ajaxFilter(){
             var keyword = $('#search').val();
@@ -208,7 +243,6 @@ if(products == null) {
             }else{
                 $('#oro').val("Gold");
             }
-            
             
             if($("#ororosa:checked").val()==undefined){
                 $("#ororosa").val("");
@@ -357,8 +391,6 @@ if(products == null) {
         }
         
         function enablePrice() {
-            var prezzo = document.getElementById('prezzo');
-           
            if ($("#prezzo").prop("checked") == true ) {  
                 $(".checkboxInterne#1").css("display","block");
             }
@@ -368,8 +400,6 @@ if(products == null) {
         }
         
         function enableCategory() {
-            var categoria = document.getElementById('categoria'); 
-
             if ($("#categoria").prop("checked") == true ) {  
                 $(".checkboxInterne#3").css("display","block");  
             }
@@ -379,8 +409,6 @@ if(products == null) {
         }
         
         function enableGemstone() {
-            var pietra = document.getElementById('pietra'); 
-           
             if ($("#pietra").prop("checked") == true ) {  
                 $(".checkboxInterne#4").css("display","block");  
             }
@@ -390,8 +418,6 @@ if(products == null) {
         }
         
         function enableMaterial() {
-            var materiale = document.getElementById('materiale'); 
-
             if ($("#materiale").prop("checked") == true ) {  
                 $(".checkboxInterne#2").css("display","block");  
             }

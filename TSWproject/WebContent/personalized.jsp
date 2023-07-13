@@ -5,7 +5,10 @@ import = "java.util.*, it.unisa.model.*" pageEncoding="UTF-8"%>
 	if(client == null){
 		response.sendRedirect("login.jsp");	
 		return;
-	} %>
+	}
+ String error = (String) request.getAttribute("error");
+
+%>
 
 <html lang="en">
 
@@ -18,8 +21,10 @@ import = "java.util.*, it.unisa.model.*" pageEncoding="UTF-8"%>
         <h1> Customize your jewel  </h1>
 
         
-        <form action="personalized?action=insert" method="post">
-                
+        <form action="personalized?action=insert" method="post" onsubmit="event.preventDefault(); validate(this)">
+              <% if (error != null){%>
+               <div><%=error%></div>
+              <%}%>  
                 <br>
                 <label for="category">Category:</label><br>
       
@@ -36,14 +41,12 @@ import = "java.util.*, it.unisa.model.*" pageEncoding="UTF-8"%>
                 <br>
                 <label for="gemstone">Gemstone:</label><br>
                 <select name="gemstone">
-               	 	 <option value="Jade"> Jade </option>
+               	 	<option value="Jade"> Jade </option>
                		 <option value="Amethyst">Amethyst </option>
-               		 <option value="Obsidian"> Obsidian </option>
                		 <option value="Ruby"> Ruby </option>
-                         <option value="Rose Quarz"> Rose Quarz </option>
-                         <option value="Diammond"> Diammond </option>
-                         <option value="Emerald"> Emerald </option>
-                         <option value="Aquamarine"> Aquamarine </option>
+                  <option value="Rose Quarz"> Rose Quarz </option>
+                  <option value="Emerald"> Emerald </option>
+                  <option value="Aquamarine"> Aquamarine </option>
               	
            		  </select>  
                 <br>
@@ -61,6 +64,7 @@ import = "java.util.*, it.unisa.model.*" pageEncoding="UTF-8"%>
                <br>
                 <label for="description">Describe how you want your jewel:</label><br>
                 <textarea name="description" maxlength="100" rows="3" required placeholder="enter description (max 100 characters)"></textarea>
+                <span id="errorDescrizione"></span>
                 <br>
 
                 <br>
@@ -69,3 +73,31 @@ import = "java.util.*, it.unisa.model.*" pageEncoding="UTF-8"%>
                 
                  
         </form>
+<script>
+    function validate(obj) {	
+     let valid = true;	
+
+     let descrizione = document.getElementsByName("descrizione")[0];    
+     let errorDescrizione = document.getElementById('errorDescrizione');
+     if(!checkDescrizione(descrizione)) {
+      valid = false;
+      errorDescrizione.textContent = "Error: description must be 100 characters at most"; 
+     } else {
+      errorDescrizione.textContent = ""; 
+     }
+     if(valid) obj.submit();
+    }
+
+     function checkDescrizione(inputtxt) {
+      let descrizione = /^[a-zA-Z0-9]{1,100}$/;
+      if(inputtxt.value.match(descrizione)) 
+		        return true
+
+      return false;	
+     }
+    
+</script>
+
+</body>
+
+</html>

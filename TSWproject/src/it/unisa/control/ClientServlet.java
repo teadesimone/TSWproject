@@ -56,15 +56,63 @@ public class ClientServlet extends HttpServlet{
             
             if(action.equalsIgnoreCase("modify")){
                 
-                client.setCf(request.getParameter("cf"));
-                client.setNome(request.getParameter("nome"));
-                client.setCognome(request.getParameter("cognome"));
-                client.setVia(request.getParameter("indirizzo"));
-                client.setCitta(request.getParameter("citta"));
-                client.setProvincia(request.getParameter("provincia"));
-                client.setCap(request.getParameter("cap"));
-                client.setTelefono(request.getParameter("telefono"));
-                client.setEmail(request.getParameter("email"));
+                String cf = request.getParameter("cf");
+                String nome = request.getParameter("nome");
+                String cognome = request.getParameter("cognome");
+                String indirizzo = request.getParameter("indirizzo");
+                String citta = request.getParameter("citta");
+                String provincia = request.getParameter("provincia");
+                String cap = request.getParameter("cap");
+                String telefono = request.getParameter("telefono");
+                String email = request.getParameter("email");
+                
+               
+                if(cf==null || !cf.matches("^[A-Z]{6}[0-9]{2}[A-Z][0-9]{2}[A-Z][0-9]{3}[A-Z]$")){
+                    sendError(request, response);
+                    return;
+                }
+                if(nome==null || !nome.matches("^[A-Za-z ]+$")){
+                    sendError(request, response);
+                    return;
+                }
+                if(cognome==null || !cognome.matches("^[A-Za-z ]+$")){
+                    sendError(request, response);
+                    return;
+                }
+                if(indirizzo==null || !indirizzo.matches("^([A-Za-z]+\\s)+\\d+$")){
+                    sendError(request, response);
+                    return;
+                }
+                if(citta==null || !citta.matches("^[A-Za-z ]+$")){
+                    sendError(request, response);
+                    return;
+                }
+                if(provincia==null || !provincia.matches("^[A-Za-z ]+$")){
+                    sendError(request, response);
+                    return;
+                }
+                if(cap==null || !cap.matches("^\\d{5}$")){
+                    sendError(request, response);
+                    return;
+                }
+                if(telefono==null || !telefono.matches("^\\d{10}$")){
+                    sendError(request, response);
+                    return;
+                }
+                if(email==null || !email.matches("^\\w+([\\.-]?\\w+)*@\\w+([\\.-]?\\w+)*(\\.\\w{2,3})+$")){
+                    sendError(request, response);
+                    return;
+                }
+                
+                client.setCf(cf);
+                client.setNome(nome);
+                client.setCognome(cognome);
+                client.setVia(indirizzo);
+                client.setCitta(citta);
+                client.setProvincia(provincia);
+                client.setCap(cap);
+                client.setTelefono(telefono);
+                client.setEmail(email);
                 
                 try {
                     clientModel.doModify(client);
@@ -76,10 +124,33 @@ public class ClientServlet extends HttpServlet{
             if(action.equalsIgnoreCase("addPaymentCard")){
                 PaymentMethodBean card = new PaymentMethodBean();
                 int id = -1;
-                card.setNumero_carta(request.getParameter("numero_carta"));
-                card.setCvv(request.getParameter("cvv"));
-                card.setData_scadenza(request.getParameter("data_scadenza"));
-                card.setCircuito(request.getParameter("circuito"));
+                
+                String numcarta = request.getParameter("numero_carta");
+                String cvv =  request.getParameter("cvv");
+                String datascadenza = request.getParameter("data_scadenza");
+                String circuito = request.getParameter("circuito");
+                
+                if(numcarta==null || !numcarta.matches("^\\d{13,19}$")){
+                    sendError(request, response);
+                    return;
+                }
+                if(cvv==null || !cvv.matches("^\\d{3}$")){
+                    sendError(request, response);
+                    return;
+                }
+                if(datascadenza==null || !datascadenza.matches("^\\d{4}\\-\\d{2}\\-\\d{2}$")){
+                    sendError(request, response);
+                    return;
+                }
+                if(circuito==null || !circuito.matches("^[A-Za-z ]+$")){
+                    sendError(request, response);
+                    return;
+                }
+                
+                card.setNumero_carta(numcarta);
+                card.setCvv(cvv);
+                card.setData_scadenza(datascadenza);
+                card.setCircuito(circuito);
                 card.setUsername(client.getUsername());
                 
                 try {
@@ -115,9 +186,27 @@ public class ClientServlet extends HttpServlet{
             if(action.equalsIgnoreCase("addAddress")){
                 AddressBean address = new AddressBean();
                 int id = -1;
-                address.setVia(request.getParameter("via_indirizzo"));
-                address.setCitta(request.getParameter("citta_indirizzo"));
-                address.setCAP(request.getParameter("CAP_indirizzo"));
+                
+                String via_indirizzo = request.getParameter("via_indirizzo");
+                String citta_indirizzo = request.getParameter("citta_indirizzo");
+                String CAP = request.getParameter("CAP_indirizzo");
+                
+                if(citta_indirizzo==null || !citta_indirizzo.matches("^[A-Za-z ]+$")){
+                    sendError(request, response);
+                    return;
+                }
+                if(via_indirizzo==null || !via_indirizzo.matches("^([A-Za-z]+\\s)+\\d+$")){
+                    sendError(request, response);
+                    return;
+                }
+                if(CAP==null || !CAP.matches("^\\d{5}$")){
+                    sendError(request, response);
+                    return;
+                }
+                
+                address.setVia(via_indirizzo);
+                address.setCitta(citta_indirizzo);
+                address.setCAP(CAP);
                 address.setUsername(client.getUsername());
                 
                 try {
@@ -160,5 +249,11 @@ public class ClientServlet extends HttpServlet{
     
     protected void doPost(HttpServletRequest request, HttpServletResponse response)throws ServletException, IOException {
         doGet(request, response);
-    } 
+    }
+    
+    public void sendError(HttpServletRequest request, HttpServletResponse response)throws ServletException, IOException{
+        request.setAttribute("error", "JadeTear encountered a problem. Please, try to fill up the form correctly and check your data before submitting.");
+        RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/registration.jsp");
+        dispatcher.forward(request, response);
+    }
 }

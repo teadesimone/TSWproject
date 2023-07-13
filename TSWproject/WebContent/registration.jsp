@@ -1,6 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 import = "java.util.*, it.unisa.model.*" pageEncoding="UTF-8"%>
 
+<%
+       String error = (String) request.getAttribute("error");
+%>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -12,6 +16,9 @@ import = "java.util.*, it.unisa.model.*" pageEncoding="UTF-8"%>
     <h1>Register</h1>
     
     <form action="registration" method="post" onsubmit="event.preventDefault(); validate(this)">
+        <% if (error != null){%>
+        <div><%=error%></div>
+        <%}%>
         
         <br>
         <label for="email">Insert email:</label><br>
@@ -83,7 +90,6 @@ import = "java.util.*, it.unisa.model.*" pageEncoding="UTF-8"%>
         
         <br>
         <input type="submit" value="Submit"> 
-     
         <br>
     </form>
 

@@ -327,7 +327,7 @@ public class JewelDAO {
     }
     return beans;
   }
-  
+  /*
   public synchronized ArrayList<JewelBean> doSearch(String query) throws SQLException {
     Connection connection = null;
     PreparedStatement preparedStatement = null;
@@ -372,7 +372,7 @@ public class JewelDAO {
       }
     }
     return beans;
-  }
+  }*/
   /*
   public synchronized ArrayList<JewelBean> doRetrieveAllByMaterial(String material) throws SQLException {
     Connection connection = null;
@@ -505,7 +505,7 @@ public class JewelDAO {
     Connection connection = null;
     PreparedStatement preparedStatement = null;
 
-    String selectSQL = "SELECT * FROM " + TABLE + " WHERE descrizione LIKE " + "'%" + keyword + "%'" + query;
+    String selectSQL = "SELECT * FROM " + TABLE + " WHERE personalizzato = false AND descrizione LIKE " + "'%" + keyword + "%'" + query;
 
     ArrayList<JewelBean> beans = new ArrayList<JewelBean>();
 
@@ -546,6 +546,50 @@ public class JewelDAO {
     return beans;
   }
   
+  public synchronized ArrayList<JewelBean> doRetrieveAllByName(String keyword) throws SQLException {
+    Connection connection = null;
+    PreparedStatement preparedStatement = null;
+
+    String selectSQL = "SELECT * FROM " + TABLE + " WHERE personalizzato = false AND nome LIKE '" + keyword + "%'" ;
+
+    ArrayList<JewelBean> beans = new ArrayList<JewelBean>();
+
+    try {
+      connection = ds.getConnection();
+      preparedStatement = connection.prepareStatement(selectSQL);
+
+      ResultSet rs = preparedStatement.executeQuery();
+
+      while (rs.next()) {
+        JewelBean jewel = new JewelBean();
+        jewel.setId(rs.getInt("id_prodotto"));
+        jewel.setNome(rs.getString("nome"));
+        jewel.setCategoria(rs.getString("categoria"));
+        jewel.setPietra(rs.getString("pietra"));
+        jewel.setImmagine(rs.getString("immagine"));
+        jewel.setDisponibilita(rs.getInt("disponibilita"));
+        jewel.setIVA(rs.getFloat("IVA"));
+        jewel.setPrezzo(rs.getFloat("prezzo"));
+        jewel.setDescrizione(rs.getString("descrizione"));
+        jewel.setMateriale(rs.getString("materiale"));
+        jewel.setSconto(rs.getInt("sconto"));
+        jewel.setPersonalizzato(rs.getBoolean("personalizzato"));
+
+        beans.add(jewel);
+      }
+    } 
+    finally {
+      try {
+        if (preparedStatement != null)
+          preparedStatement.close();
+      } 
+      finally {
+        if (connection != null)
+          connection.close();
+      }
+    }
+    return beans;
+  }
   
   
   

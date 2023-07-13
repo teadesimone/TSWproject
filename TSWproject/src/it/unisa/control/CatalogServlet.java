@@ -25,32 +25,39 @@ public class CatalogServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)throws ServletException, IOException {
         
      JewelDAO model = new JewelDAO();
-     boolean ajax = "XMLHttpRequest".equals(request.getHeader("X-Requested-With"));
+     //boolean ajax = "XMLHttpRequest".equals(request.getHeader("X-Requested-With"));
      
      String action = request.getParameter("action");
      ArrayList<JewelBean> result = null;
      
      
-     if (action == null && ajax) {
-         
-         System.out.println("frate sono null");
+     if (action == null) {
          try {
 			result = (ArrayList<JewelBean>)model.doRetrieveAll();
 		}catch (SQLException e) {
 			LOGGER.log( Level.SEVERE, e.toString(), e );
 		}
-     }/*
-     else if (action.equals("search")) {
-         String query = request.getParameter("query");
+     }
+     else if(action.equals("suggest")){
+         String keyword = request.getParameter("keyword");
          
          try {
-			result = model.doRetrieveAllByKeyword(query,"");
-		}catch (SQLException e) {
-			LOGGER.log( Level.SEVERE, e.toString(), e );
-		}
-     }*/
+             result = (ArrayList<JewelBean>)model.doRetrieveAllByName(keyword);
+         }catch (SQLException e) {
+             LOGGER.log( Level.SEVERE, e.toString(), e );
+         }
+     }
+     else if(action.equals("searchByCategory")){
+         
+         String category = request.getParameter("category");
+
+         try {
+             result = (ArrayList<JewelBean>)model.doRetrieveAllByCategory(category);
+         }catch (SQLException e) {
+             LOGGER.log( Level.SEVERE, e.toString(), e );
+         }
+     }
      else if(action.equals("filter")){
-         System.out.println("Debug sono nella filter");
          String sql ="";
          
          String keyword = request.getParameter("keyword");
@@ -58,10 +65,8 @@ public class CatalogServlet extends HttpServlet {
          String prezzo = request.getParameter("prezzo");
          float prezzo_da = 0;
          float prezzo_a = 5000; 
-         if (!request.getParameter("prezzo_da").equals("")){
-             System.out.println("prezzo non è null");
+         if (!request.getParameter("prezzo_da").equals(""))
              prezzo_da = Float.parseFloat(request.getParameter("prezzo_da"));
-         }
          if (!request.getParameter("prezzo_a").equals(""))
              prezzo_a = Float.parseFloat(request.getParameter("prezzo_a"));
          
@@ -94,7 +99,7 @@ public class CatalogServlet extends HttpServlet {
                   sql = " AND prezzo > "+ prezzo_da +" AND prezzo < "+ prezzo_a;
             }
          
-            System.out.println(sql);
+            //System.out.println(sql);
 
              try {
                  result = model.doRetrieveAllByKeyword(keyword,sql);

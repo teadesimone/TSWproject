@@ -10,6 +10,8 @@ import = "java.util.*, it.unisa.model.*" pageEncoding="UTF-8"%>
 	}
   
   ArrayList<ClientBean> clients = (ArrayList<ClientBean>) request.getAttribute("clienti");
+  
+  String error = (String) request.getAttribute("error");
 %>
 
 <!DOCTYPE html>
@@ -75,7 +77,9 @@ import = "java.util.*, it.unisa.model.*" pageEncoding="UTF-8"%>
 
     <form action="userdetails?action=modify" method="post" onsubmit="event.preventDefault(); validate(this)">
         
-    
+        <% if (error != null){%>
+        <div><%=error%></div>
+        <%}%>
 
         <h3>Modify your account</h3>    
     

@@ -107,12 +107,11 @@ public class CartServlet extends HttpServlet {
                     return;
                 }
                 else{
-                	
-                    //QUI DOVREMMO INSERIRE UN ERRORE IN SOVRAIMPRESSIONE SULLA PAGINA 
-                    
-                   RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/generalError.jsp");
-                   dispatcher.forward(request, response);
-                   return;
+                   //QUI DOVREMMO INSERIRE UN ERRORE IN SOVRAIMPRESSIONE SULLA PAGINA CHE DICE ALL'UTENTE DI INSERIRE LE CARTE
+                    request.setAttribute("carterror","Please insert at least one card before proceeding with your purchase");
+                    RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/client.jsp");
+                    dispatcher.forward(request, response);
+                    return;
                 }
 
             }
