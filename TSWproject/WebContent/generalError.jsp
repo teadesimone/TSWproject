@@ -11,7 +11,7 @@ import = "java.util.*, it.unisa.model.*" pageEncoding="UTF-8"%>
 <body>
     <h3>Ops... Something went wrong!</h3>
 
-    <img src="images//error.png" class="errorImg">
+    <img src="images//error.png" class="errorImg" alt="Error">
     
     <p>Return to <a href="home">home &nbsp <i class="fa fa-home" aria-hidden="true"></i></a></p> 
 

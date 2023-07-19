@@ -227,13 +227,11 @@ form.delete{
     color: #80959690;
 }
 
-      .inputBox input[type="text"]::required{
-    background: red;
-}
+   
 
       .inputBox input[type="radio"]{
     accent-color: #9590a8;
-    trasform: scale(0.2);
+    transform: scale(0.2);
 }
 
       .inputBox input[type="checkbox"]{

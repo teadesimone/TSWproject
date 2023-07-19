@@ -19,7 +19,7 @@ import = "java.util.*, it.unisa.model.*" pageEncoding="UTF-8"%>
 <body>
     <h3>Ops... Something went wrong!</h3>
     
-        <img src="images//error.png" class="errorImg">
+        <img src="images//error.png" class="errorImg"alt="Error" >
 
     <p> Are you sure you're registered?
         If not, try to <a href="registration">register <i class="fa fa-user-plus" aria-hidden="true"></i></a> 

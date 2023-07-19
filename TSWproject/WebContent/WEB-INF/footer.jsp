@@ -7,7 +7,9 @@ import = "java.util.*, it.unisa.model.*" pageEncoding="UTF-8"%>
 
 <head>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <title>Footer</title>
     <style>
+    
      
     footer{
         font-size: 30px;
