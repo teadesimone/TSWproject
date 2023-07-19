@@ -28,6 +28,7 @@ public class AddressDAO {
 
         } catch (NamingException e) {
             System.out.println("Error:" + e.getMessage());
+            
         }
     }
     private static final String TABLE_NAME = "Indirizzo";

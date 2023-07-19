@@ -20,8 +20,7 @@ public class ClientBean {
     private String password;
     
     public ClientBean() {
-    	
-    	 
+        //costruttore vuoto
     } 
 
     

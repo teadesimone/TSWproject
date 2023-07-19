@@ -1,0 +1,316 @@
+.grid-container {
+  display: grid;
+  grid-template-columns: auto ;
+  grid-template-rows: auto auto auto;
+  gap: 60px;
+  background: rgba(250,250,250);
+}
+
+.grid-container > div {
+  font-size: 15px;
+}
+
+ .screen-container{
+    grid-row: 2;
+    display: grid;
+    grid-template-columns: 15% 70% 15%;
+    width: 100%;
+}
+
+  .transparentCard{
+    grid-column:  2/3;
+    display: grid;
+    grid-template-columns: auto;
+    grid-template-rows: auto auto auto auto auto auto;
+    height:100%;
+    width:100%;
+    gap: 100px;
+
+}
+
+  .formContainer{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  gap: 30px;
+  width:100%;
+  height:100%;
+}
+
+form.delete{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: row;
+  gap:5px;
+}
+
+  .title{
+    grid-column: 2;
+    grid-row: 1;
+    width:100%;
+    height:100%;
+    margin-top: 27px;
+    text-align:center;
+}
+
+.subtitle {
+  width:100%;
+  height:100%;
+  margin:auto;
+  text-align:center;
+  color: #4c8577;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  display: inline;
+  font-weight: bold;
+  font-size: medium;
+}
+
+  .submitContainer{
+    text-align:center;
+}
+
+  .submit{
+    height: 120%;
+    width: 120%;
+    padding:15%;
+    margin: 5%;
+}
+
+  .inputBox{
+    width: 55%;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+  .special{
+    width: 55%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+}
+
+  .inputBox input[type="radio"]{
+    border: 0px;
+    width: 100%;
+    height: 1em;
+}
+
+.errorNoTranslate{
+  color: #634B66;
+}
+
+  .error{
+    transform: translateY(-100%);
+}
+
+  @media only screen and (max-width: 900px){ 
+    .container{
+        grid-template-columns: 1fr 5fr 1fr;
+    }
+   .transparentCard{
+        width:100%;
+    }
+}
+
+  @media only screen and (max-width: 480px){ 
+    .container{
+        grid-template-columns: 1fr;
+    }
+
+   .transparentCard{
+        grid-column:1;
+        grid-template-columns: 1fr;
+        grid-template-rows: 1fr 3fr 1fr;
+        width:100%;
+    }
+
+   .submitContainer{
+        grid-column: 1;
+        grid-row: 3;
+    }
+  
+  .title{
+      grid-column: 1;
+      grid-row: 1;
+    }
+
+}
+
+.container{
+    font-family: "Times New Roman", serif, sans-serif;
+}
+
+      .title {
+    color: #4c8577;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    display: block;
+    font-weight: bold;
+    font-size: x-large;
+}
+
+      .card {
+    background: #e3e3e3;
+    box-shadow: 16px 16px 32px #c8c8c8,
+        -16px -16px 32px #fefefe;
+    border-radius: 10px;
+}
+
+      .inputBox {
+    width: 60%;
+}
+
+      .inputBox input {
+    width: 100%;
+    padding: 10px;
+    outline: none;
+    border: none;
+    color: #4c8577;
+    font-size: 1em;
+    background: transparent;
+    border-left: 2px solid #4c8577;
+    border-bottom: 2px solid #4c8577;
+    transition: 0.1s;
+    border-bottom-left-radius: 8px;
+}
+
+      .inputBox label {
+    padding: 10px;
+    pointer-events: none;
+    font-size: 12px;
+    color: #4c8577;
+    text-transform: uppercase;
+    transition: 0.5s;
+    letter-spacing: 3px;
+    border-radius: 8px;
+    transform: translateY(-100%);
+}
+
+    div.special label, #descriptionLabel{
+    transform: none;
+}
+
+
+      .inputBox input[type="text"]:valid~label,
+      .inputBox input[type="text"]:focus~label, .inputBox input[type="email"]:valid~label,
+      .inputBox input[type="email"]:focus~label, .inputBox input[type="password"]:valid~label,
+      .inputBox input[type="password"]:focus~label, .inputBox .notEmpty{
+    transform: translateY(-222%);
+    font-size: 0.8em;
+    padding: 5px 10px;
+    background: #4c8577;
+    letter-spacing: 0.2em;
+    color: #fff;
+    border: 2px;
+}
+
+      .inputBox input[type="text"]:valid,
+      .inputBox input[type="text"]:focus, .inputBox input[type="email"]:valid,
+      .inputBox input[type="email"]:focus, .inputBox input[type="password"]:valid,
+      .inputBox input[type="password"]:focus, .inputBox .notEmpty {
+    border: 2px solid #4c8577;
+    border-radius: 8px;
+}
+
+      .inputBox input::placeholder{
+    visibility: hidden; 
+}
+
+      .inputBox input:focus::placeholder{
+    visibility: visible;
+    color: #80959690;
+}
+
+      .inputBox input[type="text"]::required{
+    background: red;
+}
+
+      .inputBox input[type="radio"]{
+    accent-color: #9590a8;
+    trasform: scale(0.2);
+}
+
+      .inputBox input[type="checkbox"]{
+    accent-color: #9590a8;
+    transform: scale(0.4);
+}
+
+.submit {
+    border-radius: 5px;
+    border: 2px solid #4c8577;
+    cursor: pointer;
+    background-color: transparent;
+    transition: 0.5s;
+    text-transform: uppercase;
+    font-size: 11px;
+    letter-spacing: 2px;
+    margin-bottom: 1em;
+    color: #4c8577;
+}
+
+      .submit:hover {
+    background-color: #4c8577;
+    color: white;
+}
+
+      .error{
+    color: #634B66;
+}
+
+      .link span{
+    color: #4c8577; 
+}
+
+      .link a{
+    color: #634B66;
+}
+
+      textarea{
+    width:70%;
+    height:100%;
+}
+
+#payment, #address {
+  background-color: #18020C;
+  color: #fff;
+  border: none;
+  padding: 8px 16px;
+  margin-top: 5px;
+  cursor: pointer;
+  border-radius: 20px;
+  text-decoration: none;
+}
+
+#payment:hover, #address:hover {
+  background-color: #84A8A1;
+  color: #fff;
+  border: none;
+  padding: 8px 16px;
+  margin-top: 5px;
+  cursor: pointer; 
+}
+
+.formContainer label {
+  padding: 10px;
+  pointer-events: none;
+  font-size: 12px;
+  color: #4c8577;
+  text-transform: uppercase;
+  transition: 0.5s;
+  letter-spacing: 3px;
+  border-radius: 8px;
+}
+
+fieldset {
+  border-color: #AEA4B4;
+}
+
+legend {
+  color: #AEA4B4;
+}

@@ -34,6 +34,12 @@ public class RegistrationServlet extends HttpServlet {
         String action = request.getParameter("action");
         boolean ajax = "XMLHttpRequest".equals(request.getHeader("X-Requested-With"));
         
+        if(action == null){
+            RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/WEB-INF/registration.jsp");
+            dispatcher.forward(request, response);
+            return;
+        }
+        
         if(action != null && ajax){
             boolean bol;
             ClientBean result = null;
@@ -61,7 +67,7 @@ public class RegistrationServlet extends HttpServlet {
             PrintWriter out = response.getWriter();
             out.write(json);
         }
-        else{
+        else if(!ajax && action.equals("register")){
             int result = 0;
             String username = request.getParameter("username");
             String cf = request.getParameter("cf");
@@ -147,20 +153,16 @@ public class RegistrationServlet extends HttpServlet {
 
             if(result == 0){
                 response.sendRedirect("loginError.jsp");
+                return;
+            }else{
+                try {
+                    addressmodel.doSave(indirizzobase);
+                } catch (SQLException e) {
+                    LOGGER.log( Level.SEVERE, e.toString(), e );
+                }
+                
+                response.sendRedirect("login");        
             }
-
-        else{
-
-            try {
-                addressmodel.doSave(indirizzobase);
-            } catch (SQLException e) {
-                LOGGER.log( Level.SEVERE, e.toString(), e );
-            }
-
-
-            RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/login.jsp");
-            dispatcher.forward(request, response);
-        }
 
         }
     }
@@ -171,7 +173,7 @@ public class RegistrationServlet extends HttpServlet {
     
     public void sendError(HttpServletRequest request, HttpServletResponse response)throws ServletException, IOException{
         request.setAttribute("error", "JadeTear encountered a problem during your registration. Please, try to fill up the form correctly and check your data before submitting.");
-        RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/registration.jsp");
+        RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/WEB-INF/registration.jsp");
         dispatcher.forward(request, response);
     }
 }

@@ -24,6 +24,10 @@ public class DetailsServlet extends HttpServlet {
       JewelDAO model = new JewelDAO();
 
       String id = request.getParameter("id");
+      if (id == null || Integer.parseInt(id)==0){
+          response.sendRedirect("catalog");
+          return;
+      } 
       
       JewelBean j = new JewelBean();
       
@@ -35,9 +39,14 @@ public class DetailsServlet extends HttpServlet {
 		LOGGER.log( Level.SEVERE, e.toString(), e );
 	}
       
+      if (j.getDisponibilita() <= 0) {
+    	  
+    	  request.setAttribute("erroresoldout2", "We are sorry but this jewel's sold out");
+      }
+      
       request.setAttribute("detailed", j);
       
-      RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/details.jsp");
+      RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/WEB-INF/details.jsp");
       dispatcher.forward(request, response);
   }
   

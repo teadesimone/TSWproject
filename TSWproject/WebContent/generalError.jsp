@@ -5,11 +5,15 @@ import = "java.util.*, it.unisa.model.*" pageEncoding="UTF-8"%>
 <html lang="en">
 <head>
     <title>Error</title>
+    <link rel="stylesheet" type="text/css" href="./styles/errorStyle.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 <body>
     <h3>Ops... Something went wrong!</h3>
 
-   <a href="home.jsp">Home</a>
+    <img src="images//error.png" class="errorImg">
+    
+    <p>Return to <a href="home">home &nbsp <i class="fa fa-home" aria-hidden="true"></i></a></p> 
 
 </body>
 </html>

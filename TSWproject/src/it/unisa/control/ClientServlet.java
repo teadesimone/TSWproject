@@ -33,6 +33,16 @@ public class ClientServlet extends HttpServlet{
         
         String action = request.getParameter("action");
         ClientBean client = (ClientBean) request.getSession().getAttribute("utente");
+        if (client == null){
+            response.sendRedirect("login");
+            return;
+        } 
+        if (client.getEmail().equals("JadeTear@gmail.com")){
+        	RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/admin?action=clientsNoFilter");
+            dispatcher.forward(request, response);
+            return;
+        } 
+        
         
         ArrayList<AddressBean> addresses = null;
 		try {
@@ -50,6 +60,13 @@ public class ClientServlet extends HttpServlet{
         
         request.setAttribute("addresses", addresses);
         request.setAttribute("payments", payments);
+        
+
+        if(action==null || action.equals("")) {
+            RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/WEB-INF/client.jsp");
+            dispatcher.forward(request, response);
+            return;
+        }
         
         
         if(action != null){
@@ -165,7 +182,7 @@ public class ClientServlet extends HttpServlet{
             
             if(action.equalsIgnoreCase("deletePaymentCard")){
                 int idcarta = Integer.parseInt(request.getParameter("id_carta"));
-                System.out.println(idcarta);
+                
                 PaymentMethodBean bean = null;
                 
                 try {
@@ -241,7 +258,7 @@ public class ClientServlet extends HttpServlet{
         }
         
         
-        RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/client.jsp");
+        RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/WEB-INF/client.jsp");
         dispatcher.forward(request, response);
 
         
@@ -253,7 +270,7 @@ public class ClientServlet extends HttpServlet{
     
     public void sendError(HttpServletRequest request, HttpServletResponse response)throws ServletException, IOException{
         request.setAttribute("error", "JadeTear encountered a problem. Please, try to fill up the form correctly and check your data before submitting.");
-        RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/registration.jsp");
+        RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/WEB-INF/client.jsp");
         dispatcher.forward(request, response);
     }
 }

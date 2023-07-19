@@ -32,26 +32,31 @@ public class PersonalizedServlet extends HttpServlet {
         float result = (float)r.nextInt(high-low) + low;
         int id= -1;
         
-        if (action.equals("insert")) {
+        if(action == null || action.equals("")){
+            RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/WEB-INF/personalized.jsp");
+            dispatcher.forward(request, response);
+            return;
+        }
+        else if (action.equals("insert")) {
             
             String category = request.getParameter("category");
             String gemstone = request.getParameter("gemstone");
             String description = request.getParameter("description");
             String material =request.getParameter("material");
             
-            if(category==null || !category.equals("Necklace") || !category.equals("Earrings") || !category.equals("Ring") || !category.equals("Bracelet")){
+            if(category==null || (!category.equals("Necklace") && !category.equals("Earrings") && !category.equals("Ring") && !category.equals("Bracelet"))){
                 sendError(request, response);
                 return;
             }
-            if(gemstone==null || !gemstone.equals("Ruby") || !gemstone.equals("Jade") || !gemstone.equals("Amethyst") || !gemstone.equals("Emerald") || !gemstone.equals("Rose Quarz") || !gemstone.equals("Aquamarine")){
+            if(gemstone==null || (!gemstone.equals("Quarz") && !gemstone.equals("Jade") && !gemstone.equals("Amethyst") && !gemstone.equals("Citrine") && !gemstone.equals("Rose Quarz") && !gemstone.equals("Aquamarine"))){
                 sendError(request, response);
                 return;
             }
-            if(description==null || !description.matches("^[a-zA-Z0-9]{1,100}$")){
+            if(description==null || !description.matches("^[a-zA-Z\\s]{1,100}$")){
                 sendError(request, response);
                 return;
             }
-            if(material==null || !material.equals("Gold") || !material.equals("Silver") || !material.equals("Rose Gold")){
+            if(material==null || (!material.equals("Gold") && !material.equals("Silver") && !material.equals("Rose Gold"))){
                 sendError(request, response);
                 return;
             }
@@ -86,7 +91,7 @@ public class PersonalizedServlet extends HttpServlet {
     
     public void sendError(HttpServletRequest request, HttpServletResponse response)throws ServletException, IOException{
         request.setAttribute("error", "JadeTear encountered a problem during submission. Please, try to fill up the form again.");
-        RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/personalized.jsp");
+        RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/WEB-INF/personalized.jsp");
         dispatcher.forward(request, response);
     }
 }

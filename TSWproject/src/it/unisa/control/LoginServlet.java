@@ -27,43 +27,48 @@ public class LoginServlet extends HttpServlet {
     	if(action!=null && action.equalsIgnoreCase("logout")){
             HttpSession session = request.getSession();
             session.invalidate();
-            response.sendRedirect("home.jsp");
+            response.sendRedirect("home");
             return;
         }
         
-        ClientBean client = null;
-        String email = request.getParameter("email");
-        String password = request.getParameter("password");
-        
-        try {
-			client = model.doRetrieveByEmailAndPassword(email, password);
-		} catch (SQLException e) {
+        if (action == null || action.equals("") ){
             
-			LOGGER.log( Level.SEVERE, e.toString(), e );
-			response.sendRedirect("loginError.jsp");	
+            RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/WEB-INF/login.jsp");
+            dispatcher.forward(request, response);
             return;
-		}  
-        
-        
-        if(client == null){
-            
-            response.sendRedirect("loginError.jsp");	
-            return;
-        }
-        else {
-            request.getSession().setAttribute("utente", client);
-            
-            if (client.getEmail().equals("JadeTear@gmail.com")) {
-            	RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/admin.jsp");
-                dispatcher.forward(request, response);
+        }else if(action.equals("login")){
+
+            ClientBean client = null;
+            String email = request.getParameter("email");
+            String password = request.getParameter("password");
+
+            try {
+                client = model.doRetrieveByEmailAndPassword(email, password);
+            } catch (SQLException e) {
+
+                LOGGER.log( Level.SEVERE, e.toString(), e );
+                response.sendRedirect("loginError.jsp");	
+                return;
+            }  
+
+            if(client == null){
+
+                response.sendRedirect("loginError.jsp");	
                 return;
             }
-            
-        }  
-        
-        RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/home.jsp");
-        dispatcher.forward(request, response);
+            else {
+                request.getSession().setAttribute("utente", client);
+    
+                if (client.getEmail().equals("JadeTear@gmail.com")) {
+                    RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/admin");
+                    dispatcher.forward(request, response);
+                    return;
+                }
+    
+            }
 
+            response.sendRedirect("home");
+        }
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response)throws ServletException, IOException {

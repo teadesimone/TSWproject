@@ -27,6 +27,10 @@ public class OrderDetailsServlet extends HttpServlet{
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
         
         ClientBean client = (ClientBean) request.getSession().getAttribute("utente");
+        if (client == null){
+            response.sendRedirect("login");
+            return;
+        } 
         String action = request.getParameter("action");
         
         
@@ -34,14 +38,18 @@ public class OrderDetailsServlet extends HttpServlet{
             int id = Integer.parseInt(request.getParameter("ordine"));
 
             OrderBean order = new OrderBean();
-
+            
             try {
                 order = orderModel.doRetrieveByKey(id);
             } catch (SQLException e) {
                 LOGGER.log( Level.SEVERE, e.toString(), e );
             }
-
-            request.setAttribute("detailedOrder", order);
+            
+            if(order.getClient().getUsername().equalsIgnoreCase(client.getUsername()) || client.getEmail().equals("JadeTear@gmail.com")){
+                request.setAttribute("detailedOrder", order);    
+            }else{
+                response.sendRedirect("home");
+            }
         }
         if(action!=null && action.equalsIgnoreCase("viewInvoice")){
             
@@ -76,12 +84,12 @@ public class OrderDetailsServlet extends HttpServlet{
             request.setAttribute("orderProducts", products);
             request.setAttribute("invoice", invoice);
             
-            RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/invoice.jsp");
+            RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/WEB-INF/invoice.jsp");
             dispatcher.forward(request, response);
             return;
         }
         
-        RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/orderdetails.jsp");
+        RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/WEB-INF/orderdetails.jsp");
         dispatcher.forward(request, response);
         return;
         

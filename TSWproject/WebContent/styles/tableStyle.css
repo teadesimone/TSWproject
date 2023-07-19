@@ -1,0 +1,114 @@
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    
+}
+
+table, th, td {
+    border: none;
+    
+}
+
+table th:first-child{
+  border-radius:20px 0 0 20px;
+}
+
+table th:last-child{
+  border-radius:0 20px 20px 0;
+}
+
+th, td {
+    padding: 10px;
+    text-align: center;
+}
+
+th {
+    background-color: #84A8A1;
+}
+
+form {
+    margin-top: 20px;
+}
+
+input[type="submit"] {
+    background-color: #18020C;
+    color: #fff;
+    border: none;
+    padding: 8px 16px;
+    margin-top: 5px;
+    cursor: pointer;
+    border-radius: 20px;
+}
+
+input[type="submit"]:hover {
+    background-color: #84A8A1;
+    color: #fff;
+    border: none;
+    padding: 8px 16px;
+    margin-top: 5px;
+    cursor: pointer;  
+}
+
+
+input[type="number"] {
+    width: 60px;
+}
+
+body {
+    padding: 20px;
+    font-family: "Times New Roman", serif, sans-serif;
+}
+
+h1 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #4C8577;
+}
+
+form[action="cart"] {
+    text-align: center;
+    margin-top: 20px;
+}
+
+button {
+  padding: 5px 10px;
+  margin: 0 5px;
+  border: 2px solid #4C8577;
+  border-radius: 20px;
+  background-color: #fff;
+  cursor: pointer;
+  text-align: center;
+  font-size: 18px;
+  letter-spacing: 1px;
+}
+
+button:hover {
+  color: white;
+  background-color: #4c8577;
+}
+
+button:active {
+  transform: scale(0.9);
+}
+
+
+#goBack, #reset {
+    background-color: #18020C;
+    color: #fff;
+    border: none;
+    padding: 8px 16px;
+    margin-top: 5px;
+    cursor: pointer;
+    border-radius: 20px;
+    text-decoration: none;
+}
+
+#goBack:hover, #reset:hover {
+    background-color: #84A8A1;
+    color: #fff;
+    border: none;
+    padding: 8px 16px;
+    margin-top: 5px;
+    cursor: pointer;  
+}

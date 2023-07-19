@@ -42,15 +42,21 @@ public class PaymentServlet extends HttpServlet {
         AddressBean bean = new AddressBean();
         InvoiceBean invoice = new InvoiceBean();
         
+        if( action == null || action.equals("buy") || action.equals("")){
+            RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/WEB-INF/checkout.jsp");
+            dispatcher.forward(request, response);
+            return;
+        }
+        
         int idcarta;
         int idindirizzo;
         
-        if(request.getParameter("carta")=="")
+        if(request.getParameter("carta").equals(""))
             idcarta = 0;
         else
             idcarta = Integer.parseInt(request.getParameter("carta"));
 
-        if(request.getParameter("indirizzo")=="")
+        if(request.getParameter("indirizzo").equals(""))
             idindirizzo = 0;
         else
             idindirizzo = Integer.parseInt(request.getParameter("indirizzo"));
@@ -61,19 +67,19 @@ public class PaymentServlet extends HttpServlet {
         String spedizione= request.getParameter("spedizione");
         String metpag = request.getParameter("metodo_di_pagamento");
         
-        if(destinatario==null || !destinatario.matches("^[A-Za-z ]+$")){
+        if(destinatario.equals("") || destinatario== null || !destinatario.matches("^[A-Za-z ]+$")){
             sendError(request, response);
             return;
         }
-        if(spedizione==null || !spedizione.equals("Express") || !spedizione.equals("Standard") || !spedizione.equals("Economic") ){
+        if(spedizione.equals("") || spedizione== null || (!spedizione.equals("Express") && !spedizione.equals("Standard") && !spedizione.equals("Economic") )){
             sendError(request, response);
             return;
         }
-        if(note==null || !note.matches("^[A-Za-z ]+$")){
+        if(note.equals("") || note== null || !note.matches("^[A-Za-z ]+$")){
             sendError(request, response);
             return;
         }
-        if(metpag==null || !metpag.equals("carta_di_credito") || !metpag.equals("carta_di_debito") || !metpag.equals("Paypal")){
+        if(metpag.equals("") || metpag== null || (!metpag.equals("carta_di_credito") && !metpag.equals("carta_di_debito") && !metpag.equals("Paypal"))){
             sendError(request, response);
             return;
         }
@@ -170,7 +176,7 @@ public class PaymentServlet extends HttpServlet {
                     order.setConfezione_regalo(Boolean.parseBoolean(request.getParameter("regalo")));
 
                     try {
-                        //controllo che la quantitÃ  di prodotti inserita nel carrello sia ancora disponibile
+                        //controllo che la quantità di prodotti inserita nel carrello sia ancora disponibile
                         for (CartProduct cp : cart.getProducts()){
                             if(cp.getQuantity() > cp.getProduct().getDisponibilita() ){
                                 check = false;
@@ -223,11 +229,9 @@ public class PaymentServlet extends HttpServlet {
                     //IL CARRELLO ADESSO E' VUOTO
                     request.getSession().removeAttribute("cart");
                     request.getSession().setAttribute("cart", null);
-
-                    RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/catalog.jsp");
-                    dispatcher.forward(request, response);
+                    
+                    response.sendRedirect("catalog");
                     return;
-
                 }
 
             }else {
@@ -244,7 +248,7 @@ public class PaymentServlet extends HttpServlet {
     
     public void sendError(HttpServletRequest request, HttpServletResponse response)throws ServletException, IOException{
         request.setAttribute("error", "JadeTear encountered a problem during the payment. Please, try to fill up the form correctly and check your data before submitting.");
-        RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/registration.jsp");
+        RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/WEB-INF/checkout.jsp");
         dispatcher.forward(request, response);
     }
 }

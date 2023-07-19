@@ -56,8 +56,11 @@ public class CartServlet extends HttpServlet {
             //controllo che ci siano abbastanza prodotti da aggiungere al carrello
             if(jewel.getDisponibilita()>0)
                 cart.addProduct(jewel);
-            //else
-                // scritta di errore generale oppure dispatch alla pagina di errore generale 
+            else {
+            	
+            	request.setAttribute("erroresoldout", "We are sorry but this jewel's sold out");
+            }
+                
         }
             
         if (action.equals("Delete from Cart"))
@@ -66,16 +69,20 @@ public class CartServlet extends HttpServlet {
         if (action.equals("Modify Amount")){
                 if((jewel.getDisponibilita() - Integer.parseInt(request.getParameter("quantity"))) >= 0 )
                         cart.changeQuantity(jewel, Integer.parseInt(request.getParameter("quantity")));
-                //else
-                        //scritta di errore generale oppure dispatch alla pagina di errore generale 
+                else {
+                	
+                	request.setAttribute("erroredisponibilita", "You selected too many of this jewel! Try lowering the quantity.");
+                	
+                }
+                
+                        
         }
             
         if (cart != null && cart.getProducts().size() != 0){
             if(action.equalsIgnoreCase("buy")) {
-                // se non Ã¨ loggato lo portiamo al login
+                // se non è loggato lo portiamo al login
                 if(client == null) {
-                    RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/login.jsp");
-                    dispatcher.forward(request, response);
+                    response.sendRedirect("login");
                     return;
                 }
                 request.getSession().setAttribute("cart", cart);
@@ -94,22 +101,19 @@ public class CartServlet extends HttpServlet {
 					LOGGER.log( Level.SEVERE, e.toString(), e );
                     
 				}
-                
-             
 				
                 if(!indirizzi.isEmpty() && !carte.isEmpty()){
                 
                 	request.setAttribute("addresses", indirizzi);
                 	request.setAttribute("payments",carte);
-                    RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/checkout.jsp");
+                    RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/payment");
                     dispatcher.forward(request, response);       
-                    
                     return;
                 }
                 else{
                    //QUI DOVREMMO INSERIRE UN ERRORE IN SOVRAIMPRESSIONE SULLA PAGINA CHE DICE ALL'UTENTE DI INSERIRE LE CARTE
                     request.setAttribute("carterror","Please insert at least one card before proceeding with your purchase");
-                    RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/client.jsp");
+                    RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/userdetails");
                     dispatcher.forward(request, response);
                     return;
                 }
@@ -120,7 +124,7 @@ public class CartServlet extends HttpServlet {
   
         request.getSession().setAttribute("cart", cart);
 
-        RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/cart.jsp");
+        RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/WEB-INF/cart.jsp");
         dispatcher.forward(request, response);
     }
 

@@ -22,15 +22,16 @@ public class ClientOrdersServlet extends HttpServlet{
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
         
-        ClientBean client = (ClientBean) request.getSession().getAttribute("utente");
-        String action = request.getParameter("action");
-        ArrayList<OrderBean> orders = new ArrayList<OrderBean>();
+    	
+       
         
-        if (client == null){
-            RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/login.jsp");
-            dispatcher.forward(request, response);
+        ArrayList<OrderBean> orders = new ArrayList<OrderBean>();
+        ClientBean client = (ClientBean) request.getSession().getAttribute("utente");
+    	if (client == null){
+            response.sendRedirect("login");
             return;
-        }
+        } 
+        
         else if (!client.getEmail().equals("JadeTear@gmail.com")){
             //cliente generico
             String username = client.getUsername();
@@ -40,13 +41,17 @@ public class ClientOrdersServlet extends HttpServlet{
 				LOGGER.log( Level.SEVERE, e.toString(), e );
 			}
             
+        }else if (client.getEmail().equals("JadeTear@gmail.com")){
+            
+            RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/admin?action=ordersNoFilter");
+            dispatcher.forward(request, response);
+            return;
         }
  
         request.setAttribute("ordini", orders);
 
-        RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/clientorders.jsp");
+        RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/WEB-INF/clientorders.jsp");
         dispatcher.forward(request, response);
-        
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

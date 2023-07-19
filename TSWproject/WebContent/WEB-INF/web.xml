@@ -2,7 +2,7 @@
 <web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd" id="WebApp_ID" version="4.0">
   <display-name>JadeTear</display-name>
   <welcome-file-list>
-    <welcome-file>home.jsp</welcome-file>
+    <welcome-file>home</welcome-file>
   </welcome-file-list>
   <resource-ref>
     <description>JNDI reference to a data source</description>
@@ -32,6 +32,11 @@
     <error-code>500</error-code>
     <location>/generalError.jsp</location>
 </error-page>
+<error-page>
+    <!-- problemi con URL/pagina -->
+    <error-code>302</error-code>
+    <location>/Error302.jsp</location>
+</error-page>
   
   
   <servlet>
@@ -40,7 +45,16 @@
   </servlet>
   <servlet-mapping>
     <servlet-name> CatalogServlet </servlet-name>
-    <url-pattern>/createCatalog</url-pattern>
+    <url-pattern>/catalog</url-pattern>
+  </servlet-mapping>
+  
+   <servlet>
+    <servlet-name> HomeServlet </servlet-name>
+    <servlet-class>it.unisa.control.HomeServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name> HomeServlet </servlet-name>
+    <url-pattern>/home</url-pattern>
   </servlet-mapping>
 
   <servlet>
