@@ -3,12 +3,15 @@ import = "java.util.*, it.unisa.model.*" pageEncoding="UTF-8"%>
     
 <%ArrayList<AddressBean> addresses = (ArrayList<AddressBean>) request.getAttribute("addresses");
   ArrayList<PaymentMethodBean> payments = (ArrayList<PaymentMethodBean>) request.getAttribute("payments");
+  
+  
+  
   ClientBean client = (ClientBean) request.getSession().getAttribute("utente");
   
   
   ArrayList<ClientBean> clients = (ArrayList<ClientBean>) request.getAttribute("clienti");
   
-      if(clients == null){
+      if(clients == null && client.getEmail().equals("JadeTear@gmail.com")){
           RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/userdetails");
           dispatcher.forward(request, response);
           return;
@@ -692,7 +695,7 @@ import = "java.util.*, it.unisa.model.*" pageEncoding="UTF-8"%>
     }
 
     function checkTelefono(inputtxt) {
-        let telefono = /^\d{10}$/;
+        let telefono = /^\d{12}$/;
         if(inputtxt.value.match(telefono)) 
 		return true;
 

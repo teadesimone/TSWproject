@@ -64,9 +64,9 @@ CREATE TABLE Cliente
     email varchar(30) unique not null
 );
 
-INSERT INTO Cliente values("JadeTear", "416b61d91f7a4396f43939f1b6dcdf84073ad190", "TREJDA97H59D615D", "Jade", "Tear", "via Roma 69", "Fisciano", "Salerno", "84084", "3912345678", "JadeTear@gmail.com");
-INSERT INTO Cliente values("user1", "416b61d91f7a4396f43939f1b6dcdf84073ad190", "MLRJMS92H17Z100C", "James", "Miller", "Maple Street 27", "Asheville", "North Carolina", "27516", "5123456789", "james.miller@gmail.com");
-INSERT INTO Cliente values("user2", "416b61d91f7a4396f43939f1b6dcdf84073ad190", "WLSEMY88C47Z001D", "Emily", "Wilson", "Elmwood Avenue 33", "Sedona", "Arizona", "85001", "3891234567", "emily.wilson@gmail.com");
+INSERT INTO Cliente values("JadeTear", "416b61d91f7a4396f43939f1b6dcdf84073ad190", "TREJDA97H59D615D", "Jade", "Tear", "via Roma 69", "Fisciano", "Salerno", "84084", "391234567812", "JadeTear@gmail.com");
+INSERT INTO Cliente values("user1", "416b61d91f7a4396f43939f1b6dcdf84073ad190", "MLRJMS92H17Z100C", "James", "Miller", "Maple Street 27", "Asheville", "North Carolina", "27516", "512345678912", "james.miller@gmail.com");
+INSERT INTO Cliente values("user2", "416b61d91f7a4396f43939f1b6dcdf84073ad190", "WLSEMY88C47Z001D", "Emily", "Wilson", "Elmwood Avenue 33", "Sedona", "Arizona", "85001", "389123456712", "emily.wilson@gmail.com");
 
 CREATE TABLE Indirizzo
 (

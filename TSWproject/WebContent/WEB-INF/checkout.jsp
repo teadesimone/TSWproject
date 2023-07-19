@@ -169,7 +169,7 @@ pageEncoding="UTF-8" import="java.util.*, it.unisa.model.*"%>
        </div>
 
        <div class="inputBox">
-        <input name="note" type="text" maxlenght="100" autocomplete="off" placeholder="bla">
+        <input name="note" type="text" maxlenght="100" autocomplete="off" placeholder="Insert notes...">
         <label for="note">Notes:</label>
        </div>
 

@@ -88,14 +88,14 @@ public class AdminServlet extends HttpServlet {
                   request.setAttribute("uploaded", destinazione);
 
                   //UPLOAD NEL .war
-/*                  
-String tomcatBase = System.getProperty("catalina.base");  
-String targetPath = tomcatBase + "//webapps//TSWproject//images//" + fileName;
-InputStream fileInputStream2 = filePart.getInputStream();
+                
+					String tomcatBase = System.getProperty("catalina.base");  
+					String targetPath = tomcatBase + "//webapps//TSWproject//images//" + fileName;
+					InputStream fileInputStream2 = filePart.getInputStream();
+					
+					Path targetImagePath = Path.of(targetPath);
+					Files.copy(fileInputStream2, targetImagePath);
 
-Path targetImagePath = Path.of(targetPath);
-Files.copy(fileInputStream2, targetImagePath);
-*/
 
                   //controllo e set di tutti i parametri destinati al JewelBean prima di essere salvato nel database
                   int availability;
@@ -366,7 +366,7 @@ Files.copy(fileInputStream2, targetImagePath);
                   }
 
                   request.setAttribute("ordini", orders);
-                  System.out.println(request.getAttribute("clientError"));
+                  
                   RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/WEB-INF/clientorders.jsp");
                   dispatcher.forward(request, response);
                   return;
@@ -389,7 +389,7 @@ Files.copy(fileInputStream2, targetImagePath);
                         //controllo che l'utente inserito abbia effettuato degli ordini
                         if(orders.size()==0){
                               request.setAttribute("clientError", "This user doesn't have orders saved");
-                              System.out.println((String)request.getAttribute("clientError")+1);
+                            
                               RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/WEB-INF/clientorders.jsp");
                               dispatcher.forward(request, response);
                               return;

@@ -117,7 +117,7 @@ public class RegistrationServlet extends HttpServlet {
             	sendError(request, response);
             	return;
             }
-            if(telefono==null || !telefono.matches("^\\d{10}$")){
+            if(telefono==null || !telefono.matches("^\\d{12}$")){
             	sendError(request, response);
             	return;
             }
