@@ -65,7 +65,7 @@ form.delete{
 
 .subtitle {
   width:100%;
-  height:100%;
+  height:auto;
   margin:auto;
   text-align:center;
   color: #4c8577;
@@ -109,7 +109,7 @@ form.delete{
     width: 100%;
     height: 1em;
     accent-color: #9590a8;
-    transform: scale(0.2);
+    transform: scale(0.4);
 }
 
   
@@ -118,46 +118,10 @@ form.delete{
   color: #634B66;
 }
 
-  
-
-  @media only screen and (max-width: 900px){ 
-    .container{
-        grid-template-columns: 1fr 5fr 1fr;
-    }
-   .transparentCard{
-        width:100%;
-    }
-}
-
-  @media only screen and (max-width: 480px){ 
-    .container{
-        grid-template-columns: 1fr;
-    }
-
-   .transparentCard{
-        grid-column:1;
-        grid-template-columns: 1fr;
-        grid-template-rows: 1fr 3fr 1fr;
-        width:100%;
-    }
-
-   .submitContainer{
-        grid-column: 1;
-        grid-row: 3;
-    }
-  
-  .title{
-      grid-column: 1;
-      grid-row: 1;
-    }
-
-}
 
 .container{
     font-family: "Times New Roman", serif, sans-serif;
 }
-
-  
 
       .card {
     background: #e3e3e3;
@@ -314,3 +278,61 @@ fieldset {
 legend {
   color: #AEA4B4;
 }
+
+@media only screen and (max-width: 900px){ 
+  .screen-container{
+    grid-template-columns: 1fr 5fr 1fr;
+  }
+               .transparentCard{
+    width:100%;
+  }
+}
+
+  @media only screen and (max-width: 480px){ 
+  *{
+    font-size: 10px;
+  }
+
+                .screen-container{
+    grid-template-columns: 1fr;
+  }
+
+   .transparentCard{
+    grid-column:1;
+    grid-template-columns: 1fr;
+    width:100%;
+    gap: 10px;
+  }
+
+  .submitContainer{
+    grid-column: 1;
+    grid-row: 3;
+  }
+
+  .title{
+    grid-column: 1;
+    grid-row: 1;
+  }
+
+  .formContainer{
+    gap: 15px;
+    justify-content: flex-start;
+  }
+
+
+  .submit{
+    padding: 10%
+  }
+  
+  .inputBox{
+    font-size: 10px;
+  }
+  
+  label{
+    font-size: 7px;
+  }
+
+}
+
+
+

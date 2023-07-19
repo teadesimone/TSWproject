@@ -300,68 +300,68 @@ String error = (String) request.getAttribute("error");
           <div class="inputBox">
             <span class="error" id="errorEmail"></span>
             <span class="error" id="errorCheckEmail"></span>
-            <input id="email" name="email" type="email" maxlenght="30" required placeholder="myemail@domain.com" onblur="checkEmailAjax()">
+            <input id="email" name="email" type="email" maxlenght="30" required autocomplete="off" placeholder="myemail@domain.com" onblur="checkEmailAjax()">
             <label id="emailLabel" for="email">Insert email:</label>
           </div>
 
           <div class="inputBox">
             <span class="error" id="errorPsw"></span>
-            <input id="password" name="password" type="password" maxlenght="20" required placeholder="password123">
+            <input id="password" name="password" type="password" maxlenght="20"  autocomplete="off" required placeholder="password123">
             <label id="passwordLabel" for="password">Insert password:</label>
           </div>
 
           <div class="inputBox">
             <span class="error" id="errorUsername"></span>
             <span class="error" id="errorCheckUsername"></span>
-            <input id ="username" name="username" type="text" maxlenght="20" required placeholder="Ciro05" onblur="checkUsernameAjax()">
+            <input id ="username" name="username" type="text" maxlenght="20" required autocomplete="off" placeholder="Ciro05" onblur="checkUsernameAjax()">
             <label id="usernameLabel" for="username">Username:</label>
           </div>
 
           <div class="inputBox">
             <span class="error" id="errorNome"></span>
-            <input id="nome" name="nome" type="text" maxlenght="30" required placeholder="Ciro">
+            <input id="nome" name="nome" type="text" maxlenght="30" required autocomplete="off" placeholder="Ciro">
             <label id="nomeLabel" for="nome">Name:</label>
           </div>
 
           <div class="inputBox">
             <span class="error" id="errorCognome"></span>
-            <input id="cognome" name="cognome" type="text" maxlenght="30" required placeholder="Esposito">
+            <input id="cognome" name="cognome" type="text" maxlenght="30" required autocomplete="off" placeholder="Esposito">
             <label id="cognomeLabel" for="cognome">Surname:</label>
           </div>
 
           <div class="inputBox">
             <span class="error" id="errorCf"></span>
-            <input id="cf" name="cf" type="text" maxlenght="16" required placeholder="ABCDEF01G23H456I">
+            <input id="cf" name="cf" type="text" maxlenght="16" required autocomplete="off" placeholder="ABCDEF01G23H456I">
             <label id="cfLabel" for="cf">CF:</label>
           </div>
 
           <div class="inputBox">
             <span class="error" id="errorIndirizzo"></span>
-            <input id="indirizzo" name="indirizzo" type="text" maxlenght="50" required placeholder="via Roma 69">
+            <input id="indirizzo" name="indirizzo" type="text" maxlenght="50" autocomplete="off" required placeholder="via Roma 69">
             <label id="indirizzoLabel" for="indirizzo">Street:</label>
           </div>
 
           <div class="inputBox">
             <span class="error" id="errorCitta"></span>
-            <input id="citta" name="citta" type="text" maxlenght="40" required placeholder="Ottaviano">
+            <input id="citta" name="citta" type="text" maxlenght="40" required autocomplete="off" placeholder="Ottaviano">
             <label id="cittaLabel" for="citta">City:</label>
           </div>
 
           <div class="inputBox">
             <span class="error" id="errorProvincia"></span>
-            <input id="provincia" name="provincia" type="text" maxlenght="40" required placeholder="Napoli">
+            <input id="provincia" name="provincia" type="text" maxlenght="40" autocomplete="off" required placeholder="Napoli">
             <label id="provinciaLabel" for="provincia">Province:</label>
           </div>
 
           <div class="inputBox">
             <span class="error" id="errorCap"></span>
-            <input id="cap" name="cap" type="text" maxlenght="5" required placeholder="00000">
+            <input id="cap" name="cap" type="text" maxlenght="5" required autocomplete="off" placeholder="00000">
             <label id="capLabel" for="cap">CAP:</label>
           </div>
 
           <div class="inputBox">
             <span class="error" id="errorTelefono"></span>
-            <input id="telefono" name="telefono" type="text" maxlenght="12" required placeholder="000000000000">
+            <input id="telefono" name="telefono" type="text" maxlenght="12" required autocomplete="off" placeholder="000000000000">
             <label id="telefonoLabel" for=telefono">Cellphone number:</label>
           </div>
           <div class="footerContainer">
@@ -627,13 +627,15 @@ String error = (String) request.getAttribute("error");
       }
 
       function checkTelefono(inputtxt) {
-        let telefono = /^\d{10}$/;
+        let telefono = /^\d{12}$/;
         if(inputtxt.value.match(telefono)) 
         return true;
 
         return false;
       }
-
+      
+      //FUNZIONE AJAX CHE CONTROLLA SE LO USERNAME E' GIA' NEL DATABASE
+      //Funzionamento: chiamata a funzione "check" della registration
       function checkUsernameAjax() {
 
         var username = $("#username").val();

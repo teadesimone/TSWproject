@@ -8,8 +8,15 @@ import = "java.util.*, it.unisa.model.*" pageEncoding="UTF-8"%>
   
   ArrayList<ClientBean> clients = (ArrayList<ClientBean>) request.getAttribute("clienti");
   
+      if(clients == null){
+          RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/userdetails");
+          dispatcher.forward(request, response);
+          return;
+      }
+  
   String error = (String) request.getAttribute("error");
   String carterror = (String) request.getAttribute("carterror");
+  String clientError = (String)request.getAttribute("clientError");
 %>
 
 <!DOCTYPE html>
@@ -18,13 +25,28 @@ import = "java.util.*, it.unisa.model.*" pageEncoding="UTF-8"%>
         <title>User page</title>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
         <style>
+            
             .error{
                 transform: translateY(-300%);
             }
             
+            .searchbar input[type="text"]{
+            border-radius: 10px;
+            padding: 2px;
+            width: 30%;
+            height: auto;
+            border-top: solid;
+        	border-bottom: solid;
+
+        	}
+
 
         @media screen and (max-width: 700px){
-
+            
+            .numberRow{
+                display: none;
+            }
+            
             img{
 
                 width:70px;
@@ -116,9 +138,14 @@ import = "java.util.*, it.unisa.model.*" pageEncoding="UTF-8"%>
     </form>
 
     <form action="admin?action=ByClient" method="post">
-
+        <% if (clientError != null){%>
+            <span class="errorNoTranslate"><%=clientError%></span>
+            <%}%>
+    
         <label for= "cliente"> Insert Client Username </label>
+    <div class="searchbar">    
 	<input name="cliente" type = "text"  placeholder = "user" >
+    </div>
 	<input type="submit" value="Order">
     <a href="admin?action=clientsNoFilter" id="reset">Reset</a>
 
@@ -130,7 +157,7 @@ import = "java.util.*, it.unisa.model.*" pageEncoding="UTF-8"%>
 	       <th> Name </th>
 	       <th> Surname </th>
            <th> Username </th>
-	       <th> Cellphone Number</th>
+	       <th class="numberRow"> Cellphone Number</th>
            <th> Email </th>
            
         </tr>
@@ -142,7 +169,7 @@ import = "java.util.*, it.unisa.model.*" pageEncoding="UTF-8"%>
 			<td><%=cliente.getNome() %></td>
 			<td><%=cliente.getCognome() %></td>
 			<td><%=cliente.getUsername() %></td>
-            <td><%=cliente.getTelefono() %></td>
+            <td class="numberRow"><%=cliente.getTelefono() %></td>
             <td><%=cliente.getEmail() %></td>
 		<td></td>
 	</tr>

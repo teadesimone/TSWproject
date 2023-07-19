@@ -35,7 +35,7 @@ public class CartServlet extends HttpServlet {
             
         ClientBean client = (ClientBean) request.getSession().getAttribute("utente");
         
-        if (client.getEmail().equals("JadeTear@gmail.com")) {
+        if (client!= null && client.getEmail().equals("JadeTear@gmail.com")) {
         	
         	 response.sendRedirect("home");
              return;
@@ -54,8 +54,11 @@ public class CartServlet extends HttpServlet {
 			jewel = model.doRetrieveByKey(Integer.parseInt(id));
 		} catch (NumberFormatException e) {
 			 LOGGER.log( Level.SEVERE, e.toString(), e );
+             
 		} catch (SQLException e) {
 			LOGGER.log( Level.SEVERE, e.toString(), e );
+            response.sendRedirect("generalError.jsp");
+            return;
 		}
          
             
@@ -85,9 +88,9 @@ public class CartServlet extends HttpServlet {
                         
         }
             
-        if (cart != null && cart.getProducts().size() != 0){
+        if (cart != null && cart.getProducts().size() != 0){ // "procedi al pagamento" : se l'utente non è loggato, lo porta alla login.jsp
             if(action.equalsIgnoreCase("buy")) {
-                // se non � loggato lo portiamo al login
+                // se non � loggato lo portiamo al login
                 if(client == null) {
                     response.sendRedirect("login");
                     return;
@@ -99,6 +102,8 @@ public class CartServlet extends HttpServlet {
 					indirizzi = addressModel.doRetrieveByClient(client.getUsername());
 				} catch (SQLException e) {
 					LOGGER.log( Level.SEVERE, e.toString(), e );
+                    response.sendRedirect("generalError.jsp");
+                    return;
 				}
 				
                 ArrayList<PaymentMethodBean> carte = null;
@@ -106,10 +111,12 @@ public class CartServlet extends HttpServlet {
                     carte =  paymentModel.doRetrieveByClient(client.getUsername());
 				} catch (SQLException e) {
 					LOGGER.log( Level.SEVERE, e.toString(), e );
+                    response.sendRedirect("generalError.jsp");
+                    return;
                     
 				}
 				
-                if(!indirizzi.isEmpty() && !carte.isEmpty()){
+                if(!indirizzi.isEmpty() && !carte.isEmpty()){// "procedi al pagamento" : se l'utente è loggato ed ha almeno un metodo di pagamento e un idirizzo può procedere all'acquisto
                 
                 	request.setAttribute("addresses", indirizzi);
                 	request.setAttribute("payments",carte);
@@ -117,8 +124,7 @@ public class CartServlet extends HttpServlet {
                     dispatcher.forward(request, response);       
                     return;
                 }
-                else{
-                   //QUI DOVREMMO INSERIRE UN ERRORE IN SOVRAIMPRESSIONE SULLA PAGINA CHE DICE ALL'UTENTE DI INSERIRE LE CARTE
+                else{ // altrimenti gli viene chiesto di inserire dei metodi di pagamento nella client.jsp
                     request.setAttribute("carterror","Please insert at least one card before proceeding with your purchase");
                     RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/userdetails");
                     dispatcher.forward(request, response);

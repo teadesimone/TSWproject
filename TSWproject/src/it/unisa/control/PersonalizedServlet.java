@@ -26,7 +26,7 @@ public class PersonalizedServlet extends HttpServlet {
 
         String action = request.getParameter("action");
         
-        SecureRandom r = new SecureRandom();
+        SecureRandom r = new SecureRandom(); // utilizzo di un SecureRandom per generare il prezzo del gioiello personalizzato
         int low = 50;
         int high = 200;
         float result = (float)r.nextInt(high-low) + low;
@@ -37,7 +37,7 @@ public class PersonalizedServlet extends HttpServlet {
             dispatcher.forward(request, response);
             return;
         }
-        else if (action.equals("insert")) {
+        else if (action.equals("insert")) { // controllo dei form server side della personalized.jsp 
             
             String category = request.getParameter("category");
             String gemstone = request.getParameter("gemstone");
@@ -61,7 +61,7 @@ public class PersonalizedServlet extends HttpServlet {
                 return;
             }
             
-            JewelBean jewel = new JewelBean();
+            JewelBean jewel = new JewelBean(); // si crea un gioiello con nome, immagine, disponibilità e sconto predefiniti
             jewel.setNome("Customized");
             jewel.setCategoria(category);
             jewel.setPietra(gemstone);
@@ -78,10 +78,12 @@ public class PersonalizedServlet extends HttpServlet {
                 id = model.doSave(jewel);
             } catch (SQLException e) {
                 LOGGER.log( Level.SEVERE, e.toString(), e );
+                response.sendRedirect("generalError.jsp");
+                return;
             }
         }
         
-        RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/cart?action=add&id=" + id);
+        RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/cart?action=add&id=" + id); //se l'insert è andata a buon fine si aggiunge il gioiello al carrello
         dispatcher.forward(request, response);
     }
     

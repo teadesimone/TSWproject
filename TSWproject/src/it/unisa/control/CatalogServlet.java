@@ -25,29 +25,34 @@ public class CatalogServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)throws ServletException, IOException {
         
      JewelDAO model = new JewelDAO();
-     boolean ajax = "XMLHttpRequest".equals(request.getHeader("X-Requested-With"));
+     boolean ajax = "XMLHttpRequest".equals(request.getHeader("X-Requested-With")); //variabile necessaria a distinguere le richieste ajax e richieste non ajax
      
      String action = request.getParameter("action");
      ArrayList<JewelBean> result = null;
      
+     //se la richiesta è effettivamente ajax
      if(ajax){
-         if (action == null) {
+         if (action == null) { //azione che genera tutto il caricamento di tutto il catalogo
              try {
                  result = (ArrayList<JewelBean>)model.doRetrieveAll();
              }catch (SQLException e) {
                  LOGGER.log( Level.SEVERE, e.toString(), e );
+                 response.sendRedirect("generalError.jsp");
+                 return;
              }
          }
-     else if(action.equals("suggest")){
+     else if(action.equals("suggest")){ //viene passata una stringa come parametro: la keyword per cercare tutte le occorrenze di gioielli che hanno nella loro descrizione quella keyword
          String keyword = request.getParameter("keyword");
 
          try {
              result = (ArrayList<JewelBean>)model.doRetrieveAllByName(keyword);
          }catch (SQLException e) {
              LOGGER.log( Level.SEVERE, e.toString(), e );
+             response.sendRedirect("generalError.jsp");
+             return;
          }
      }
-     else if(action.equals("searchByCategory")){
+     else if(action.equals("searchByCategory")){ //viene passata una stringa come parametro e viene effettuata la ricerca per categoria
 
          String category = request.getParameter("category");
 
@@ -55,17 +60,21 @@ public class CatalogServlet extends HttpServlet {
              result = (ArrayList<JewelBean>)model.doRetrieveAllByCategory(category);
          }catch (SQLException e) {
              LOGGER.log( Level.SEVERE, e.toString(), e );
+             response.sendRedirect("generalError.jsp");
+             return;
          }
      }
      else if(action.equals("filter")){
-         String sql ="";
-
+         String sql =""; //è una stringa che verrà formattata e passata secondo dei filtri
+         
          String keyword = request.getParameter("keyword");
          keyword = keyword.replace(" ", "%");
 
          String prezzo = request.getParameter("prezzo");
+         //set iniziale dei due prezzi con i valori di default
          float prezzo_da = 0;
-         float prezzo_a = 5000; 
+         float prezzo_a = 5000;
+         
          if (!request.getParameter("prezzo_da").equals(""))
              prezzo_da = Float.parseFloat(request.getParameter("prezzo_da"));
          if (!request.getParameter("prezzo_a").equals(""))
@@ -89,27 +98,29 @@ public class CatalogServlet extends HttpServlet {
          String acquamarina = request.getParameter("acquamarina");
          String quarzo = request.getParameter("quarzo");
          String quarzorosa = request.getParameter("quarzorosa");
-
+         
+         //viene prima preso tutto dalla request ed in seguito aggiunti tutti i filtri
          if (!pietra.equals("") || !materiale.equals("") || !categoria.equals("")){
              sql = " AND (prezzo > "+ prezzo_da +" AND prezzo < "+ prezzo_a + ") AND (materiale = '"+ argento + "' OR materiale = '" + oro + "' OR materiale='" + ororosa ;
              sql+= "' OR categoria = '"+collana+"' OR categoria = '"+bracciale+"' OR categoria ='"+anello+"' OR categoria ='"+orecchini;
              sql+= "' OR pietra = '"+giada+"' OR pietra = '"+ametista+"' OR pietra = '"+citrino+"' OR pietra = '"+acquamarina+"' OR pietra = '"+quarzo+"' OR pietra = '"+quarzorosa + "')";
 
-         }
+         }//se tutti i filtri sono vuoti, di default viene cercato per prezzo
              else if (pietra.equals("") && materiale.equals("") && categoria.equals("")){
                  sql = " AND prezzo > "+ prezzo_da +" AND prezzo < "+ prezzo_a;
              }
 
          
-
          try {
-             result = model.doRetrieveAllByKeyword(keyword,sql);
+             result = model.doRetrieveAllByKeyword(keyword,sql); //restituisce tutte le occorrenze che seguono la stringa sql con i filtri e la keyword passata
          }catch (SQLException e) {
              LOGGER.log( Level.SEVERE, e.toString(), e );
+             response.sendRedirect("generalError.jsp");
+             return;
          }
 
      } 
-
+    //la stringa json viene creata dall'oggetto gson e passata così com'è nella response (che verrà formattata nella jsp) 
          Gson gson = new Gson();
      String json = gson.toJson(result);
 
@@ -117,7 +128,7 @@ public class CatalogServlet extends HttpServlet {
      PrintWriter out = response.getWriter();
      out.write(json);
      }
-     else if(!ajax && action==null){
+     else if(!ajax && action==null){ //controllo che si stia cercando semplicemente di accedere al catalogo (non ajax e con action == null)
          RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/WEB-INF/catalog.jsp");
          dispatcher.forward(request, response);
          return;

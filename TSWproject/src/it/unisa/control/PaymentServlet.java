@@ -53,7 +53,7 @@ public class PaymentServlet extends HttpServlet {
         int idcarta;
         int idindirizzo;
         
-        if(request.getParameter("carta").equals(""))
+        if(request.getParameter("carta").equals(""))  // controllo del form server side 
             idcarta = 0;
         else
             idcarta = Integer.parseInt(request.getParameter("carta"));
@@ -88,11 +88,13 @@ public class PaymentServlet extends HttpServlet {
         
         int id_ordine;
         
-        OrderBean lastorder = new OrderBean();
+        OrderBean lastorder = new OrderBean(); //necessario per settare l'id dell'ordine che si sta effettuando (bisogna fare anche le insert in composizione)
 		try {
 			lastorder = orderModel.lastOrder();
 		} catch (SQLException e) {
 			LOGGER.log( Level.SEVERE, e.toString(), e );
+            response.sendRedirect("generalError.jsp");
+            return;
 		}
         
         if (lastorder== null){
@@ -103,7 +105,7 @@ public class PaymentServlet extends HttpServlet {
         }
         
 
-            if (cart != null && cart.getProducts().size() != 0){
+            if (cart != null && cart.getProducts().size() != 0){ // se il carrello non è vuoto, si prendono i prodotti e si salvano in composizione con chiave esterna sull'id dell'ordine 
                 
 			     if(action != null && action.equalsIgnoreCase("confirm_buy")) {
 
@@ -124,7 +126,7 @@ public class PaymentServlet extends HttpServlet {
                         prodotto.setQuantita(cp.getQuantity());
                         products.add(prodotto);
                         if(cp.getProduct().getSconto()!=0){
-                            prezzo = (cp.getProduct().getPrezzo() * cp.getProduct().getSconto()) /100;
+                            prezzo = (cp.getProduct().getPrezzo() * cp.getProduct().getSconto()) /100; // il prezzo viene calcolato facendo la somma dei prezzi singoli
                         }
                         else {
                             prezzo = cp.getProduct().getPrezzo();
@@ -146,27 +148,33 @@ public class PaymentServlet extends HttpServlet {
                     order.setMetodo_di_pagamento(metpag);
                      
                     try {
-						order.setCircuito(paymentmodel.doRetrieveByKey(idcarta).getCircuito());
-					} catch (SQLException e) {
+						order.setCircuito(paymentmodel.doRetrieveByKey(idcarta).getCircuito());//prende il numero carta e il circuito dal paymentmethodbean usato per pagare l'ordine
+					} catch (SQLException e) {                                                 //e lo inserisce nell'ordine (mantiene la storia degli ordini nel database)
 						LOGGER.log( Level.SEVERE, e.toString(), e );
+                        response.sendRedirect("generalError.jsp");
+                        return;
 					}
                     
                     try {
 						order.setNumero_carta(paymentmodel.doRetrieveByKey(idcarta).getNumero_carta());
 					} catch (SQLException e) {
 						LOGGER.log( Level.SEVERE, e.toString(), e );
+                        response.sendRedirect("generalError.jsp");
+                        return;
 					}
                     
                     try {
-						bean = addressmodel.doRetrieveByKey(idindirizzo);
-					} catch (SQLException e) {
+						bean = addressmodel.doRetrieveByKey(idindirizzo);// prende l'indirizzo dall' addressbean scelto per effettuare l'ordine e lo inserisce in ordine sottoforma di stringa formattata
+					} catch (SQLException e) {                         // (mantiene la storia degli ordini)
 						LOGGER.log( Level.SEVERE, e.toString(), e );
+                        response.sendRedirect("generalError.jsp");
+                        return;
 					}
                     
                     String indirizzospedizione = bean.getVia() + "," + bean.getCitta();
                     order.setIndirizzo_di_spedizione(indirizzospedizione);
 
-                    SecureRandom r = new SecureRandom();
+                    SecureRandom r = new SecureRandom(); // uso di un Secure Random per generare il numero di tracking
                     int low = 100000;
                     int high = 10000000;
                     String result = Integer.toString(r.nextInt(high-low) + low);
@@ -178,13 +186,13 @@ public class PaymentServlet extends HttpServlet {
                     order.setConfezione_regalo(Boolean.parseBoolean(request.getParameter("regalo")));
 
                     try {
-                        //controllo che la quantit� di prodotti inserita nel carrello sia ancora disponibile
+                        //controllo che la quantità di prodotti inserita nel carrello sia ancora disponibile
                         for (CartProduct cp : cart.getProducts()){
                             if(cp.getQuantity() > cp.getProduct().getDisponibilita() ){
                                 check = false;
                             }
                         }  
-                        if (check != false){
+                        if (check != false){ // se tutti i gioielli sono disponibili si salva l'ordine nel database (il salvataggio degli orderproductbean viene effettuato dalla doSave dell'orderDAO)
                             orderModel.doSave(order);
                             for(CartProduct cp : cart.getProducts()){
                                 JewelBean jewel = jewelModel.doRetrieveByKey(cp.getProduct().getId());
@@ -192,7 +200,7 @@ public class PaymentServlet extends HttpServlet {
                             }
                         }
                         else{
-                            //scritta di errore generale oppure dispatch alla pagina di errore generale 
+                             
                             response.sendRedirect("generalError.jsp");
                             return;
                         }
@@ -200,6 +208,8 @@ public class PaymentServlet extends HttpServlet {
 
                     } catch (SQLException e) {
                         LOGGER.log( Level.SEVERE, e.toString(), e );
+                        response.sendRedirect("generalError.jsp");
+                        return;
                     }
                     
                     //GENERAZIONE DELLA FATTURA
@@ -226,6 +236,8 @@ public class PaymentServlet extends HttpServlet {
 						invoicemodel.doSave(invoice);
 					}  catch (SQLException e) {
                         LOGGER.log( Level.SEVERE, e.toString(), e );
+                        response.sendRedirect("generalError.jsp");
+                        return;
                     }
                     
                     //IL CARRELLO ADESSO E' VUOTO

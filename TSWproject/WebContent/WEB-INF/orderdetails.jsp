@@ -50,11 +50,11 @@ import = "java.util.*, java.sql.*, it.unisa.model.*" pageEncoding="UTF-8"%>
 				background-color: #18020C;
 				color: #fff;
 				border: none;
-				padding: 5%;
-				margin-top: 2px;
 				cursor: pointer;
 				border-radius: 20px;
-				font-size:5px;
+				font-size:8px;
+                width: 80px;
+                height: 20px;
 			}
 
 			input[type="submit"]:hover {
@@ -65,6 +65,16 @@ import = "java.util.*, java.sql.*, it.unisa.model.*" pageEncoding="UTF-8"%>
 				margin-top: 2px;
 				cursor: pointer;
 				font-size:5px;
+			}
+
+			#goBack {
+			    margin-top: 5px;
+			    cursor: pointer;
+			    border-radius: 20px;
+			    text-decoration: none;
+			    font-size:8px;
+                width: 20px;
+                height: 10px;
 			}
 			
 		}

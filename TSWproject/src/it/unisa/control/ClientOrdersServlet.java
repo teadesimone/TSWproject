@@ -22,9 +22,6 @@ public class ClientOrdersServlet extends HttpServlet{
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
         
-    	
-       
-        
         ArrayList<OrderBean> orders = new ArrayList<OrderBean>();
         ClientBean client = (ClientBean) request.getSession().getAttribute("utente");
     	if (client == null){
@@ -39,11 +36,13 @@ public class ClientOrdersServlet extends HttpServlet{
 				orders = orderModel.doRetrieveByClient(username);
 			} catch (SQLException e) {
 				LOGGER.log( Level.SEVERE, e.toString(), e );
+                response.sendRedirect("generalError.jsp");
+                return;
 			}
             
         }else if (client.getEmail().equals("JadeTear@gmail.com")){
-            
-            RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/admin?action=ordersNoFilter");
+            //admin
+            RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/admin?action=ordersNoFilter"); //fa il dispatch alla servlet che gestisce tutto ciò che riguarda le operaioni da admin
             dispatcher.forward(request, response);
             return;
         }

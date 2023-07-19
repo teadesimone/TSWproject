@@ -40,21 +40,25 @@ public class RegistrationServlet extends HttpServlet {
             return;
         }
         
-        if(action != null && ajax){
+        if(action != null && ajax){ //ajax è una variabile necessaria a distinguere le richieste di ajax e le richieste normali della jsp
             boolean bol;
             ClientBean result = null;
-            if (action.equalsIgnoreCase("check") ){
+            if (action.equalsIgnoreCase("check") ){ // si controlla se è già presente questo username nel database
                 try {
                     result = (ClientBean) clientmodel.doRetrieveByKey(request.getParameter("username"));
                 }catch (SQLException e) {
                     LOGGER.log( Level.SEVERE, e.toString(), e );
+                    response.sendRedirect("generalError.jsp");
+                    return;
                 }
 
-            }else  if (action.equalsIgnoreCase("checkemail")){
+            }else  if (action.equalsIgnoreCase("checkemail")){ // si controlla se è già presente questa email nel database
                 try {
                     result = (ClientBean) clientmodel.doRetrieveByEmail(request.getParameter("email"));
                 }catch (SQLException e) {
                     LOGGER.log( Level.SEVERE, e.toString(), e );
+                    response.sendRedirect("generalError.jsp");
+                    return;
                 }
             }
             if (result != null) bol=true;
@@ -63,11 +67,11 @@ public class RegistrationServlet extends HttpServlet {
             Gson gson = new Gson();
             String json = gson.toJson(bol);
 
-            response.setContentType("application/json");
+            response.setContentType("application/json"); // si inserisce la risposta in formato gson nella response 
             PrintWriter out = response.getWriter();
             out.write(json);
         }
-        else if(!ajax && action.equals("register")){
+        else if(!ajax && action.equals("register")){ // controllo dei form server side della registration.jsp 
             int result = 0;
             String username = request.getParameter("username");
             String cf = request.getParameter("cf");
@@ -138,7 +142,7 @@ public class RegistrationServlet extends HttpServlet {
             client.setEmail(email);
             client.setPassword(password);
 
-            AddressBean indirizzobase = new AddressBean();
+            AddressBean indirizzobase = new AddressBean();  // si estrae l'idirizzo da cliente appena registrato e si inserisce nella tabella Indirizzo con chiave esterna sull'username
             
             indirizzobase.setVia(indirizzo);
             indirizzobase.setCitta(citta);
@@ -149,6 +153,8 @@ public class RegistrationServlet extends HttpServlet {
                 result = model.doSave(client);
             } catch (SQLException e) {
                 LOGGER.log( Level.SEVERE, e.toString(), e );
+                response.sendRedirect("generalError.jsp");
+                return;
             }
 
             if(result == 0){
@@ -156,9 +162,11 @@ public class RegistrationServlet extends HttpServlet {
                 return;
             }else{
                 try {
-                    addressmodel.doSave(indirizzobase);
+                    addressmodel.doSave(indirizzobase); // se l'inserimento del cliente è andato a buon fine si inserisce l'indirizzo nel database
                 } catch (SQLException e) {
                     LOGGER.log( Level.SEVERE, e.toString(), e );
+                    response.sendRedirect("generalError.jsp");
+                    return;
                 }
                 
                 response.sendRedirect("login");        

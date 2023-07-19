@@ -196,7 +196,7 @@ String erroresoldout2 = (String)request.getAttribute("erroresoldout2");
 
 
 
-				
+				<%if (!(clientbean != null && clientbean.getEmail().equals("JadeTear@gmail.com"))){ %>
            
 
                 <% if (erroresoldout2 != null){%>
@@ -211,7 +211,7 @@ String erroresoldout2 = (String)request.getAttribute("erroresoldout2");
                <% } %>
                 
                 
-             
+             <% } %>
                 
                 <a href="catalog"> Go Back </a> 
 

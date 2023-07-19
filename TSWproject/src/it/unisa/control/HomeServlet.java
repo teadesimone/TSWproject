@@ -30,6 +30,8 @@ public class HomeServlet extends HttpServlet {
             prodotti = model.doRetrieveAllLimit();
         } catch (SQLException e) {
             LOGGER.log( Level.SEVERE, e.toString(), e );
+            response.sendRedirect("generalError.jsp");
+            return;
         }
 
         request.setAttribute("prodotti", prodotti);

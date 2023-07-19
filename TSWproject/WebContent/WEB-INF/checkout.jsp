@@ -164,12 +164,12 @@ pageEncoding="UTF-8" import="java.util.*, it.unisa.model.*"%>
 
        <div class="inputBox">
         <span class="error" id="errorDestinatario"></span>
-        <input id="destinatario" name="destinatario" type="text" maxlenght="30" required placeholder="destinatario" >
+        <input id="destinatario" name="destinatario" type="text" maxlenght="30" required autocomplete="off" placeholder="destinatario" >
         <label id="destinatarioLabel" for="destinatario">Insert addressee:</label>
        </div>
 
        <div class="inputBox">
-        <input name="note" type="text" maxlenght="100" placeholder="bla">
+        <input name="note" type="text" maxlenght="100" autocomplete="off" placeholder="bla">
         <label for="note">Notes:</label>
        </div>
 

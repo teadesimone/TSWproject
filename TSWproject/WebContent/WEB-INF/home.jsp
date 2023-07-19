@@ -272,6 +272,7 @@ h1{
 
 display: flex;
 justify-content: center;
+text-align: center;
 color: #4C8577;
 padding: 1%;
 border-top-style: double;
@@ -279,6 +280,28 @@ border-bottom-style: double;
 border-color: #84A8A1;
 font-family: "Times New Roman", serif, sans-serif; 
 
+
+}
+
+@media screen and (max-width: 880px){
+
+  .pietra,.pietra1,.pietra2,.pietra3,.pietra4,.pietra5{
+
+  flex : 0 0 40%;
+   width : 32%;
+  height: 32%;
+  }
+
+}
+
+@media screen and (max-width: 450px){
+
+  .pietra,.pietra1,.pietra2,.pietra3,.pietra4,.pietra5{
+
+  flex : 0 0 90%;
+  height: 16%;
+  
+  }
 
 }
 

@@ -49,7 +49,7 @@ if (cart == null) {
                 background-color: #18020C;
                 color: #fff;
                 border: none;
-                padding: 2%;
+                padding: 10%;
                 margin-top: 2px;
                 cursor: pointer;
                 border-radius: 20px;
@@ -60,15 +60,24 @@ if (cart == null) {
                 background-color: #84A8A1;
                 color: #fff;
                 border: none;
-                padding: 2%;
+                padding: 10%;
                 margin-top: 2px;
                 cursor: pointer;
                 font-size:5px;
             }
 
             input[type="number"] {
-
-                width: 15px;
+                width: 10px;
+                height: 10px;
+                font-size: 8px;
+            }
+        
+        #checkout-btn {
+            	padding: 2%;
+            }
+        
+        #checkout-btn:hover {
+            	padding: 2%;
             }
         }
 
@@ -114,7 +123,7 @@ if (cart == null) {
     <!-- FORM CON ACTION BUY-->
     <form action="cart" method="post">
         <input type="hidden" name="action" value="buy">
-        <input type ="submit" value="Proceed to checkout">
+        <input type ="submit" id="checkout-btn" value="Proceed to checkout">
     </form>
 
 

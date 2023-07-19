@@ -26,7 +26,7 @@ import = "java.util.*, it.unisa.model.*" pageEncoding="UTF-8"%>
 
             
             text-align: center;
-            padding: 20px 5px;;
+            padding: 2% 1%;
             font-size:20px;
         
         
@@ -110,6 +110,8 @@ import = "java.util.*, it.unisa.model.*" pageEncoding="UTF-8"%>
         padding:5%;
         background: rgba(240,240,240);
         border-radius:5px;
+        overflow-y: hidden;
+        padding-bottom: 0;
 
          }
 
@@ -156,7 +158,7 @@ import = "java.util.*, it.unisa.model.*" pageEncoding="UTF-8"%>
             border-radius: 10px;
             padding: 2px;
             width: 30%;
-            height: 80%;
+            height: auto;
             border-top: solid;
         border-bottom: solid;
         
@@ -215,7 +217,115 @@ import = "java.util.*, it.unisa.model.*" pageEncoding="UTF-8"%>
               background-color: white;
             border-bottom: 1px solid #634B66;
             
-            }    
+            }
+        
+        @media screen and (max-width: 880px){
+
+        .searchbar input[type="text"]{
+          
+            width: 30%;
+        }
+        
+        .categoria {
+          display:none;
+
+        }
+        
+        .catalogo{
+         
+          font-size:17px;
+
+        }
+        .card {
+
+          flex : 0 0 40%;
+        }
+
+        .catalogo img {
+          width: 80%;
+          height: 65%;
+
+        }
+        h2{
+          font-size: 20px;
+        }
+}
+
+@media screen and (max-width: 1030px){
+
+  .searchbar input[type="text"]{
+    width: 30%;
+   
+  }
+  .categoria {
+    padding: 5px 7px;
+    margin: 0 3px;
+    font-size: 15px;
+    
+  }
+  
+  
+}
+
+@media screen and (max-width: 430px){
+
+  .searchbar input[type="text"]{
+    width: 60%;
+    }
+    h2,h3{
+      font-size: 15px;
+    }
+    
+    .searchbar{
+      padding-top:10%;
+    }
+    
+    button {
+      padding: 2px 2px;
+      font-size: 10px;
+      letter-spacing: 0px;
+    }
+    .filter-container{
+      
+      padding:3%;
+      
+    }
+    
+    .filter{
+
+      font-size:13px;
+
+    }
+
+    .macro{
+
+      margin-top:7px;
+      margin-bottom:7px;
+
+    }
+    .checkboxInterne{
+      
+      padding-left:15%;
+
+    }
+    .macro input[type="checkbox"]{
+      accent-color: #634B66;
+      transform: scale(0.6);
+
+    }
+    .filter-container input[type="number"]{
+      transform: scale(0.7);
+    }
+    .filter-container button{
+      font-size: 13px;
+    }
+    
+    .card {
+
+      flex : 0 0 90%;
+    }
+
+}
 
 
 
@@ -232,7 +342,7 @@ import = "java.util.*, it.unisa.model.*" pageEncoding="UTF-8"%>
     
     <div class="searchbar">
     
-        <input type="text" list="list" id="search" placeholder="Search products..." style="width: 300px;" oninput="doSuggest()" >
+        <input type="text" list="list" id="search" placeholder="Search products..."  oninput="doSuggest()" >
         <span class="suggestBar">
             <datalist class="suggestBar" id="list" style="width: 300px;">
             
@@ -260,7 +370,7 @@ import = "java.util.*, it.unisa.model.*" pageEncoding="UTF-8"%>
             
             <div class="checkboxInterne" id="1">
             <label for= "prezzo_da"> From </label>
-            <input name = "prezzo_da" id = "prezzo_da" type="number" required style="width:20%">
+            <input name = "prezzo_da" id = "prezzo_da" type="number" required style="width:20%"><br>
             <label for= "prezzo_a"> To  </label>
             <input name = "prezzo_a" id = "prezzo_a" type="number" required style="width:20%">
            </div>

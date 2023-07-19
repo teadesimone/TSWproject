@@ -112,3 +112,7 @@ button:active {
     margin-top: 5px;
     cursor: pointer;  
 }
+
+.errorNoTranslate{
+    color: #634B66;
+}

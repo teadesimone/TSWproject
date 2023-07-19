@@ -50,6 +50,7 @@ String error = (String) request.getAttribute("error");
             color: white;
             }
             
+            
         </style>
 </head>
 
@@ -69,7 +70,7 @@ String error = (String) request.getAttribute("error");
                 <input type="hidden" name="action" value="insert">
 
                 <div class="inputBox">
-                <input name="name" type="text" maxlength="50" required placeholder="enter name">
+                    <input name="name" type="text" maxlength="50" required autocomplete="off" placeholder="enter name">
                 <label for="name">Name:</label>
                 </div>
                 
@@ -119,7 +120,7 @@ String error = (String) request.getAttribute("error");
 
                 <div class="inputBox special">
                 <label for="description">Description:</label>
-                <textarea name="description" maxlength="100" rows="3" required placeholder="enter description"></textarea>
+                <textarea name="description" maxlength="500" rows="3" required placeholder="enter description"></textarea>
                 </div>
 
                 <div class="inputBox special">
@@ -210,11 +211,11 @@ String error = (String) request.getAttribute("error");
                 
                 <div class="inputBox special">
                 <label for="description">Description:</label>
-                <textarea name="descriptionM" maxlength="100" rows="3" required><%=j.getDescrizione() %></textarea>
+                <textarea name="descriptionM" maxlength="500" rows="3" required><%=j.getDescrizione() %></textarea>
                 </div>
                 
                 <div class="inputBox special">
-                <label for="materialM">Material:</label> <select name="category">
+                <label for="materialM">Material:</label> 
                	  <select name="materialM">
                	 	 <option value="Gold"> Gold </option>
                		 <option value="Silver"> Silver </option>

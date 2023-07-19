@@ -37,7 +37,7 @@ public class ClientServlet extends HttpServlet{
             response.sendRedirect("login");
             return;
         } 
-        if (client.getEmail().equals("JadeTear@gmail.com")){
+        if (client.getEmail().equals("JadeTear@gmail.com")){ //se l'utente è l'admin, viene reindirizzato alla pagine di visualizzazioni dei clienti tramite la servlet admin
         	RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/admin?action=clientsNoFilter");
             dispatcher.forward(request, response);
             return;
@@ -49,6 +49,8 @@ public class ClientServlet extends HttpServlet{
 			addresses = (ArrayList<AddressBean>) addressmodel.doRetrieveByClient(client.getUsername());
 		} catch (SQLException e) {
             LOGGER.log( Level.SEVERE, e.toString(), e );
+            response.sendRedirect("generalError.jsp");
+            return;
         }
 		
         ArrayList<PaymentMethodBean> payments = null;
@@ -56,6 +58,8 @@ public class ClientServlet extends HttpServlet{
 			payments = (ArrayList<PaymentMethodBean>) paymentmodel.doRetrieveByClient(client.getUsername());
 		}  catch (SQLException e) {
             LOGGER.log( Level.SEVERE, e.toString(), e );
+            response.sendRedirect("generalError.jsp");
+            return;
         }
         
         request.setAttribute("addresses", addresses);
@@ -71,7 +75,7 @@ public class ClientServlet extends HttpServlet{
         
         if(action != null){
             
-            if(action.equalsIgnoreCase("modify")){
+            if(action.equalsIgnoreCase("modify")){ // modifica dei dati personali con controllo dei form server side
                 
                 String cf = request.getParameter("cf");
                 String nome = request.getParameter("nome");
@@ -135,10 +139,12 @@ public class ClientServlet extends HttpServlet{
                     clientModel.doModify(client);
                 } catch (SQLException e) {
                     LOGGER.log( Level.SEVERE, e.toString(), e );
+                    response.sendRedirect("generalError.jsp");
+                    return;
                 }
             }
             
-            if(action.equalsIgnoreCase("addPaymentCard")){
+            if(action.equalsIgnoreCase("addPaymentCard")){ // aggiunta di un metodo di pagamento con controlli server side
                 PaymentMethodBean card = new PaymentMethodBean();
                 int id = -1;
                 
@@ -174,13 +180,15 @@ public class ClientServlet extends HttpServlet{
                     id = paymentmodel.doSave(card);
                 } catch (SQLException e) {
                     LOGGER.log( Level.SEVERE, e.toString(), e );
+                    response.sendRedirect("generalError.jsp");
+                    return;
                 }
                 card.setId(id);
                 payments.add(card);
                 request.setAttribute("payments", payments);
             }
             
-            if(action.equalsIgnoreCase("deletePaymentCard")){
+            if(action.equalsIgnoreCase("deletePaymentCard")){ // eliminazione di un metodo di pagamento 
                 int idcarta = Integer.parseInt(request.getParameter("id_carta"));
                 
                 PaymentMethodBean bean = null;
@@ -189,6 +197,8 @@ public class ClientServlet extends HttpServlet{
                     bean = paymentmodel.doRetrieveByKey(idcarta);
 				}catch (SQLException e) {
                     LOGGER.log( Level.SEVERE, e.toString(), e );
+                    response.sendRedirect("generalError.jsp");
+                    return;
                 }
                 payments.remove(bean);
                 request.setAttribute("payments", payments);
@@ -200,7 +210,7 @@ public class ClientServlet extends HttpServlet{
                 }
             }
             
-            if(action.equalsIgnoreCase("addAddress")){
+            if(action.equalsIgnoreCase("addAddress")){ // aggiunta di un indirizzo con controlli form server side
                 AddressBean address = new AddressBean();
                 int id = -1;
                 
@@ -230,13 +240,15 @@ public class ClientServlet extends HttpServlet{
                     id = addressmodel.doSave(address);
                 } catch (SQLException e) {
                     LOGGER.log( Level.SEVERE, e.toString(), e );
+                    response.sendRedirect("generalError.jsp");
+                    return;
                 }
                 address.setId(id);
                 addresses.add(address);
                 request.setAttribute("addresses", addresses);
             }
             
-            if(action.equalsIgnoreCase("deleteAddress")){
+            if(action.equalsIgnoreCase("deleteAddress")){ // eliminazione di un indirizzo
                 int idindirizzo = Integer.parseInt(request.getParameter("id_indirizzo"));
                 AddressBean bean = null;
                 
@@ -244,6 +256,8 @@ public class ClientServlet extends HttpServlet{
                     bean = addressmodel.doRetrieveByKey(idindirizzo);
 				}catch (SQLException e) {
                     LOGGER.log( Level.SEVERE, e.toString(), e );
+                    response.sendRedirect("generalError.jsp");
+                    return;
                 }
                 addresses.remove(bean);
                 request.setAttribute("addresses", addresses);
@@ -252,6 +266,8 @@ public class ClientServlet extends HttpServlet{
                     addressmodel.doDelete(Integer.parseInt(request.getParameter("id_indirizzo")));
                 } catch (SQLException e) {
                     LOGGER.log( Level.SEVERE, e.toString(), e );
+                    response.sendRedirect("generalError.jsp");
+                    return;
                 }
                 
             }

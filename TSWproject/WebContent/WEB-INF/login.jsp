@@ -79,9 +79,10 @@ import = "java.util.*, it.unisa.model.*" pageEncoding="UTF-8"%>
             padding:0.5%;
             margin:auto;
         }
-
+        
+        
         #passwordLabel{
-            padding: 6px;
+            height: 70%;
         }
 
         @media only screen and (max-width: 900px){ /* media query per tablet e schermi laptop medi */

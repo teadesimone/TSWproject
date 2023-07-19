@@ -23,8 +23,8 @@ public class LoginServlet extends HttpServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
         
-    	String action = request.getParameter("action");
-    	if(action!=null && action.equalsIgnoreCase("logout")){
+    	String action = request.getParameter("action");  
+        if(action!=null && action.equalsIgnoreCase("logout")){ // azione di logout
             HttpSession session = request.getSession();
             session.invalidate();
             response.sendRedirect("home");
@@ -51,13 +51,13 @@ public class LoginServlet extends HttpServlet {
                 return;
             }  
 
-            if(client == null){
+            if(client == null){ // se si inseriscono le credenziali sbagliate, si viene rediretti alla login error 
 
                 response.sendRedirect("loginError.jsp");	
                 return;
             }
             else {
-                request.getSession().setAttribute("utente", client);
+                request.getSession().setAttribute("utente", client); // set dell'attributo utente nella sessione 
     
                 if (client.getEmail().equals("JadeTear@gmail.com")) {
                     RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/admin");
