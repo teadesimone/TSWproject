@@ -10,12 +10,16 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedList;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
 
 public class PaymentMethodDAO {
+    private static final Logger LOGGER = Logger.getLogger(PaymentMethodDAO.class.getName() );
     
     private static DataSource ds;
 
@@ -27,7 +31,7 @@ public class PaymentMethodDAO {
             ds = (DataSource) envCtx.lookup("jdbc/JadeTear");
 
         } catch (NamingException e) {
-            System.out.println("Error:" + e.getMessage());
+            LOGGER.log( Level.SEVERE, e.toString(), e );
         }
     }
     private static final String TABLE_NAME = "Metodo_di_pagamento";
@@ -52,7 +56,7 @@ public class PaymentMethodDAO {
             preparedStatement.setString(5, bean.getUsername());
 
             preparedStatement.executeUpdate();
-            //connection.commit();
+          
             
             ResultSet key = preparedStatement.getGeneratedKeys();
 

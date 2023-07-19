@@ -1,5 +1,8 @@
 package it.unisa.model;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import java.sql.*;
 import java.util.*;
 import javax.naming.Context;
@@ -9,6 +12,8 @@ import javax.sql.DataSource;
 
 
 public class ClientDAO {
+    
+    private static final Logger LOGGER = Logger.getLogger(ClientDAO.class.getName() );
     private static final String TABLE = "Cliente";
 
     private static DataSource ds;
@@ -21,7 +26,7 @@ public class ClientDAO {
             ds = (DataSource) envCtx.lookup("jdbc/JadeTear");
 
         } catch (NamingException e) {
-            System.out.println("Error:" + e.getMessage());
+            LOGGER.log( Level.SEVERE, e.toString(), e );
         }
     }
 

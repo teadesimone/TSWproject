@@ -35,7 +35,7 @@ public class AdminServlet extends HttpServlet {
 
             ClientBean client = (ClientBean) request.getSession().getAttribute("utente");
             if(client==null || !client.getEmail().equals("JadeTear@gmail.com") ){
-                  System.out.println("cio sono nel controllo");
+                
                   response.sendRedirect("home");	
                   return;
             }
@@ -124,47 +124,47 @@ Files.copy(fileInputStream2, targetImagePath);*/
                   String material = request.getParameter("material");
 
                   if(nome==null || !nome.matches("^[A-Za-z ]+$")){
-                        System.out.println("nome");
+                       
                         sendError(request, response);
                         return;
                   }
                   if(category==null || category.equals("") || (!category.equals("Necklace") && !category.equals("Earrings") && !category.equals("Ring") && !category.equals("Bracelet"))){
-                        System.out.println("catego");
+                       
                         sendError(request, response);
                         return;
                   }
                   if(gemstone==null ||  gemstone.equals("") || (!gemstone.equals("Quarz") && !gemstone.equals("Jade") && !gemstone.equals("Amethyst") && !gemstone.equals("Citrine") && !gemstone.equals("Rose Quarz") && !gemstone.equals("Aquamarine"))){
-                        System.out.println("gem");
+                      
                         sendError(request, response);
                         return;
                   }
                   if(availability==0 || !(availability > 0 && availability < 100)){
-                        System.out.println("dis");
+                       
                         sendError(request, response);
                         return;
                   }
                   if(IVA==0 || !(IVA > 0 && IVA < 100)){
-                        System.out.println("iva");
+                        
                         sendError(request, response);
                         return;
                   }
                   if(price==0 || !(price > 0 && price <= 5000)){
-                        System.out.println("price");
+                       
                         sendError(request, response);
                         return;
                   }
                   if(description==null || !description.matches("^[a-zA-Z0-9 ]{1,100}$")){
-                        System.out.println("descri");
+                      
                         sendError(request, response);
                         return;
                   }
                   if(material==null || material.equals("") || (!material.equals("Gold") && !material.equals("Silver") && !material.equals("Rose Gold"))){
-                        System.out.println("mat");
+                        
                         sendError(request, response);
                         return;
                   }
                   if(discount==-1 || !(discount >= 0 && discount < 100)){
-                        System.out.println("sconto");
+                       
                         sendError(request, response);
                         return;
                   }

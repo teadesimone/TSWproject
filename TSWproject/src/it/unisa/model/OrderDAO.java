@@ -9,6 +9,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedList;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
@@ -18,6 +21,7 @@ import javax.sql.DataSource;
 
 public class OrderDAO {
 
+    private static final Logger LOGGER = Logger.getLogger(OrderDAO.class.getName() );
     private static DataSource ds;
 
     static {
@@ -28,7 +32,7 @@ public class OrderDAO {
             ds = (DataSource) envCtx.lookup("jdbc/JadeTear");
 
         } catch (NamingException e) {
-            System.out.println("Error:" + e.getMessage());
+            LOGGER.log( Level.SEVERE, e.toString(), e );
         }
     }
     private static final String TABLE_NAME = "Ordine";
@@ -63,7 +67,7 @@ public class OrderDAO {
             preparedStatement.setBoolean(13, order.getConfezione_regalo());
 
             preparedStatement.executeUpdate();
-            //connection.commit();
+           
             
             for (OrderProductBean prodotto : (ArrayList<OrderProductBean>) order.getProducts()){
                 model.doSave(prodotto);
@@ -332,36 +336,7 @@ public class OrderDAO {
     }
 
 
-    /*
-    public synchronized boolean doDelete(int id) throws SQLException {
-        Connection connection = null;
-        PreparedStatement preparedStatement = null;
-
-        int result = 0;
-
-        String deleteSQL = "DELETE * FROM " + TABLE_NAME + "where id = ?";
-
-        try {
-            connection = ds.getConnection();
-            preparedStatement = connection.prepareStatement(deleteSQL);
-            preparedStatement.setInt(1, id);
-
-            result = preparedStatement.executeUpdate();
-
-        } finally {
-            try {
-                if (preparedStatement != null)
-                    preparedStatement.close();
-            } finally {
-                if (connection != null)
-                    connection.close();
-            }
-        }
-        return (result != 0);
-    }*/
-
-
-
+    
     public synchronized ArrayList < OrderBean > doRetrieveAll() throws SQLException {
         Connection connection = null;
         PreparedStatement preparedStatement = null;

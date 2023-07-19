@@ -372,7 +372,7 @@ String error = (String) request.getAttribute("error");
 
             <div class="link">
               <span>You already have a profile? Sign in <a href= "login"> here</a></span>
-              <span>Return to <a href="home.jsp"> home </a></span>
+              <span>Return to <a href="home"> home </a></span>
             </div>
           </div>
         </div>

@@ -54,7 +54,7 @@ public class OrderDetailsServlet extends HttpServlet{
         if(action!=null && action.equalsIgnoreCase("viewInvoice")){
             
             int idordine = Integer.parseInt(request.getParameter("idOrder"));
-            InvoiceBean invoice = new InvoiceBean();
+            InvoiceBean invoice = null;
             
             ArrayList<OrderProductBean> products = null;
 			try {

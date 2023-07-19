@@ -306,7 +306,7 @@ header {
         
         <div class="logo">
           
-          <img src="images//logo.png" class="logo"></a>
+          <img src="images//logo.png" class="logo" alt="logo"></a>
         
         </div>
 
@@ -324,7 +324,7 @@ header {
               <% } %>
           
           
-            <% if (clientbean != null) { %>
+            <% if (clientbean != null && !clientbean.getEmail().equals("JadeTear@gmail.com")  ) { %>
            
                   
                   <a href="home">  Home  </a>
@@ -338,7 +338,7 @@ header {
               
                     
                     <a href="home">  Home  </a>
-                    <a href="catalog">  Catalog  </a>
+                  <a href="catalog">  Catalog  </a>
                 
           
                 <% } %>

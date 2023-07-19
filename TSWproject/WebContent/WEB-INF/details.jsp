@@ -2,6 +2,8 @@
 import = "java.util.*, it.unisa.model.*" pageEncoding="UTF-8"%>
 
 <% JewelBean j = (JewelBean) request.getAttribute("detailed");
+ClientBean clientbean1 = (ClientBean) request.getSession().getAttribute("utente");
+
 
 String erroresoldout2 = (String)request.getAttribute("erroresoldout2");
 %>
@@ -156,7 +158,7 @@ String erroresoldout2 = (String)request.getAttribute("erroresoldout2");
 <div class="grid-container">
 
 <div class="header">
-	<%@include file="header.jsp" %></div>
+	<%@include file="header.jsp"%></div>
 
     <div class="title">
     <h1><%=j.getNome() %></h1>
@@ -194,6 +196,8 @@ String erroresoldout2 = (String)request.getAttribute("erroresoldout2");
 
 
 
+				
+           
 
                 <% if (erroresoldout2 != null){%>
                             <div style="color:red;"><%=erroresoldout2%></div>
@@ -205,6 +209,10 @@ String erroresoldout2 = (String)request.getAttribute("erroresoldout2");
                 <a href="cart?action=add&id=<%=j.getId()%>"> Add to Cart </a> 
 
                <% } %>
+                
+                
+             
+                
                 <a href="catalog"> Go Back </a> 
 
                 </div>

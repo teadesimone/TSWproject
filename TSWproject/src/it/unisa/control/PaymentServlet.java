@@ -19,6 +19,8 @@ import java.util.logging.Logger;
 import it.unisa.model.*;
 
 
+
+
 public class PaymentServlet extends HttpServlet {
 	private static final Logger LOGGER = Logger.getLogger(DetailsServlet.class.getName() );
     private static final long serialVersionUID = 1L;
@@ -39,7 +41,7 @@ public class PaymentServlet extends HttpServlet {
         Cart cart = (Cart) request.getSession().getAttribute("cart");
         ClientBean client = (ClientBean) request.getSession().getAttribute("utente");
         boolean check = true;
-        AddressBean bean = new AddressBean();
+        AddressBean bean =  null;
         InvoiceBean invoice = new InvoiceBean();
         
         if( action == null || action.equals("buy") || action.equals("")){
@@ -176,7 +178,7 @@ public class PaymentServlet extends HttpServlet {
                     order.setConfezione_regalo(Boolean.parseBoolean(request.getParameter("regalo")));
 
                     try {
-                        //controllo che la quantità di prodotti inserita nel carrello sia ancora disponibile
+                        //controllo che la quantitï¿½ di prodotti inserita nel carrello sia ancora disponibile
                         for (CartProduct cp : cart.getProducts()){
                             if(cp.getQuantity() > cp.getProduct().getDisponibilita() ){
                                 check = false;

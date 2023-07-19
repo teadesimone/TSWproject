@@ -100,7 +100,7 @@ public class CatalogServlet extends HttpServlet {
                  sql = " AND prezzo > "+ prezzo_da +" AND prezzo < "+ prezzo_a;
              }
 
-         //System.out.println(sql);
+         
 
          try {
              result = model.doRetrieveAllByKeyword(keyword,sql);
@@ -123,42 +123,7 @@ public class CatalogServlet extends HttpServlet {
          return;
      }
 
-     /*
-     if (action != null && action.equalsIgnoreCase("search")){
-         System.out.println("Test: ");
-         String query = request.getParameter("query");
-         ArrayList<JewelBean> result = null;
-         
-         try {
-             result = model.doRetrieveAllByKeyword(query);
-			//request.setAttribute("products", model.doRetrieveAllByKeyword(query));
-		}catch (SQLException e) {
-			LOGGER.log( Level.SEVERE, e.toString(), e );
-		}
-         
-         Gson gson = new Gson();
-         String json = gson.toJson(result);
-
-         response.setContentType("application/json");
-         PrintWriter out = response.getWriter();
-         out.write(json); 
-         System.out.println("Test: "+json);
-     }
-        
-        if(action == null && !ajax){
-            request.removeAttribute("products");
-            
-            try {
-                request.setAttribute("products", model.doRetrieveAll());
-            } catch (SQLException e) {
-                LOGGER.log( Level.SEVERE, e.toString(), e );
-            }
-
-            
-            RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/catalog.jsp");
-            dispatcher.forward(request, response);
-
-        }*/
+     
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response)throws ServletException, IOException {

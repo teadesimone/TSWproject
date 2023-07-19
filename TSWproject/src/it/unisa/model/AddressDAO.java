@@ -7,6 +7,9 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
@@ -16,6 +19,8 @@ import javax.sql.DataSource;
 
 
 public class AddressDAO {
+    
+    private static final Logger LOGGER = Logger.getLogger(AddressDAO.class.getName() );
 
     private static DataSource ds;
 
@@ -27,7 +32,7 @@ public class AddressDAO {
             ds = (DataSource) envCtx.lookup("jdbc/JadeTear");
 
         } catch (NamingException e) {
-            System.out.println("Error:" + e.getMessage());
+            LOGGER.log( Level.SEVERE, e.toString(), e );
             
         }
     }
@@ -53,7 +58,7 @@ public class AddressDAO {
             preparedStatement.setString(4, address.getUsername());
 
             preparedStatement.executeUpdate();
-            //connection.commit();
+            
             
             ResultSet key = preparedStatement.getGeneratedKeys();
             

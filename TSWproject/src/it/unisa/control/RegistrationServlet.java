@@ -139,7 +139,7 @@ public class RegistrationServlet extends HttpServlet {
             client.setPassword(password);
 
             AddressBean indirizzobase = new AddressBean();
-            //indirizzobase.setId(1);
+            
             indirizzobase.setVia(indirizzo);
             indirizzobase.setCitta(citta);
             indirizzobase.setCAP(cap);

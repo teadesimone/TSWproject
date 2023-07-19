@@ -3,12 +3,17 @@ package it.unisa.model;
 import java.sql.*;
 import java.util.*;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
 
 public class OrderProductDAO {
+    
+    private static final Logger LOGGER = Logger.getLogger(OrderProductDAO.class.getName() );
     private static final String TABLE = "Composizione";
 
     private static DataSource ds;
@@ -21,7 +26,7 @@ public class OrderProductDAO {
             ds = (DataSource) envCtx.lookup("jdbc/JadeTear");
 
         } catch (NamingException e) {
-            System.out.println("Error:" + e.getMessage());
+            LOGGER.log( Level.SEVERE, e.toString(), e );
         }
     }
 
@@ -49,7 +54,7 @@ public class OrderProductDAO {
 
             preparedStatement.executeUpdate();
 
-           // connection.commit();
+          
         } finally {
             try {
                 if (preparedStatement != null)

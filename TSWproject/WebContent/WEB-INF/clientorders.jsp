@@ -22,7 +22,7 @@ import = "java.util.*, it.unisa.model.*" pageEncoding="UTF-8"%>
 		<html lang="en">
 
 		<head>
-			<!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">   -->
+			
 
 			<link rel="stylesheet" type="text/css" href="./styles/tableStyle.css">
 			<meta charset="UTF-8">
