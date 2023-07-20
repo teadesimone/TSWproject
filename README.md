@@ -12,10 +12,8 @@ La struttura responsive del sito web consente di adattare automaticamente la vis
     - visualizzare il catalogo
     - visualizzare il dettaglio di un prodotto
     - aggiungere e rimuovere elementi dal carrello
-    - aggiungere e rimuovere elementi dalla wishlist
     - registrarsi
     - visualizzare il carrello
-    - visualizzare la wishlist
     - ricercare gioielli per categorie
     - la registrazione è richiesta per la finalizzazione dell’acquisto (o per l’invio di un form per la personalizzazione di un gioiello), e verrà esplicitamente richiesta solo in questa fase
     - non potrà vedere gli ordini effettuati, in quanto non potrà averne completati
@@ -28,7 +26,6 @@ La struttura responsive del sito web consente di adattare automaticamente la vis
     - richiedere la fattura e scaricarla
     - visualizzare la lista degli ordini effettuati
     - modificare le informazioni personali o relative ad un singolo acquisto
-    - inserire feedback su prodotti acquistati
     - assistenza cliente
  
 - Funzionalità lato amministrativo \
@@ -37,4 +34,3 @@ La struttura responsive del sito web consente di adattare automaticamente la vis
     - gestire ordini: l’amministratore può visualizzare gli ordini per data, per cliente
     - gestire pagamenti: gestire i pagamenti effettuati dagli utenti, compresa la verifica della transazione
     - gestire promozioni: l’amministratore può creare e gestire promozioni, sconti e offerte speciali per incentivare gli utenti all'acquisto
-    - ricevere supporto tecnico: fornire un supporto tecnico rapido ed efficace all'amministratore per risolvere eventuali problemi tecnici o errori del sito web
