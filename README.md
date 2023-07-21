@@ -1,5 +1,5 @@
 # TSWproject
-> Progetto realizzato per il corso di Tecnologie software per il WEB 2022/23 da [rarissimaavis](https://github.com/rarissimaavis), [teadesimone](https://github.com/teadesimone) e [FieryLux](https://github.com/FieryLux)
+> Progetto realizzato per il corso di Tecnologie Software per il WEB 2022/23 da [rarissimaavis](https://github.com/rarissimaavis), [teadesimone](https://github.com/teadesimone) e [FieryLux](https://github.com/FieryLux) [Università degli Studi di Salerno, facoltà di Informatica]
 
 # Obiettivo
 ***Jade Tear*** ha come obiettivo principale vendere gioielli di alta qualità ai propri clienti attraverso una piattaforma online. 
@@ -34,3 +34,12 @@ La struttura responsive del sito web consente di adattare automaticamente la vis
     - gestire ordini: l’amministratore può visualizzare gli ordini per data, per cliente
     - gestire pagamenti: gestire i pagamenti effettuati dagli utenti, compresa la verifica della transazione
     - gestire promozioni: l’amministratore può creare e gestire promozioni, sconti e offerte speciali per incentivare gli utenti all'acquisto
+    
+    NOTA DELLE AUTRICI:
+    Le immagini presenti nella cartella "TSWproject/WebContent/images", non sono di nostra proprietà!
+    In particolare le immagini dei prodotti riportate appartengono al sito di Lindeza a cui potete risalire cliccando questo link: https://lindeza.shop/
+    
+    NOTE FROM THE AUTHORS:
+    The images present in the folder "TSWproject/WebContent/images" are not our property!
+    In particular, the images of the products shown belong to Lindeza's website, which you can visit by clicking this link: https://lindeza.shop/
+    
